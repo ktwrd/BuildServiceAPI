@@ -11,9 +11,9 @@ namespace BuildServiceAPI.Controllers
         public ActionResult FetchFilesFromHash(string hash)
         {
             var returnContent = new List<PublishedReleaseFile>();
-            if (MainClass.CommitFileTable.ContainsKey(hash))
+            if (MainClass.contentManager.Published.ContainsKey(hash))
             {
-                var commit = MainClass.CommitFileTable[hash];
+                var commit = MainClass.contentManager.Published[hash];
                 returnContent = new List<PublishedReleaseFile>(commit.Files);
             }
             return Json(returnContent, MainClass.serializerOptions);

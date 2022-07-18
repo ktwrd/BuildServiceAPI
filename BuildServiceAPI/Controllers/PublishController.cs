@@ -72,9 +72,9 @@ namespace BuildServiceAPI.Controllers
                 fileList.Add(prf);
             }
             publishedRelease.Files = fileList.ToArray();
-            if (!MainClass.CommitFileTable.ContainsKey(parameters.releaseInfo.commitHash))
+            if (!MainClass.contentManager.Published.ContainsKey(parameters.releaseInfo.commitHash))
             {
-                MainClass.CommitFileTable.Add(parameters.releaseInfo.commitHash, publishedRelease);
+                MainClass.contentManager.Published.Add(parameters.releaseInfo.commitHash, publishedRelease);
             }
             return Json(parameters, jsonDeserializeOptions);
         }

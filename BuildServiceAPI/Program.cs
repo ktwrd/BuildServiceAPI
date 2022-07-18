@@ -30,6 +30,10 @@ namespace BuildServiceAPI
             App.MapControllers();
             App.Run();
         }
+        public static void Save()
+        {
+            contentManager.DatabaseSerialize();
+        }
 
         public static void LoadTokens()
         {
