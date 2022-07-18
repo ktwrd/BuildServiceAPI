@@ -24,6 +24,14 @@ namespace BuildServiceAPI.Controllers
                 WriteIndented = true
             };
 
+            var decodedReleaseInfo = JsonSerializer.Deserialize<ReleaseInfo>(encodedReleaseInfo, jsonDeserializeOptions);
+
+            if (decodedReleaseInfo == null)
+            {
+                Response.StatusCode = 400;
+                return Json(new HttpException(400, @"Invalid parameter 'encodedReleaseInfo'"), MainClass.serializerOptions);
+            }
+
             var parameters = new PublishParameters()
             {
                 token = token,
@@ -31,7 +39,7 @@ namespace BuildServiceAPI.Controllers
                 product = product,
                 branch = branch,
                 timestamp = timestamp,
-                releaseInfo = JsonSerializer.Deserialize<ReleaseInfo>(encodedReleaseInfo, jsonDeserializeOptions),
+                releaseInfo = decodedReleaseInfo,
                 files = JsonSerializer.Deserialize<ManagedUploadSendData[]>(encodedSendDataArray, jsonDeserializeOptions) ?? Array.Empty<ManagedUploadSendData>()
             };
             for (int i = 0; i < parameters.files.Length; i++)
