@@ -5,9 +5,9 @@ namespace BuildServiceAPI
 {
     public class ContentManager
     {
-        public List<ReleaseInfo> ReleaseInfoContent;
-        public Dictionary<string, ProductRelease> Releases = new Dictionary<string, ProductRelease>();
-        public Dictionary<string, PublishedRelease> Published = new Dictionary<string, PublishedRelease>();
+        public List<ReleaseInfo> ReleaseInfoContent = new();
+        public Dictionary<string, ProductRelease> Releases = new();
+        public Dictionary<string, PublishedRelease> Published = new();
 
         internal int DatabaseVersion;
 
