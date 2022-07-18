@@ -7,19 +7,14 @@ namespace BuildServiceAPI
     {
         public static WebApplicationBuilder Builder;
         public static WebApplication App;
-        public static string[] ReleaseInfoFiles = Array.Empty<string>();
-        public static List<ReleaseInfo> ReleaseInfoContent = new();
-        public static Dictionary<string, ProductRelease> AvailableReleases = new Dictionary<string, ProductRelease>();
-        public static Dictionary<string, PublishedRelease> CommitFileTable = new Dictionary<string, PublishedRelease>();
         public static List<string> ValidTokens = new List<string>();
 
         public static ContentManager contentManager = new ContentManager();
 
         public static void Main(string[] args)
         {
-            ReleaseInfoFiles = GetFileList(@"C:\Users\jyles\Desktop\productgenerator\test_data", @"release-info.json");
-            ReleaseInfoContent = ScrapeForProducts();
-            AvailableReleases = TransformReleaseList(ReleaseInfoContent.ToArray());
+            contentManager.ReleaseInfoContent = ScrapeForProducts(GetFileList(@"C:\Users\jyles\Desktop\productgenerator\test_data", @"release-info.json"));
+            contentManager.Releases = TransformReleaseList(contentManager.ReleaseInfoContent.ToArray());
 
             Builder = WebApplication.CreateBuilder(args);
             Builder.Services.AddControllers();
@@ -77,10 +72,10 @@ namespace BuildServiceAPI
             return allFiles.ToArray();
         }
 
-        public static List<ReleaseInfo> ScrapeForProducts()
+        public static List<ReleaseInfo> ScrapeForProducts(string[] infoFiles)
         {
             var releaseList = new List<ReleaseInfo>();
-            foreach (var file in ReleaseInfoFiles)
+            foreach (var file in infoFiles)
             {
                 var content = File.ReadAllText(file);
                 if (content.Replace(": ", ":").Contains("\"envtimestamp\":\"")) continue;
