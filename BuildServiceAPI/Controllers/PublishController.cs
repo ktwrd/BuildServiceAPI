@@ -75,6 +75,7 @@ namespace BuildServiceAPI.Controllers
             if (!MainClass.contentManager.Published.ContainsKey(parameters.releaseInfo.commitHash))
             {
                 MainClass.contentManager.Published.Add(parameters.releaseInfo.commitHash, publishedRelease);
+                MainClass.Save();
             }
             return Json(parameters, jsonDeserializeOptions);
         }
