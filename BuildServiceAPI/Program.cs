@@ -9,13 +9,15 @@ namespace BuildServiceAPI
         public static WebApplication App;
         public static List<string> ValidTokens = new List<string>();
 
-        public static ContentManager contentManager = new ContentManager();
+        public static ContentManager contentManager;
 
         public static void Main(string[] args)
         {
-            contentManager.ReleaseInfoContent = ScrapeForProducts(GetFileList(@"C:\Users\jyles\Desktop\productgenerator\test_data", @"release-info.json"));
-            contentManager.Releases = TransformReleaseList(contentManager.ReleaseInfoContent.ToArray());
-
+            contentManager = new ContentManager();
+            LoadTokens();
+            /*contentManager.ReleaseInfoContent = ScrapeForProducts(GetFileList(@"C:\Users\jyles\Desktop\productgenerator\test_data", @"release-info.json"));
+            contentManager.Releases = TransformReleaseList(contentManager.ReleaseInfoContent.ToArray());*/
+            Save();
             Builder = WebApplication.CreateBuilder(args);
             Builder.Services.AddControllers();
 
@@ -23,11 +25,12 @@ namespace BuildServiceAPI
 
             App.UseAuthorization();
             App.MapControllers();
-            App.Run();
+            App.RunAsync();
+            Console.ReadKey(true);
         }
         public static void Save()
         {
-            contentManager.DatabaseSerialize();
+            MainClass.contentManager.DatabaseSerialize();
         }
 
         public static void LoadTokens()
