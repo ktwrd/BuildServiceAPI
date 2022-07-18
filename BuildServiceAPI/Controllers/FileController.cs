@@ -11,11 +11,13 @@ namespace BuildServiceAPI.Controllers
         public ActionResult FetchFilesFromHash(string hash)
         {
             var returnContent = new List<PublishedReleaseFile>();
+            var contentManager = MainClass.contentManager;
             if (MainClass.contentManager.Published.ContainsKey(hash))
             {
                 var commit = MainClass.contentManager.Published[hash];
                 returnContent = new List<PublishedReleaseFile>(commit.Files);
             }
+            MainClass.contentManager.DatabaseSerialize();
             return Json(returnContent, MainClass.serializerOptions);
         }
     }
