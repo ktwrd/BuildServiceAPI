@@ -126,7 +126,8 @@ namespace BuildServiceAPI
                     UpdatedAt = DateTimeOffset.FromUnixTimeMilliseconds(release.envtimestamp),
                     RemoteSignature = release.remoteLocation,
                     Executable = executable,
-                    ProductID = release.appID
+                    ProductID = release.appID,
+                    CommitHash = release.commitHash
                 };
                 if (!products.ContainsKey(release.appID))
                     products.Add(release.appID, new List<ProductReleaseStream>());
