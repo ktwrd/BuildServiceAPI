@@ -4,11 +4,12 @@ using Minalyze.Shared.Helpers;
 
 namespace BuildServiceAPI
 {
+    [Serializable]
     public class PublishedRelease : bSerializable
     {
-        public string CommitHash { get; set; }
-        public long Timestamp { get; set; }
-        public ReleaseInfo Release { get; set; }
+        public string CommitHash = "";
+        public long Timestamp = 0;
+        public ReleaseInfo Release;
         public PublishedReleaseFile[] Files = Array.Empty<PublishedReleaseFile>();
 
         public void ReadFromStream(SerializationReader sr)
@@ -22,14 +23,15 @@ namespace BuildServiceAPI
         {
             sw.Write(CommitHash);
             sw.Write(Timestamp);
-            sw.WriteObject(Release);
-            sw.Write<PublishedReleaseFile>(new List<PublishedReleaseFile>(Files));
+            sw.WriteObject(Release == null ? (byte)ObjectType.nullType : Release);
+            sw.Write(new List<PublishedReleaseFile>(Files));
         }
     }
+    [Serializable]
     public class PublishedReleaseFile : bSerializable
     {
-        public string Location;
-        public string CommitHash;
+        public string Location = "";
+        public string CommitHash = "";
         public FilePlatform Platform = FilePlatform.Any;
         public FileType Type = FileType.Other;
         public void ReadFromStream(SerializationReader sr)
