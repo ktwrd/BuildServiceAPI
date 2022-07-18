@@ -15,8 +15,6 @@ namespace BuildServiceAPI
         {
             contentManager = new ContentManager();
             LoadTokens();
-            /*contentManager.ReleaseInfoContent = ScrapeForProducts(GetFileList(@"C:\Users\jyles\Desktop\productgenerator\test_data", @"release-info.json"));
-            contentManager.Releases = TransformReleaseList(contentManager.ReleaseInfoContent.ToArray());*/
             Save();
             Builder = WebApplication.CreateBuilder(args);
             Builder.Services.AddControllers();
