@@ -80,9 +80,16 @@ namespace BuildServiceAPI.Controllers
                 fileList.Add(prf);
             }
             publishedRelease.Files = fileList.ToArray();
-            if (!MainClass.contentManager.Published.ContainsKey(parameters.releaseInfo.commitHash))
+            bool saveRelease = !MainClass.contentManager.Published.ContainsKey(parameters.releaseInfo.commitHash);
+            bool saveReleaseInfo = !MainClass.contentManager.ReleaseInfoContent.Contains(parameters.releaseInfo);
+            if (saveRelease)
             {
                 MainClass.contentManager.Published.Add(parameters.releaseInfo.commitHash, publishedRelease);
+                MainClass.Save();
+            }
+            if (saveReleaseInfo)
+            {
+                MainClass.contentManager.ReleaseInfoContent.Add(parameters.releaseInfo);
                 MainClass.Save();
             }
             return Json(parameters, jsonDeserializeOptions);
