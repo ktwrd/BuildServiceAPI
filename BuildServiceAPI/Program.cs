@@ -12,13 +12,14 @@ namespace BuildServiceAPI
         public static Dictionary<string, ProductRelease> AvailableReleases = new Dictionary<string, ProductRelease>();
         public static Dictionary<string, PublishedRelease> CommitFileTable = new Dictionary<string, PublishedRelease>();
         public static List<string> ValidTokens = new List<string>();
+
+        public static ContentManager contentManager = new ContentManager();
+
         public static void Main(string[] args)
         {
             ReleaseInfoFiles = GetFileList(@"C:\Users\jyles\Desktop\productgenerator\test_data", @"release-info.json");
             ReleaseInfoContent = ScrapeForProducts();
             AvailableReleases = TransformReleaseList(ReleaseInfoContent.ToArray());
-
-            LoadTokens();
 
             Builder = WebApplication.CreateBuilder(args);
             Builder.Services.AddControllers();
