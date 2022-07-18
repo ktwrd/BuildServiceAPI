@@ -31,21 +31,27 @@ namespace BuildServiceAPI
                 Console.WriteLine($"[ContentManager->databaseDeserialize] Read {Path.GetRelativePath(Directory.GetCurrentDirectory(), DATABASE_FILENAME)}");
             }, () =>
             {
-                Console.Error.WriteLine(@"content.db is corrupt...");
+                Console.WriteLine(@"//-- content.db is corrupt...".PadLeft(Console.BufferWidth));
                 File.Copy("content.db", $"content.db.{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}");
-                DatabaseSerialize();
             });
         }
         public void DatabaseSerialize()
         {
-            DatabaseHelper.Write(DATABASE_FILENAME, sw =>
+            bool response = DatabaseHelper.Write(DATABASE_FILENAME, sw =>
             {
                 sw.Write(DatabaseVersion);
-                sw.Write<ReleaseInfo>(ReleaseInfoContent);
+                sw.Write(ReleaseInfoContent);
                 sw.Write(Releases);
                 sw.Write(Published);
-                Console.WriteLine($"[ContentManager->DatabaseSerialize] Saved {Path.GetRelativePath(Directory.GetCurrentDirectory(), DATABASE_FILENAME)}");
             });
+            if (response)
+            {
+                Console.WriteLine($"[ContentManager->DatabaseSerialize] Saved {Path.GetRelativePath(Directory.GetCurrentDirectory(), DATABASE_FILENAME)}");
+            }
+            else
+            {
+                Console.Error.WriteLine($"[ContentManager->DatabaseSerialize] Failed to save {Path.GetRelativePath(Directory.GetCurrentDirectory(), DATABASE_FILENAME)}");
+            }
         }
     }
 }
