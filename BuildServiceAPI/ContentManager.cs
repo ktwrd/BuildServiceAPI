@@ -28,6 +28,12 @@ namespace BuildServiceAPI
                 ReleaseInfoContent = (List<ReleaseInfo>)sr.ReadBList<ReleaseInfo>();
                 Releases = (Dictionary<string, ProductRelease>)sr.ReadDictionary<string, ProductRelease>();
                 Published = (Dictionary<string, PublishedRelease>)sr.ReadDictionary<string, PublishedRelease>();
+                Console.WriteLine($"[ContentManager->databaseDeserialize] Read {Path.GetRelativePath(Directory.GetCurrentDirectory(), DATABASE_FILENAME)}");
+            }, () =>
+            {
+                Console.Error.WriteLine(@"content.db is corrupt...");
+                File.Copy("content.db", $"content.db.{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}");
+                DatabaseSerialize();
             });
         }
         public void DatabaseSerialize()
@@ -38,6 +44,7 @@ namespace BuildServiceAPI
                 sw.Write<ReleaseInfo>(ReleaseInfoContent);
                 sw.Write(Releases);
                 sw.Write(Published);
+                Console.WriteLine($"[ContentManager->DatabaseSerialize] Saved {Path.GetRelativePath(Directory.GetCurrentDirectory(), DATABASE_FILENAME)}");
             });
         }
     }
