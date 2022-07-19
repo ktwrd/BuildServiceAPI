@@ -96,5 +96,36 @@ namespace BuildServiceAPI.Controllers
             }
             return Json(parameters, jsonDeserializeOptions);
         }
+    
+        [HttpGet]
+        [Route("all")]
+        public ActionResult All(string token)
+        {
+            if (!MainClass.ValidTokens.Contains(token))
+            {
+                Response.StatusCode = 401;
+                return Json(new HttpException(401, @"Invalid token"), MainClass.serializerOptions);
+            }
+            return Json(MainClass.contentManager.Published, MainClass.serializerOptions);
+        }
+
+        [HttpGet]
+        [Route("uid/{uid}")]
+        public ActionResult All(string uid, string token)
+        {
+            if (!MainClass.ValidTokens.Contains(token))
+            {
+                Response.StatusCode = 401;
+                return Json(new HttpException(401, @"Invalid token"), MainClass.serializerOptions);
+            }
+            if (MainClass.contentManager.Published.ContainsKey(uid))
+            {
+                return Json(MainClass.contentManager.Published[uid], MainClass.serializerOptions);
+            }
+            else
+            {
+                return Json(new object(), MainClass.serializerOptions);
+            }
+        }
     }
 }
