@@ -12,20 +12,23 @@ namespace BuildServiceAPI
         internal List<string> LoadedFirebaseAssets = new();
         internal FirestoreDb database;
 
-        internal int DatabaseVersion;
-
-        private readonly string DATABASE_FILENAME = Path.Join(
-            Directory.GetCurrentDirectory(),
-            @"content.db");
-
         private Thread firebaseSaveThread;
         private Thread firebaseLoadThread;
         public ContentManager()
         {
+            BusStationTimer = new System.Threading.Timer(CheckBusSchedule, new AutoResetEvent(false), 0, 150);
+            TriggerSave = false;
+            TriggerSaveTimestamp = -1;
+            TriggerLoad = false;
+            TriggerLoadTimestamp = -1;
+            IsSaving = false;
+            IsLoading = false;
             firebaseSaveThread = new Thread(firebaseSaveThreadLogic);
             firebaseLoadThread = new Thread(firebaseLoadThreadLogic);
             database = FirestoreDb.Create(@"cloudtesting-3d734");
-            LoadFirebase();
+            // We do this because we want to lock the process
+            // before the web server starts, just to be safe.
+            firebaseLoadThreadLogic();
         }
         static ContentManager()
         {
@@ -33,6 +36,56 @@ namespace BuildServiceAPI
             FirebaseHelper.FirebaseCollection.Add(typeof(PublishedReleaseFile), "PublishedReleaseFile");
         }
 
+        private Timer BusStationTimer;
+
+        #region Schedule Saving
+        public bool TriggerSave { get; private set; }
+        public long TriggerSaveTimestamp { get; private set; }
+        public void ScheduleSave()
+        {
+            if (TriggerSave || TriggerLoad || TriggerSaveTimestamp > 0) return;
+            TriggerSave = true;
+            TriggerSaveTimestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        }
+        #endregion
+        #region Schedule Loading
+        public bool TriggerLoad { get; set; }
+        public long TriggerLoadTimestamp { get; private set; }
+        public void ScheduleLoad()
+        {
+            if (TriggerLoad || TriggerSave || TriggerLoadTimestamp > 0) return;
+            Console.WriteLine($"ScheduleLoad: (TriggerLoad: {TriggerLoad}, TriggerSave: {TriggerSave}, TriggerLoadTimestamp: {TriggerLoadTimestamp})");
+            TriggerLoad = true;
+            TriggerLoadTimestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        }
+        #endregion
+        #region Schedule Checker
+        public bool IsSaving{ get; private set; }
+        public bool IsLoading { get; private set; }
+        private void CheckBusSchedule(object? state)
+        {
+            AutoResetEvent autoEvent = (AutoResetEvent)state;
+            if (TriggerLoadTimestamp > 0 && !IsSaving && !IsLoading)
+            {
+                if ((TriggerLoadTimestamp < TriggerSaveTimestamp || TriggerSaveTimestamp <= 0) && TriggerLoad)
+                {
+                    TriggerLoad = false;
+                    LoadFirebase();
+                }
+            }
+            if (TriggerSaveTimestamp > 0 && !IsSaving && !IsLoading)
+            {
+                if ((TriggerSaveTimestamp < TriggerLoadTimestamp || TriggerLoadTimestamp <= 0) && TriggerSave)
+                {
+                    TriggerSave = false;
+                    SaveFirebase();
+                }
+            }
+            autoEvent.Set();
+        }
+        #endregion
+
+        #region Save Content from Firebase
         public void SaveFirebase()
         {
             if (firebaseSaveThread.ThreadState == ThreadState.Running) return;
@@ -43,6 +96,7 @@ namespace BuildServiceAPI
         private void firebaseSaveThreadLogic()
         {
             Console.WriteLine($"[ContentManager->SaveFirebase] Uploading Content to Firebase");
+            IsSaving = true;
             var startTimestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
             var count = 0;
             foreach (var item in ReleaseInfoContent)
@@ -63,7 +117,11 @@ namespace BuildServiceAPI
                 count += pair.Value.Files.Length + 1;
             }
             Console.WriteLine($"[ContentManager->SaveFirebase] Uploaded {count} items in {DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - startTimestamp}ms");
+            TriggerSaveTimestamp = -1;
+            IsSaving = false;
         }
+        #endregion
+        #region Load Content from Firebase
         public void LoadFirebase()
         {
             if (firebaseLoadThread.ThreadState == ThreadState.Running) return;
@@ -73,6 +131,7 @@ namespace BuildServiceAPI
         }
         private void firebaseLoadThreadLogic()
         {
+            IsLoading = true;
             Console.WriteLine($"[ContentManager->LoadFirebase] Fetching Content from Firebase");
             var startTimestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
             var count = 0;
@@ -149,42 +208,9 @@ namespace BuildServiceAPI
             Published = new(Published.Concat(newPublished));
             ReleaseInfoContent = new(ReleaseInfoContent.Concat(newReleaseInfoContent));
             Console.WriteLine($"[ContentManager->LoadFirebase] Fetched {count} items in {DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - startTimestamp}ms");
+            TriggerLoadTimestamp = -1;
+            IsLoading = false;
         }
-
-        private void databaseDeserialize()
-        {
-            DatabaseHelper.Read(DATABASE_FILENAME, sr =>
-            {
-                DatabaseVersion = sr.ReadInt32();
-                ReleaseInfoContent = (List<ReleaseInfo>)sr.ReadBList<ReleaseInfo>();
-                Releases = (Dictionary<string, ProductRelease>)sr.ReadDictionary<string, ProductRelease>();
-                Published = (Dictionary<string, PublishedRelease>)sr.ReadDictionary<string, PublishedRelease>();
-                Console.WriteLine($"[ContentManager->databaseDeserialize] Read {Path.GetRelativePath(Directory.GetCurrentDirectory(), DATABASE_FILENAME)}");
-            }, (e) =>
-            {
-                Console.WriteLine(@"//-- content.db is corrupt...".PadLeft(Console.BufferWidth));
-                Console.Error.WriteLine(e);
-                Console.WriteLine(@"//-- content.db is corrupt...".PadLeft(Console.BufferWidth));
-                File.Copy("content.db", $"content.{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}.bak.db");
-            });
-        }
-        public void DatabaseSerialize()
-        {
-            bool response = DatabaseHelper.Write(DATABASE_FILENAME, sw =>
-            {
-                sw.Write(DatabaseVersion);
-                sw.Write(ReleaseInfoContent);
-                sw.Write(Releases);
-                sw.Write(Published);
-            });
-            if (response)
-            {
-                Console.WriteLine($"[ContentManager->DatabaseSerialize] Saved {Path.GetRelativePath(Directory.GetCurrentDirectory(), DATABASE_FILENAME)}");
-            }
-            else
-            {
-                Console.Error.WriteLine($"[ContentManager->DatabaseSerialize] Failed to save {Path.GetRelativePath(Directory.GetCurrentDirectory(), DATABASE_FILENAME)}");
-            }
-        }
+        #endregion
     }
 }
