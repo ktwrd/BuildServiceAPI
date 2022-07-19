@@ -8,7 +8,7 @@ namespace BuildServiceAPI
     [Serializable]
     public class PublishedRelease : bSerializable, bFirebaseSerializable
     {
-        public string UID = "";
+        public string UID = GeneralHelper.GenerateUID();
         public string CommitHash = "";
         public long Timestamp = 0;
         public ReleaseInfo Release = ReleaseInfo.Blank();
@@ -38,6 +38,25 @@ namespace BuildServiceAPI
                 Release = FirebaseHelper.DeserializeDocumentReference<ReleaseInfo>((DocumentReference)dict["Release"]);
             }
         }
+        public void ToFirebase(DocumentReference document)
+        {
+            Dictionary<string, object> data = new Dictionary<string, object>()
+            {
+                { "CommitHash", CommitHash },
+                { "Timestamp", Timestamp },
+                { "Release", Release.GetFirebaseDocumentReference(document.Database) }
+            };
+            var fileList = new List<DocumentReference>();
+            foreach (var file in Files)
+            {
+                var refr = file.GetFirebaseDocumentReference(document.Database);
+                file.ToFirebase(refr);
+                fileList.Add(refr);
+            }
+            data.Add("Files", fileList.ToArray());
+            document.SetAsync(data).Wait();
+        }
+        public DocumentReference GetFirebaseDocumentReference(FirestoreDb database) => database.Document(FirebaseHelper.FirebaseCollection[this.GetType()] + "/" + UID);
         public void ReadFromStream(SerializationReader sr)
         {
             CommitHash = sr.ReadString();
@@ -56,7 +75,7 @@ namespace BuildServiceAPI
     [Serializable]
     public class PublishedReleaseFile : bSerializable, bFirebaseSerializable
     {
-        public string UID = "";
+        public string UID = GeneralHelper.GenerateUID();
         public string Location = "";
         public string CommitHash = "";
         public FilePlatform Platform = FilePlatform.Any;
@@ -85,6 +104,18 @@ namespace BuildServiceAPI
             this.Platform = FirebaseHelper.Parse<FilePlatform>(document, "Platform", FilePlatform.Any);
             this.Type = FirebaseHelper.Parse<FileType>(document, "Type", FileType.Other);
         }
+        public void ToFirebase(DocumentReference document)
+        {
+            Dictionary<string, object> data = new Dictionary<string, object>()
+            {
+                { "Location", Location },
+                { "CommitHash", CommitHash },
+                { "Platform", Platform },
+                { "Type", Type }
+            };
+            document.SetAsync(data).Wait();
+        }
+        public DocumentReference GetFirebaseDocumentReference(FirestoreDb database) => database.Document(FirebaseHelper.FirebaseCollection[this.GetType()] + "/" + UID);
     }
     public enum FileType
     {

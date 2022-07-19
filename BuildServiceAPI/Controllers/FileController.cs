@@ -19,7 +19,7 @@ namespace BuildServiceAPI.Controllers
                     var commit = contentManager.Published[hash];
                     returnContent = new List<PublishedReleaseFile>(commit.Files);
                 }
-                contentManager.DatabaseSerialize();
+                contentManager.SaveFirebase();
             }
             return Json(returnContent, MainClass.serializerOptions);
         }
