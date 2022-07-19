@@ -1,3 +1,6 @@
+using Google.Apis.Auth.OAuth2;
+using Google.Cloud.Firestore;
+using Google.Cloud.Firestore.V1;
 using Minalyze.Shared.AutoUpdater;
 using System.Text.Json;
 
@@ -13,6 +16,8 @@ namespace BuildServiceAPI
 
         public static void Main(string[] args)
         {
+            FirestoreTest();
+            Console.ReadKey(true);
             contentManager = new ContentManager();
             LoadTokens();
             Save();
@@ -26,6 +31,58 @@ namespace BuildServiceAPI
             App.RunAsync();
             Console.ReadKey(true);
         }
+
+        public static async void FirestoreTest()
+        {
+            FirestoreDb db = FirestoreDb.Create(@"cloudtesting-3d734");
+            var collectionKeyList = new string[]
+            {
+                "ProductExecutables",
+                "PublishedReleaseFile",
+                "Release",
+                "ProductReleaseStream",
+                "ProductRelease",
+                "PublishedRelease"
+            };
+            var collectionList = await db.ListRootCollectionsAsync().ToListAsync();
+            var items = new Dictionary<string, DocumentSnapshot>();
+            foreach (var collection in collectionList)
+            {
+                var collectionDocumentList = await collection.GetSnapshotAsync();
+                foreach (var document in collectionDocumentList)
+                {
+                    items.Add(document.Reference.Path.Split("/documents/")[1], document);
+                }
+            }
+            var releaseinfo = new Dictionary<string, ReleaseInfo>();
+            var releases = new Dictionary<string, ProductRelease>();
+            var publishedRelease = new Dictionary<string, PublishedRelease>();
+            foreach (var pair in items)
+            {
+                var root = pair.Key.Split("/");
+                switch (root[0])
+                {
+                    case "Release":
+                        var ir = new ReleaseInfo();
+                        ir.FromFirebase(pair.Value);
+                        releaseinfo.Add(pair.Key, ir);
+                        break;
+                    case "ProductRelease":
+                        var ip = new ProductRelease();
+                        ip.FromFirebase(pair.Value);
+                        releases.Add(pair.Key, ip);
+                        break;
+                    case "PublishedRelease":
+                        var ipr = new PublishedRelease();
+                        ipr.FromFirebase(pair.Value);
+                        publishedRelease.Add(pair.Key, ipr);
+                        break;
+                }
+                Console.WriteLine(root);
+            }
+            Console.WriteLine("uwu");
+        }
+
         public static void Save()
         {
             MainClass.contentManager.DatabaseSerialize();
