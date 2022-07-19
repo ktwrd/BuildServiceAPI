@@ -351,3 +351,4 @@ MigrationBackup/
 
 content.db
 *.bak.db
+*.bak
