@@ -5,11 +5,11 @@ namespace BuildServiceAPI
 {
     public static class MainClass
     {
-        public static WebApplicationBuilder Builder;
-        public static WebApplication App;
+        public static WebApplicationBuilder? Builder;
+        public static WebApplication? App;
         public static List<string> ValidTokens = new List<string>();
 
-        public static ContentManager contentManager;
+        public static ContentManager? contentManager;
 
         public static void Main(string[] args)
         {
