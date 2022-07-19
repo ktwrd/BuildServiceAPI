@@ -11,13 +11,23 @@ namespace BuildServiceAPI
         public long timestamp { get; set; }
         public ReleaseInfo releaseInfo { get; set; }
         public ManagedUploadSendData[] files = Array.Empty<ManagedUploadSendData>();
+
+        public PublishParameters()
+        {
+            token = "";
+            organization = "";
+            product = "";
+            branch = "";
+            timestamp = 0;
+            releaseInfo = ReleaseInfo.Blank();
+        }
     }
 
     public class ManagedUploadSendData
     {
-        public string Location;
-        public string ETag;
-        public string Bucket;
-        public string Key;
+        public string Location = "";
+        public string ETag = "";
+        public string Bucket = "";
+        public string Key = "";
     }
 }

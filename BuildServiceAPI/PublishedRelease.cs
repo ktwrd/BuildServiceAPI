@@ -9,7 +9,7 @@ namespace BuildServiceAPI
     {
         public string CommitHash = "";
         public long Timestamp = 0;
-        public ReleaseInfo Release;
+        public ReleaseInfo Release = ReleaseInfo.Blank();
         public PublishedReleaseFile[] Files = Array.Empty<PublishedReleaseFile>();
 
         public void ReadFromStream(SerializationReader sr)
