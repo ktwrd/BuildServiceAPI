@@ -85,11 +85,13 @@ namespace BuildServiceAPI.Controllers
             if (saveRelease)
             {
                 MainClass.contentManager.Published.Add(parameters.releaseInfo.commitHash, publishedRelease);
-                MainClass.Save();
             }
             if (saveReleaseInfo)
             {
                 MainClass.contentManager.ReleaseInfoContent.Add(parameters.releaseInfo);
+            }
+            if (saveRelease || saveReleaseInfo)
+            {
                 MainClass.Save();
             }
             return Json(parameters, jsonDeserializeOptions);
