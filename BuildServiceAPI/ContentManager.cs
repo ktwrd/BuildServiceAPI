@@ -29,10 +29,12 @@ namespace BuildServiceAPI
                 Releases = (Dictionary<string, ProductRelease>)sr.ReadDictionary<string, ProductRelease>();
                 Published = (Dictionary<string, PublishedRelease>)sr.ReadDictionary<string, PublishedRelease>();
                 Console.WriteLine($"[ContentManager->databaseDeserialize] Read {Path.GetRelativePath(Directory.GetCurrentDirectory(), DATABASE_FILENAME)}");
-            }, () =>
+            }, (e) =>
             {
                 Console.WriteLine(@"//-- content.db is corrupt...".PadLeft(Console.BufferWidth));
-                File.Copy("content.db", $"content.db.{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}");
+                Console.Error.WriteLine(e);
+                Console.WriteLine(@"//-- content.db is corrupt...".PadLeft(Console.BufferWidth));
+                File.Copy("content.db", $"content.{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}.bak.db");
             });
         }
         public void DatabaseSerialize()
