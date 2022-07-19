@@ -18,8 +18,12 @@ namespace BuildServiceAPI
             Directory.GetCurrentDirectory(),
             @"content.db");
 
+        private Thread firebaseSaveThread;
+        private Thread firebaseLoadThread;
         public ContentManager()
         {
+            firebaseSaveThread = new Thread(firebaseSaveThreadLogic);
+            firebaseLoadThread = new Thread(firebaseLoadThreadLogic);
             database = FirestoreDb.Create(@"cloudtesting-3d734");
             LoadFirebase();
         }
@@ -30,6 +34,13 @@ namespace BuildServiceAPI
         }
 
         public void SaveFirebase()
+        {
+            if (firebaseSaveThread.ThreadState == ThreadState.Running) return;
+            if (firebaseSaveThread.ThreadState == ThreadState.Stopped)
+                firebaseSaveThread = new Thread(firebaseSaveThreadLogic);
+            firebaseSaveThread.Start();
+        }
+        private void firebaseSaveThreadLogic()
         {
             Console.WriteLine($"[ContentManager->SaveFirebase] Uploading Content to Firebase");
             var startTimestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
@@ -54,6 +65,13 @@ namespace BuildServiceAPI
             Console.WriteLine($"[ContentManager->SaveFirebase] Uploaded {count} items in {DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - startTimestamp}ms");
         }
         public void LoadFirebase()
+        {
+            if (firebaseLoadThread.ThreadState == ThreadState.Running) return;
+            if (firebaseLoadThread.ThreadState == ThreadState.Stopped)
+                firebaseLoadThread = new Thread(firebaseLoadThreadLogic);
+            firebaseLoadThread.Start();
+        }
+        private void firebaseLoadThreadLogic()
         {
             Console.WriteLine($"[ContentManager->LoadFirebase] Fetching Content from Firebase");
             var startTimestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
@@ -97,7 +115,7 @@ namespace BuildServiceAPI
                         if (LoadedFirebaseAssets.Contains(doc.Reference.Path))
                             continue;
 
-                        switch(doc.Reference.Path.Split("/documents/")[1].Split("/")[0])
+                        switch (doc.Reference.Path.Split("/documents/")[1].Split("/")[0])
                         {
                             case "Release":
                                 var rel = new ReleaseInfo();
@@ -132,7 +150,6 @@ namespace BuildServiceAPI
             ReleaseInfoContent = new(ReleaseInfoContent.Concat(newReleaseInfoContent));
             Console.WriteLine($"[ContentManager->LoadFirebase] Fetched {count} items in {DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - startTimestamp}ms");
         }
-
 
         private void databaseDeserialize()
         {
