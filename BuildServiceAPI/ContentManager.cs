@@ -26,6 +26,7 @@ namespace BuildServiceAPI
             firebaseSaveThread = new Thread(firebaseSaveThreadLogic);
             firebaseLoadThread = new Thread(firebaseLoadThreadLogic);
             database = FirestoreDb.Create(@"cloudtesting-3d734");
+
             // We do this because we want to lock the process
             // before the web server starts, just to be safe.
             firebaseLoadThreadLogic();
