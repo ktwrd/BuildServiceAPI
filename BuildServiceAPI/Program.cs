@@ -32,7 +32,7 @@ namespace BuildServiceAPI
 
         public static void Save()
         {
-            contentManager?.SaveFirebase();
+            contentManager?.ScheduleSave();
         }
 
         public static void LoadTokens()
