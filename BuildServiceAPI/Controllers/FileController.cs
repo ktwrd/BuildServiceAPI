@@ -12,12 +12,15 @@ namespace BuildServiceAPI.Controllers
         {
             var returnContent = new List<PublishedReleaseFile>();
             var contentManager = MainClass.contentManager;
-            if (MainClass.contentManager.Published.ContainsKey(hash))
+            if (contentManager != null)
             {
-                var commit = MainClass.contentManager.Published[hash];
-                returnContent = new List<PublishedReleaseFile>(commit.Files);
+                if (contentManager.Published.ContainsKey(hash))
+                {
+                    var commit = contentManager.Published[hash];
+                    returnContent = new List<PublishedReleaseFile>(commit.Files);
+                }
+                contentManager.DatabaseSerialize();
             }
-            MainClass.contentManager.DatabaseSerialize();
             return Json(returnContent, MainClass.serializerOptions);
         }
     }
