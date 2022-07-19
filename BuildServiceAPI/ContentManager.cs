@@ -11,7 +11,7 @@ namespace BuildServiceAPI
 
         internal int DatabaseVersion;
 
-        private string DATABASE_FILENAME = Path.Join(
+        private readonly string DATABASE_FILENAME = Path.Join(
             Directory.GetCurrentDirectory(),
             @"content.db");
 
