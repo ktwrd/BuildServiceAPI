@@ -16,7 +16,7 @@ namespace BuildServiceAPI.Controllers
                 Response.StatusCode = 401;
                 return Json(new HttpException(401, @"Invalid token"), MainClass.serializerOptions);
             }
-            return Json(MainClass.contentManager.Releases, MainClass.serializerOptions);
+            return Json(MainClass.contentManager?.Releases ?? new object(), MainClass.serializerOptions);
         }
 
         [HttpGet]
@@ -24,7 +24,7 @@ namespace BuildServiceAPI.Controllers
         public ActionResult Latest(string app)
         {
             var returnContent = new List<ProductRelease>();
-            if (MainClass.contentManager.Releases.ContainsKey(app))
+            if (MainClass.contentManager?.Releases.ContainsKey(app) ?? false)
             {
                 var toMap = new Dictionary<string, List<ReleaseInfo>>();
                 foreach (var release in MainClass.contentManager.ReleaseInfoContent)

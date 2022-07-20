@@ -74,6 +74,7 @@ namespace BuildServiceAPI
         public bool WillScheduleLoad => !(TriggerLoad || TriggerSave || TriggerLoadTimestamp > 0);
         private void CheckBusSchedule(object? state)
         {
+            if (state == null) return;
             AutoResetEvent autoEvent = (AutoResetEvent)state;
             if (TriggerLoadTimestamp > 0 && !IsSaving && !IsLoading)
             {
