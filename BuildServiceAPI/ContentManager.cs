@@ -89,17 +89,22 @@ namespace BuildServiceAPI
             if (response)
             {
                 Console.WriteLine($"[ContentManager->DatabaseSerialize] Saved {Path.GetRelativePath(Directory.GetCurrentDirectory(), DATABASE_FILENAME)}");
-                File.WriteAllText(JSONBACKUP_FILENAME, JsonSerializer.Serialize<Dictionary<string, object>>(new Dictionary<string, object>()
-                {
-                    {"ReleaseInfoContent", ReleaseInfoContent },
-                    {"Releases", Releases },
-                    {"Published", Published }
-                }, MainClass.serializerOptions));
+                CreateJSONBackup();
             }
             else
             {
                 Console.Error.WriteLine($"[ContentManager->DatabaseSerialize] Failed to save {Path.GetRelativePath(Directory.GetCurrentDirectory(), DATABASE_FILENAME)}");
             }
+        }
+        private void CreateJSONBackup()
+        {
+            var data = new Dictionary<string, object>()
+            {
+                {"ReleaseInfoContent", ReleaseInfoContent },
+                {"Releases", Releases },
+                {"Published", Published }
+            };
+            File.WriteAllText(JSONBACKUP_FILENAME, JsonSerializer.Serialize(data, MainClass.serializerOptions));
         }
         /*static ContentManager()
         {
