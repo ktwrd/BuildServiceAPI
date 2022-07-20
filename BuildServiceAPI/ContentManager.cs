@@ -2,6 +2,7 @@
 using Google.Cloud.Firestore;
 using kate.shared.Helpers;
 using Minalyze.Shared.Helpers;
+using System.Text.Json;
 
 namespace BuildServiceAPI
 {
@@ -49,6 +50,7 @@ namespace BuildServiceAPI
         public long TriggerSaveTimestamp { get; private set; }
         public void ScheduleSave()
         {
+            Console.WriteLine($"ScheduleSave: (TriggerLoad: {TriggerLoad},\n              TriggerSave: {TriggerSave},\n              TriggerLoadTimestamp: {TriggerLoadTimestamp},\n              TriggerSaveTimestamp: {TriggerSaveTimestamp},\n              IsSaving: {IsSaving},\n              IsLoading: {IsLoading})");
             if (TriggerSave || TriggerLoad || TriggerSaveTimestamp > 0) return;
             TriggerSave = true;
             TriggerSaveTimestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
@@ -59,8 +61,8 @@ namespace BuildServiceAPI
         public long TriggerLoadTimestamp { get; private set; }
         public void ScheduleLoad()
         {
+            Console.WriteLine($"ScheduleSave: (TriggerLoad: {TriggerLoad},\n              TriggerSave: {TriggerSave},\n              TriggerLoadTimestamp: {TriggerLoadTimestamp},\n              TriggerSaveTimestamp: {TriggerSaveTimestamp},\n              IsSaving: {IsSaving},\n              IsLoading: {IsLoading})");
             if (TriggerLoad || TriggerSave || TriggerLoadTimestamp > 0) return;
-            Console.WriteLine($"ScheduleLoad: (TriggerLoad: {TriggerLoad}, TriggerSave: {TriggerSave}, TriggerLoadTimestamp: {TriggerLoadTimestamp})");
             TriggerLoad = true;
             TriggerLoadTimestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
         }
@@ -68,6 +70,8 @@ namespace BuildServiceAPI
         #region Schedule Checker
         public bool IsSaving{ get; private set; }
         public bool IsLoading { get; private set; }
+        public bool WillScheduleSave => !(TriggerSave || TriggerLoad || TriggerSaveTimestamp > 0);
+        public bool WillScheduleLoad => !(TriggerLoad || TriggerSave || TriggerLoadTimestamp > 0);
         private void CheckBusSchedule(object? state)
         {
             AutoResetEvent autoEvent = (AutoResetEvent)state;
@@ -105,24 +109,33 @@ namespace BuildServiceAPI
             IsSaving = true;
             var startTimestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
             var count = 0;
-            foreach (var item in ReleaseInfoContent)
+            List<ReleaseInfo> working_ReleaseInfoContent = JsonSerializer.Deserialize<List<ReleaseInfo>>(JsonSerializer.Serialize(this.ReleaseInfoContent, MainClass.serializerOptions), MainClass.serializerOptions) ?? new List<ReleaseInfo>();
+            Dictionary<string, ProductRelease> working_Releases = JsonSerializer.Deserialize<Dictionary<string, ProductRelease>>(JsonSerializer.Serialize(this.Releases, MainClass.serializerOptions), MainClass.serializerOptions) ?? new Dictionary<string, ProductRelease>();
+            Dictionary<string, PublishedRelease> working_Published = JsonSerializer.Deserialize<Dictionary<string, PublishedRelease>>(JsonSerializer.Serialize(this.Published, MainClass.serializerOptions), MainClass.serializerOptions) ?? new Dictionary<string, PublishedRelease>();
+            foreach (var item in working_ReleaseInfoContent)
             {
                 item.ToFirebase(item.GetFirebaseDocumentReference(database));
                 count++;
             }
-            foreach (var pair in Releases)
+            foreach (var pair in working_Releases)
             {
                 pair.Value.ToFirebase(pair.Value.GetFirebaseDocumentReference(database));
                 count++;
                 count += pair.Value.Streams.Length * 2;
             }
-            foreach (var pair in Published)
+            foreach (var pair in working_Published)
             {
                 pair.Value.ToFirebase(pair.Value.GetFirebaseDocumentReference(database));
                 count++;
                 count += pair.Value.Files.Length + 1;
             }
             Console.WriteLine($"[ContentManager->SaveFirebase] Uploaded {count} items in {DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - startTimestamp}ms");
+            Releases = new(working_Releases);
+            Published = new(working_Published);
+            ReleaseInfoContent = new(working_ReleaseInfoContent);
+            working_Releases.Clear();
+            working_Published.Clear();
+            working_ReleaseInfoContent.Clear();
             TriggerSaveTimestamp = -1;
             IsSaving = false;
         }
@@ -141,20 +154,25 @@ namespace BuildServiceAPI
             Console.WriteLine($"[ContentManager->LoadFirebase] Fetching Content from Firebase");
             var startTimestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
             var count = 0;
-            foreach (var item in ReleaseInfoContent)
+
+            List<ReleaseInfo> working_ReleaseInfoContent = JsonSerializer.Deserialize<List<ReleaseInfo>>(JsonSerializer.Serialize(this.ReleaseInfoContent, MainClass.serializerOptions), MainClass.serializerOptions) ?? new List<ReleaseInfo>();
+            Dictionary<string, ProductRelease> working_Releases = JsonSerializer.Deserialize<Dictionary<string, ProductRelease>>(JsonSerializer.Serialize(this.Releases, MainClass.serializerOptions), MainClass.serializerOptions) ?? new Dictionary<string, ProductRelease>();
+            Dictionary<string, PublishedRelease> working_Published = JsonSerializer.Deserialize<Dictionary<string, PublishedRelease>>(JsonSerializer.Serialize(this.Published, MainClass.serializerOptions), MainClass.serializerOptions) ?? new Dictionary<string, PublishedRelease>();
+
+            foreach (var item in working_ReleaseInfoContent)
             {
                 var snapshot = item.GetFirebaseDocumentReference(database).GetSnapshotAsync().Result;
                 item.FromFirebase(snapshot);
                 count++;
             }
-            foreach (var pair in Releases)
+            foreach (var pair in working_Releases)
             {
                 var snapshot = pair.Value.GetFirebaseDocumentReference(database).GetSnapshotAsync().Result;
                 pair.Value.FromFirebase(snapshot);
                 count++;
                 count += pair.Value.Streams.Length * 2;
             }
-            foreach (var pair in Published)
+            foreach (var pair in working_Published)
             {
                 var snapshot = pair.Value.GetFirebaseDocumentReference(database).GetSnapshotAsync().Result;
                 pair.Value.FromFirebase(snapshot);
@@ -210,10 +228,16 @@ namespace BuildServiceAPI
                 }
             }
 
-            Releases = new(Releases.Concat(newReleases));
-            Published = new(Published.Concat(newPublished));
-            ReleaseInfoContent = new(ReleaseInfoContent.Concat(newReleaseInfoContent));
+            working_Releases = new(working_Releases.Concat(newReleases));
+            working_Published = new(working_Published.Concat(newPublished));
+            working_ReleaseInfoContent = new(working_ReleaseInfoContent.Concat(newReleaseInfoContent));
             Console.WriteLine($"[ContentManager->LoadFirebase] Fetched {count} items in {DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - startTimestamp}ms");
+            Releases = new (working_Releases);
+            Published = new (working_Published);
+            ReleaseInfoContent = new(working_ReleaseInfoContent);
+            working_Releases.Clear();
+            working_Published.Clear();
+            working_ReleaseInfoContent.Clear();
             TriggerLoadTimestamp = -1;
             IsLoading = false;
         }
