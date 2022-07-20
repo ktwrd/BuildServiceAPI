@@ -1,7 +1,8 @@
-﻿using Google.Cloud.Firestore;
+﻿using BuildServiceCommon.AutoUpdater;
+using Google.Cloud.Firestore;
 using Microsoft.AspNetCore.Mvc;
-using Minalyze.Shared.AutoUpdater;
 using Minalyze.Shared.Helpers;
+using kate.shared.Helpers;
 
 namespace BuildServiceAPI
 {

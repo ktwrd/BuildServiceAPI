@@ -1,5 +1,6 @@
-﻿using Google.Cloud.Firestore;
-using Minalyze.Shared.AutoUpdater;
+﻿using BuildServiceCommon.AutoUpdater;
+using Google.Cloud.Firestore;
+using kate.shared.Helpers;
 using Minalyze.Shared.Helpers;
 
 namespace BuildServiceAPI
@@ -35,6 +36,10 @@ namespace BuildServiceAPI
         {
             FirebaseHelper.FirebaseCollection.Add(typeof(PublishedRelease), "PublishedRelease");
             FirebaseHelper.FirebaseCollection.Add(typeof(PublishedReleaseFile), "PublishedReleaseFile");
+            FirebaseHelper.FirebaseCollection.Add(typeof(ProductReleaseStream), "ProductReleaseStream");
+            FirebaseHelper.FirebaseCollection.Add(typeof(ProductRelease), "ProductRelease");
+            FirebaseHelper.FirebaseCollection.Add(typeof(ReleaseInfo), "Release");
+            FirebaseHelper.FirebaseCollection.Add(typeof(ProductExecutable), "ProductExecutables");
         }
 
         private Timer BusStationTimer;

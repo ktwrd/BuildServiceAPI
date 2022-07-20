@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Minalyze.Shared.AutoUpdater;
+using BuildServiceCommon.AutoUpdater;
 using System.Diagnostics;
 
 namespace BuildServiceAPI.Controllers

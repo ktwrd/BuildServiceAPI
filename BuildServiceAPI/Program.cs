@@ -1,7 +1,4 @@
-using Google.Apis.Auth.OAuth2;
-using Google.Cloud.Firestore;
-using Google.Cloud.Firestore.V1;
-using Minalyze.Shared.AutoUpdater;
+using BuildServiceCommon.AutoUpdater;
 using System.Text.Json;
 
 namespace BuildServiceAPI

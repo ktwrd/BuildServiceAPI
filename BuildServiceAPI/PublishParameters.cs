@@ -1,4 +1,4 @@
-﻿using Minalyze.Shared.AutoUpdater;
+﻿using BuildServiceCommon.AutoUpdater;
 
 namespace BuildServiceAPI
 {

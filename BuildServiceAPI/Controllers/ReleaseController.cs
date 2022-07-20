@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Minalyze.Shared.AutoUpdater;
+using BuildServiceCommon.AutoUpdater;
 using System.Text.Json;
 
 namespace BuildServiceAPI.Controllers
@@ -46,7 +46,8 @@ namespace BuildServiceAPI.Controllers
                     latestOfAll.Add(pair.Value.First());
                 }
 
-                foreach (var pair in MainClass.TransformReleaseList(latestOfAll.ToArray()))
+                var latestOfAllArray = latestOfAll.ToArray();
+                foreach (var pair in MainClass.TransformReleaseList(latestOfAllArray))
                 {
                     returnContent.Add(pair.Value);
                 }
