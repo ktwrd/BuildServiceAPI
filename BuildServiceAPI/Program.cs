@@ -15,7 +15,6 @@ namespace BuildServiceAPI
         {
             contentManager = new ContentManager();
             LoadTokens();
-            Save();
             Builder = WebApplication.CreateBuilder(args);
             Builder.Services.AddControllers();
             Builder.Services.AddSwaggerGen();
@@ -40,7 +39,7 @@ namespace BuildServiceAPI
 
         public static void Save()
         {
-            contentManager?.ScheduleSave();
+            contentManager?.DatabaseSerialize();
         }
 
         public static void LoadTokens()

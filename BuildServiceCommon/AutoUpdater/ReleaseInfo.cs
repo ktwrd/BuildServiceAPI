@@ -58,7 +58,7 @@ namespace BuildServiceCommon.AutoUpdater
         [FirestoreProperty]
         public Dictionary<string, string> executable { get; set; }
 
-        public void FromFirebase(DocumentSnapshot document)
+        public Task FromFirebase(DocumentSnapshot document, VoidDelegate completeIncrement)
         {
             this.UID = document.Reference.Id;
 
@@ -74,8 +74,10 @@ namespace BuildServiceCommon.AutoUpdater
             this.releaseType = FirebaseHelper.Parse<ReleaseType>(document, "releaseType", ReleaseType.Other);
             this.files = FirebaseHelper.Parse<Dictionary<string, string>>(document, "files", new());
             this.executable = FirebaseHelper.Parse<Dictionary<string, string>>(document, "executable", new());
+            completeIncrement();
+            return Task.CompletedTask;
         }
-        public void ToFirebase(DocumentReference document)
+        public async Task ToFirebase(DocumentReference document, VoidDelegate completeIncrement)
         {
             Dictionary<string, object> data = new Dictionary<string, object>()
             {
@@ -92,7 +94,8 @@ namespace BuildServiceCommon.AutoUpdater
                 { "files", files },
                 { "executable", executable }
             };
-            document.SetAsync(data).Wait();
+            await document.SetAsync(data);
+            completeIncrement();
         }
         public DocumentReference GetFirebaseDocumentReference(FirestoreDb database) => database.Document(FirebaseHelper.FirebaseCollection[this.GetType()] + "/" + UID);
 

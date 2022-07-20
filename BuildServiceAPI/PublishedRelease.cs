@@ -15,31 +15,42 @@ namespace BuildServiceAPI
         public ReleaseInfo Release = ReleaseInfo.Blank();
         public PublishedReleaseFile[] Files = Array.Empty<PublishedReleaseFile>();
 
-        public void FromFirebase(DocumentSnapshot document)
+        public async Task FromFirebase(DocumentSnapshot document, VoidDelegate completeIncrement)
         {
             this.UID = document.Reference.Id;
 
             this.CommitHash = FirebaseHelper.ParseString(document, "CommitHash");
             this.Timestamp = FirebaseHelper.Parse<long>(document, "Timestamp", 0);
             var fileList = new List<PublishedReleaseFile>();
+            var taskList = new List<Task>();
             var dict = document.ToDictionary();
             if (dict.ContainsKey("Files"))
             {
                 foreach (object fz in (List<object>)dict["Files"])
                 {
-                    var f = (DocumentReference)fz;
-                    var res = FirebaseHelper.DeserializeDocumentReference<PublishedReleaseFile>(f);
-                    if (res != null)
-                        fileList.Add(res);
+                    taskList.Add(new Task(new Action(async delegate
+                    {
+                        var f = (DocumentReference)fz;
+                        var res = await FirebaseHelper.DeserializeDocumentReference<PublishedReleaseFile>(f, completeIncrement);
+                        if (res != null)
+                            fileList.Add(res);
+                        completeIncrement();
+                    })));
                 }
             }
+            foreach (var i in taskList)
+                i.Start();
+            await Task.WhenAll(taskList);
             Files = fileList.ToArray();
             if (dict.ContainsKey("Release"))
             {
-                Release = FirebaseHelper.DeserializeDocumentReference<ReleaseInfo>((DocumentReference)dict["Release"]);
+                var r = await FirebaseHelper.DeserializeDocumentReference<ReleaseInfo>((DocumentReference)dict["Release"], completeIncrement);
+                Release = r;
+                completeIncrement();
             }
+            completeIncrement();
         }
-        public void ToFirebase(DocumentReference document)
+        public async Task ToFirebase(DocumentReference document, VoidDelegate completeIncrement)
         {
             Dictionary<string, object> data = new Dictionary<string, object>()
             {
@@ -48,14 +59,23 @@ namespace BuildServiceAPI
                 { "Release", Release.GetFirebaseDocumentReference(document.Database) }
             };
             var fileList = new List<DocumentReference>();
+            var taskList = new List<Task>();
             foreach (var file in Files)
             {
-                var refr = file.GetFirebaseDocumentReference(document.Database);
-                file.ToFirebase(refr);
-                fileList.Add(refr);
+                taskList.Add(new Task(new Action(async delegate
+                {
+                    var refr = file.GetFirebaseDocumentReference(document.Database);
+                    await file.ToFirebase(refr, completeIncrement);
+                    fileList.Add(refr);
+                    completeIncrement();
+                })));
             }
+            foreach (var i in taskList)
+                i.Start();
+            await Task.WhenAll(taskList);
             data.Add("Files", fileList.ToArray());
-            document.SetAsync(data).Wait();
+            await document.SetAsync(data);
+            completeIncrement();
         }
         public DocumentReference GetFirebaseDocumentReference(FirestoreDb database) => database.Document(FirebaseHelper.FirebaseCollection[this.GetType()] + "/" + UID);
         public void ReadFromStream(SerializationReader sr)
@@ -96,7 +116,7 @@ namespace BuildServiceAPI
             sw.Write(Convert.ToInt32(Type));
         }
 
-        public void FromFirebase(DocumentSnapshot document)
+        public Task FromFirebase(DocumentSnapshot document, VoidDelegate completeIncrement)
         {
             this.UID = document.Reference.Id;
 
@@ -104,8 +124,10 @@ namespace BuildServiceAPI
             this.CommitHash = FirebaseHelper.ParseString(document, "CommitHash");
             this.Platform = FirebaseHelper.Parse<FilePlatform>(document, "Platform", FilePlatform.Any);
             this.Type = FirebaseHelper.Parse<FileType>(document, "Type", FileType.Other);
+            completeIncrement();
+            return Task.CompletedTask;
         }
-        public void ToFirebase(DocumentReference document)
+        public async Task ToFirebase(DocumentReference document, VoidDelegate completeIncrement)
         {
             Dictionary<string, object> data = new Dictionary<string, object>()
             {
@@ -114,7 +136,8 @@ namespace BuildServiceAPI
                 { "Platform", Platform },
                 { "Type", Type }
             };
-            document.SetAsync(data).Wait();
+            await document.SetAsync(data);
+            completeIncrement();
         }
         public DocumentReference GetFirebaseDocumentReference(FirestoreDb database) => database.Document(FirebaseHelper.FirebaseCollection[this.GetType()] + "/" + UID);
     }

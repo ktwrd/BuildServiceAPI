@@ -10,7 +10,7 @@ namespace BuildServiceAPI
         public string branch { get; set; }
         public long timestamp { get; set; }
         public ReleaseInfo releaseInfo { get; set; }
-        public ManagedUploadSendData[] files = Array.Empty<ManagedUploadSendData>();
+        public List<ManagedUploadSendData> files = new();
 
         public PublishParameters()
         {

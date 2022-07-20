@@ -11,12 +11,109 @@ namespace BuildServiceAPI
         public List<ReleaseInfo> ReleaseInfoContent = new();
         public Dictionary<string, ProductRelease> Releases = new();
         public Dictionary<string, PublishedRelease> Published = new();
-        internal List<string> LoadedFirebaseAssets = new();
-        internal FirestoreDb database;
+
+        /*internal List<string> LoadedFirebaseAssets = new();
+         * internal FirestoreDb database;*/
+
+        public ContentManager()
+        {
+            databaseDeserialize();
+        }
+
+        private readonly string DATABASE_FILENAME = Path.Combine(
+            Directory.GetCurrentDirectory(),
+            "content.db");
+        private readonly string JSONBACKUP_FILENAME = Path.Combine(
+            Directory.GetCurrentDirectory(),
+            "content.json");
+        private int DatabaseVersion;
+
+        private void databaseDeserialize()
+        {
+            DatabaseHelper.Read(DATABASE_FILENAME, sr =>
+            {
+                DatabaseVersion = sr.ReadInt32();
+                ReleaseInfoContent = (List<ReleaseInfo>)sr.ReadBList<ReleaseInfo>();
+                Releases = (Dictionary<string, ProductRelease>)sr.ReadDictionary<string, ProductRelease>();
+                Published = (Dictionary<string, PublishedRelease>)sr.ReadDictionary<string, PublishedRelease>();
+                Console.WriteLine($"[ContentManager->databaseDeserialize] Read {Path.GetRelativePath(Directory.GetCurrentDirectory(), DATABASE_FILENAME)}");
+            }, (e) =>
+            {
+                Console.WriteLine(@"//-- content.db is corrupt...".PadLeft(Console.BufferWidth));
+                Console.Error.WriteLine(e);
+                Console.WriteLine(@"//-- content.db is corrupt...".PadLeft(Console.BufferWidth));
+                File.Copy("content.db", $"content.{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}.bak.db");
+                if (File.Exists(JSONBACKUP_FILENAME))
+                    RestoreFromJSON();
+            });
+        }
+        private void RestoreFromJSON()
+        {
+            var content = new Dictionary<string, object>()
+            {
+                {"ReleaseInfoContent", new List<ReleaseInfo>() },
+                {"Releases", new Dictionary<string, ProductRelease>() },
+                {"Published", new Dictionary<string, PublishedRelease>() }
+            };
+            Dictionary<string, object>? deserialized = null;
+            Exception? deserializeException = null;
+            try
+            {
+                deserialized = JsonSerializer.Deserialize<Dictionary<string, object>>(File.ReadAllText(JSONBACKUP_FILENAME), MainClass.serializerOptions);
+            }
+            catch
+            (Exception e)
+            {
+                deserializeException = e;
+            }
+            if (deserialized == null)
+            {
+                var addedContent = deserializeException == null ? string.Empty : "\n" + deserializeException?.ToString() + "\n" ?? "";
+                Console.Error.Write($"\n[ContentManager->RestoreFromJSON] Failed to restore ;w;{addedContent}");
+                return;
+            }
+
+            ReleaseInfoContent = (List<ReleaseInfo>)content["ReleaseInfoContent"];
+            Releases = (Dictionary<string, ProductRelease>)content["Releases"];
+            Published = (Dictionary<string, PublishedRelease>)content["Published"];
+        }
+        public void DatabaseSerialize()
+        {
+            bool response = DatabaseHelper.Write(DATABASE_FILENAME, sw =>
+            {
+                sw.Write(DatabaseVersion);
+                sw.Write(ReleaseInfoContent);
+                sw.Write(Releases);
+                sw.Write(Published);
+            });
+            if (response)
+            {
+                Console.WriteLine($"[ContentManager->DatabaseSerialize] Saved {Path.GetRelativePath(Directory.GetCurrentDirectory(), DATABASE_FILENAME)}");
+                File.WriteAllText(JSONBACKUP_FILENAME, JsonSerializer.Serialize<Dictionary<string, object>>(new Dictionary<string, object>()
+                {
+                    {"ReleaseInfoContent", ReleaseInfoContent },
+                    {"Releases", Releases },
+                    {"Published", Published }
+                }, MainClass.serializerOptions));
+            }
+            else
+            {
+                Console.Error.WriteLine($"[ContentManager->DatabaseSerialize] Failed to save {Path.GetRelativePath(Directory.GetCurrentDirectory(), DATABASE_FILENAME)}");
+            }
+        }
+        /*static ContentManager()
+        {
+            FirebaseHelper.FirebaseCollection.Add(typeof(PublishedRelease), "PublishedRelease");
+            FirebaseHelper.FirebaseCollection.Add(typeof(PublishedReleaseFile), "PublishedReleaseFile");
+            FirebaseHelper.FirebaseCollection.Add(typeof(ProductReleaseStream), "ProductReleaseStream");
+            FirebaseHelper.FirebaseCollection.Add(typeof(ProductRelease), "ProductRelease");
+            FirebaseHelper.FirebaseCollection.Add(typeof(ReleaseInfo), "Release");
+            FirebaseHelper.FirebaseCollection.Add(typeof(ProductExecutable), "ProductExecutables");
+        }
 
         private Thread firebaseSaveThread;
         private Thread firebaseLoadThread;
-        public ContentManager()
+        private void firebase()
         {
             BusStationTimer = new System.Threading.Timer(CheckBusSchedule, new AutoResetEvent(false), 0, 150);
             TriggerSave = false;
@@ -33,14 +130,10 @@ namespace BuildServiceAPI
             // before the web server starts, just to be safe.
             firebaseLoadThreadLogic();
         }
-        static ContentManager()
+
+        public void DatabaseSerialize()
         {
-            FirebaseHelper.FirebaseCollection.Add(typeof(PublishedRelease), "PublishedRelease");
-            FirebaseHelper.FirebaseCollection.Add(typeof(PublishedReleaseFile), "PublishedReleaseFile");
-            FirebaseHelper.FirebaseCollection.Add(typeof(ProductReleaseStream), "ProductReleaseStream");
-            FirebaseHelper.FirebaseCollection.Add(typeof(ProductRelease), "ProductRelease");
-            FirebaseHelper.FirebaseCollection.Add(typeof(ReleaseInfo), "Release");
-            FirebaseHelper.FirebaseCollection.Add(typeof(ProductExecutable), "ProductExecutables");
+
         }
 
         private Timer BusStationTimer;
@@ -113,27 +206,42 @@ namespace BuildServiceAPI
             List<ReleaseInfo> working_ReleaseInfoContent = JsonSerializer.Deserialize<List<ReleaseInfo>>(JsonSerializer.Serialize(this.ReleaseInfoContent, MainClass.serializerOptions), MainClass.serializerOptions) ?? new List<ReleaseInfo>();
             Dictionary<string, ProductRelease> working_Releases = JsonSerializer.Deserialize<Dictionary<string, ProductRelease>>(JsonSerializer.Serialize(this.Releases, MainClass.serializerOptions), MainClass.serializerOptions) ?? new Dictionary<string, ProductRelease>();
             Dictionary<string, PublishedRelease> working_Published = JsonSerializer.Deserialize<Dictionary<string, PublishedRelease>>(JsonSerializer.Serialize(this.Published, MainClass.serializerOptions), MainClass.serializerOptions) ?? new Dictionary<string, PublishedRelease>();
+            var fetchedCount = 0;
+            var taskList = new List<Task>();
+            VoidDelegate del = delegate
+            {
+                fetchedCount++;
+            };
             foreach (var item in working_ReleaseInfoContent)
             {
-                item.ToFirebase(item.GetFirebaseDocumentReference(database));
-                count++;
+                taskList.Add(new Task(new Action(delegate
+                {
+                    item.ToFirebase(item.GetFirebaseDocumentReference(database), del).Wait();
+                    count++;
+                })));
             }
             foreach (var pair in working_Releases)
             {
-                pair.Value.ToFirebase(pair.Value.GetFirebaseDocumentReference(database));
-                count++;
-                count += pair.Value.Streams.Length * 2;
+                taskList.Add(new Task(new Action(delegate
+                {
+                    pair.Value.ToFirebase(pair.Value.GetFirebaseDocumentReference(database), del).Wait();
+                    count++;
+                    count += pair.Value.Streams.Length * 2;
+                })));
             }
             foreach (var pair in working_Published)
             {
-                pair.Value.ToFirebase(pair.Value.GetFirebaseDocumentReference(database));
-                count++;
-                count += pair.Value.Files.Length + 1;
+                taskList.Add(new Task(new Action(delegate
+                {
+                    pair.Value.ToFirebase(pair.Value.GetFirebaseDocumentReference(database), del).Wait();
+                    count++;
+                    count += pair.Value.Files.Length + 1;
+                })));
             }
+            foreach (var i in taskList)
+                i.Start();
+            Task.WaitAll(taskList.ToArray());
             Console.WriteLine($"[ContentManager->SaveFirebase] Uploaded {count} items in {DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - startTimestamp}ms");
-            Releases = new(working_Releases);
-            Published = new(working_Published);
-            ReleaseInfoContent = new(working_ReleaseInfoContent);
             working_Releases.Clear();
             working_Published.Clear();
             working_ReleaseInfoContent.Clear();
@@ -155,30 +263,46 @@ namespace BuildServiceAPI
             Console.WriteLine($"[ContentManager->LoadFirebase] Fetching Content from Firebase");
             var startTimestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
             var count = 0;
+            var fetchedCount = 0;
 
             List<ReleaseInfo> working_ReleaseInfoContent = JsonSerializer.Deserialize<List<ReleaseInfo>>(JsonSerializer.Serialize(this.ReleaseInfoContent, MainClass.serializerOptions), MainClass.serializerOptions) ?? new List<ReleaseInfo>();
             Dictionary<string, ProductRelease> working_Releases = JsonSerializer.Deserialize<Dictionary<string, ProductRelease>>(JsonSerializer.Serialize(this.Releases, MainClass.serializerOptions), MainClass.serializerOptions) ?? new Dictionary<string, ProductRelease>();
             Dictionary<string, PublishedRelease> working_Published = JsonSerializer.Deserialize<Dictionary<string, PublishedRelease>>(JsonSerializer.Serialize(this.Published, MainClass.serializerOptions), MainClass.serializerOptions) ?? new Dictionary<string, PublishedRelease>();
 
+            var taskList = new List<Task>();
+            VoidDelegate del = delegate
+            {
+                fetchedCount++;
+            };
+
             foreach (var item in working_ReleaseInfoContent)
             {
-                var snapshot = item.GetFirebaseDocumentReference(database).GetSnapshotAsync().Result;
-                item.FromFirebase(snapshot);
-                count++;
+                taskList.Add(new Task(new Action(delegate
+                {
+                    var snapshot = item.GetFirebaseDocumentReference(database).GetSnapshotAsync().Result;
+                    item.FromFirebase(snapshot, del).Wait();
+                    count++;
+                })));
             }
             foreach (var pair in working_Releases)
             {
-                var snapshot = pair.Value.GetFirebaseDocumentReference(database).GetSnapshotAsync().Result;
-                pair.Value.FromFirebase(snapshot);
-                count++;
-                count += pair.Value.Streams.Length * 2;
+                taskList.Add(new Task(new Action(delegate
+                {
+                    var snapshot = pair.Value.GetFirebaseDocumentReference(database).GetSnapshotAsync().Result;
+                    pair.Value.FromFirebase(snapshot, del).Wait();
+                    count++;
+                    count += pair.Value.Streams.Length * 2;
+                })));
             }
             foreach (var pair in working_Published)
             {
-                var snapshot = pair.Value.GetFirebaseDocumentReference(database).GetSnapshotAsync().Result;
-                pair.Value.FromFirebase(snapshot);
-                count++;
-                count += pair.Value.Files.Length + 1;
+                taskList.Add(new Task(new Action(delegate
+                {
+                    var snapshot = pair.Value.GetFirebaseDocumentReference(database).GetSnapshotAsync().Result;
+                    pair.Value.FromFirebase(snapshot, del).Wait();
+                    count++;
+                    count += pair.Value.Files.Length + 1;
+                })));
             }
 
             var newReleaseInfoContent = new List<ReleaseInfo>();
@@ -202,46 +326,60 @@ namespace BuildServiceAPI
                         switch (doc.Reference.Path.Split("/documents/")[1].Split("/")[0])
                         {
                             case "Release":
-                                var rel = new ReleaseInfo();
-                                rel.FromFirebase(doc);
-                                newReleaseInfoContent.Add(rel);
-                                LoadedFirebaseAssets.Add(doc.Reference.Path);
-                                count++;
+                                taskList.Add(new Task(new Action(delegate
+                                {
+                                    var rel = new ReleaseInfo();
+                                    rel.FromFirebase(doc, del).Wait();
+                                    newReleaseInfoContent.Add(rel);
+                                    LoadedFirebaseAssets.Add(doc.Reference.Path);
+                                    count++;
+                                })));
                                 break;
                             case "ProductRelease":
-                                var prodrel = new ProductRelease();
-                                prodrel.FromFirebase(doc);
-                                newReleases.Add(prodrel.ProductID, prodrel);
-                                LoadedFirebaseAssets.Add(doc.Reference.Path);
-                                count++;
-                                count += prodrel.Streams.Length * 2;
+                                taskList.Add(new Task(new Action(delegate
+                                {
+                                    var prodrel = new ProductRelease();
+                                    prodrel.FromFirebase(doc, del).Wait();
+                                    if (newReleases.ContainsKey(prodrel.ProductID))
+                                        newReleases[prodrel.ProductID].Streams = new List<ProductReleaseStream>(newReleases[prodrel.ProductID].Streams.Concat(prodrel.Streams)).ToArray();
+                                    LoadedFirebaseAssets.Add(doc.Reference.Path);
+                                    count++;
+                                    count += prodrel.Streams.Length * 2;
+                                })));
                                 break;
                             case "PublishedRelease":
-                                var pubrel = new PublishedRelease();
-                                pubrel.FromFirebase(doc);
-                                newPublished.Add(pubrel.CommitHash, pubrel);
-                                LoadedFirebaseAssets.Add(doc.Reference.Path);
-                                count++;
-                                count += pubrel.Files.Length;
+                                taskList.Add(new Task(new Action(delegate
+                                {
+                                    var pubrel = new PublishedRelease();
+                                    pubrel.FromFirebase(doc, del).Wait();
+                                    if (pubrel != null && pubrel.CommitHash != null)
+                                    {
+                                        newPublished.Add(pubrel.CommitHash, pubrel);
+                                        LoadedFirebaseAssets.Add(doc.Reference.Path);
+                                        count++;
+                                        count += pubrel.Files.Length;
+                                    }
+                                })));
                                 break;
                         }
                     }
                 }
             }
 
+            foreach (var i in taskList)
+                i.Start();
+            Task.WaitAll(taskList.ToArray());
+
             working_Releases = new(working_Releases.Concat(newReleases));
             working_Published = new(working_Published.Concat(newPublished));
             working_ReleaseInfoContent = new(working_ReleaseInfoContent.Concat(newReleaseInfoContent));
             Console.WriteLine($"[ContentManager->LoadFirebase] Fetched {count} items in {DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - startTimestamp}ms");
-            Releases = new (working_Releases);
-            Published = new (working_Published);
+            Releases = new(working_Releases);
+            Published = new(working_Published);
             ReleaseInfoContent = new(working_ReleaseInfoContent);
-            working_Releases.Clear();
-            working_Published.Clear();
-            working_ReleaseInfoContent.Clear();
             TriggerLoadTimestamp = -1;
             IsLoading = false;
         }
-        #endregion
+        #endregion*/
     }
 }

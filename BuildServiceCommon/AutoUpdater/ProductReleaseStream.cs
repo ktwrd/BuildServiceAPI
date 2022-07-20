@@ -25,7 +25,7 @@ namespace BuildServiceCommon.AutoUpdater
         public string RemoteSignature = @"";
         public ProductExecutable Executable = new ProductExecutable();
         public string CommitHash = @"";
-        public void FromFirebase(DocumentSnapshot document)
+        public async Task FromFirebase(DocumentSnapshot document, VoidDelegate completeIncrement)
         {
             this.UID = document.Reference.Id;
 
@@ -39,11 +39,14 @@ namespace BuildServiceCommon.AutoUpdater
             if (dict["Executable"] != null)
             {
                 var dc = (DocumentReference)dict["Executable"];
-                Executable = FirebaseHelper.DeserializeDocumentReference<ProductExecutable>(dc);
+                var exec = FirebaseHelper.DeserializeDocumentReference<ProductExecutable>(dc, completeIncrement);
+                await exec.WaitAsync(TimeSpan.FromSeconds(15));
+                Executable = exec.Result;
             }
             this.CommitHash = FirebaseHelper.ParseString(document, "CommitHash");
+            completeIncrement();
         }
-        public void ToFirebase(DocumentReference document)
+        public async Task ToFirebase(DocumentReference document, VoidDelegate completeIncrement)
         {
             Dictionary<string, object> data = new Dictionary<string, object>()
             {
@@ -56,9 +59,10 @@ namespace BuildServiceCommon.AutoUpdater
                 { "CommitHash", CommitHash }
             };
             var execRef = Executable.GetFirebaseDocumentReference(document.Database);
-            Executable.ToFirebase(execRef);
+            await Executable.ToFirebase(execRef, completeIncrement);
             data.Add("Executable", execRef);
-            document.SetAsync(data).Wait();
+            await document.SetAsync(data);
+            completeIncrement();
         }
         public DocumentReference GetFirebaseDocumentReference(FirestoreDb database) => database.Document(FirebaseHelper.FirebaseCollection[this.GetType()] + "/" + UID);
         public void ReadFromStream(SerializationReader sr)
@@ -102,7 +106,7 @@ namespace BuildServiceCommon.AutoUpdater
         public ProductReleaseStream[] Streams = Array.Empty<ProductReleaseStream>();
 
         
-        public void FromFirebase(DocumentSnapshot document)
+        public async Task FromFirebase(DocumentSnapshot document, VoidDelegate completeIncrement)
         {
             this.UID = document.Reference.Id;
 
@@ -111,19 +115,28 @@ namespace BuildServiceCommon.AutoUpdater
 
             var dict = document.ToDictionary();
             var streamList = new List<ProductReleaseStream>();
+            var taskList = new List<Task>();
             if (dict.ContainsKey("Streams"))
             {
                 foreach (object fz in (List<object>)dict["Streams"])
                 {
-                    var f = (DocumentReference)fz;
-                    var res = FirebaseHelper.DeserializeDocumentReference<ProductReleaseStream>(f);
-                    if (res != null)
-                        streamList.Add(res);
+                    taskList.Add(new Task(new Action(async delegate
+                    {
+                        var f = (DocumentReference)fz;
+                        var res = FirebaseHelper.DeserializeDocumentReference<ProductReleaseStream>(f, completeIncrement);
+                        await res.WaitAsync(TimeSpan.FromSeconds(15));
+                        if (res.Result != null)
+                            streamList.Add(res.Result);
+                    })));
                 }
             }
+            foreach (var i in taskList)
+                i.Start();
+            await Task.WhenAll(taskList.ToArray());
             this.Streams = streamList.ToArray();
+            completeIncrement();
         }
-        public void ToFirebase(DocumentReference document)
+        public async Task ToFirebase(DocumentReference document, VoidDelegate completeIncrement)
         {
             Dictionary<string, object> data = new Dictionary<string, object>()
             {
@@ -134,10 +147,12 @@ namespace BuildServiceCommon.AutoUpdater
             foreach (var stream in Streams)
             {
                 var refr = stream.GetFirebaseDocumentReference(document.Database);
-                stream.ToFirebase(refr);
+                await stream.ToFirebase(refr, completeIncrement);
                 refList.Add(refr);
             }
             data.Add("Streams", refList);
+            await document.SetAsync(data);
+            completeIncrement();
         }
         public DocumentReference GetFirebaseDocumentReference(FirestoreDb database) => database.Document(FirebaseHelper.FirebaseCollection[this.GetType()] + "/" + UID);
 

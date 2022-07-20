@@ -25,7 +25,9 @@ namespace BuildServiceAPI.Controllers
             PublishParameters? decodedBody = null;
             try
             {
-                decodedBody = Request.ReadFromJsonAsync<PublishParameters>().Result;
+                StreamReader reader = new StreamReader(Request.Body);
+                string decodedBodyText = reader.ReadToEnd();
+                decodedBody = JsonSerializer.Deserialize<PublishParameters>(decodedBodyText, MainClass.serializerOptions);
             }
             catch (Exception e)
             {
@@ -39,7 +41,7 @@ namespace BuildServiceAPI.Controllers
             }
             var parameters = decodedBody;
 
-            for (int i = 0; i < parameters.files.Length; i++)
+            for (int i = 0; i < parameters.files.Count; i++)
             {
                 parameters.files[i].ETag = parameters.files[i].ETag.Replace("\"", @"");
             }
@@ -57,7 +59,7 @@ namespace BuildServiceAPI.Controllers
                     Location = file.Location,
                     CommitHash = publishedRelease.CommitHash
                 };
-                if (file.Location.EndsWith(@"win-amd64.exe"))
+                if (file.Location.EndsWith(@"win-amd64.exe") || file.Location.EndsWith("setup.exe"))
                 {
                     prf.Platform = FilePlatform.Windows;
                     prf.Type = FileType.Installer;
@@ -80,8 +82,7 @@ namespace BuildServiceAPI.Controllers
             {
                 { "alreadyPublished", true },
                 { "releaseAlreadyExists", true },
-                { "attemptScheduleSave", false },
-                { "canScheduleSave", MainClass.contentManager?.WillScheduleSave ?? false }
+                { "attemptSave", false }
             };
             bool saveRelease = !MainClass.contentManager?.Published.ContainsKey(parameters.releaseInfo.commitHash) ?? false;
             bool saveReleaseInfo = !MainClass.contentManager?.ReleaseInfoContent.Contains(parameters.releaseInfo) ?? false;
@@ -93,12 +94,16 @@ namespace BuildServiceAPI.Controllers
             if (saveReleaseInfo)
             {
                 MainClass.contentManager?.ReleaseInfoContent.Add(parameters.releaseInfo);
+                if (MainClass.contentManager != null)
+                {
+                    MainClass.contentManager.Releases = MainClass.TransformReleaseList(MainClass.contentManager.ReleaseInfoContent.ToArray());
+                }
                 result["releaseAlreadyExists"] = false;
             }
             if (saveRelease || saveReleaseInfo)
             {
-                MainClass.contentManager?.ScheduleSave();
-                result["attemptScheduleSave"] = true;
+                MainClass.contentManager?.DatabaseSerialize();
+                result["attemptSave"] = true;
             }
             return Json(result, MainClass.serializerOptions);
         }
