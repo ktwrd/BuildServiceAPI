@@ -17,7 +17,11 @@ namespace BuildServiceAPI
             LoadTokens();
             Builder = WebApplication.CreateBuilder(args);
             Builder.Services.AddControllers();
-            Builder.Services.AddSwaggerGen();
+
+            if (Builder.Environment.IsDevelopment())
+            {
+                Builder.Services.AddSwaggerGen();
+            }
 
             App = Builder.Build();
 
@@ -29,6 +33,7 @@ namespace BuildServiceAPI
                     options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
                     options.RoutePrefix = string.Empty;
                 });
+                Console.WriteLine($"[BuildServiceAPI->Main] In development mode, so swagger is enabled. SwaggerUI can be accessed at 0.0.0.0:5010/");
             }
 
             App.UseAuthorization();
