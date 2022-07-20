@@ -18,8 +18,19 @@ namespace BuildServiceAPI
             Save();
             Builder = WebApplication.CreateBuilder(args);
             Builder.Services.AddControllers();
+            Builder.Services.AddSwaggerGen();
 
             App = Builder.Build();
+
+            if (App.Environment.IsDevelopment())
+            {
+                App.UseSwagger();
+                App.UseSwaggerUI(options =>
+                {
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+                    options.RoutePrefix = string.Empty;
+                });
+            }
 
             App.UseAuthorization();
             App.MapControllers();
