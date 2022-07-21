@@ -22,5 +22,9 @@ namespace BuildServiceAPI.Controllers
             }
             return Json(returnContent, MainClass.serializerOptions);
         }
+
+        [HttpGet]
+        [Route("")]
+        public ActionResult FetchFilesFromHashByParameter(string hash) => FetchFilesFromHash(hash);
     }
 }
