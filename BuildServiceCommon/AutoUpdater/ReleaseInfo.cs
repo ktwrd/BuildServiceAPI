@@ -8,6 +8,7 @@ namespace BuildServiceCommon.AutoUpdater
 {
     public enum ReleaseType
     {
+        Invalid = -1,
         Stable,
         Beta,
         Nightly,
