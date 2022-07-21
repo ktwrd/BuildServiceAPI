@@ -1,4 +1,5 @@
 ﻿using BuildServiceCommon.AutoUpdater;
+using BuildServiceCommon;
 using Google.Cloud.Firestore;
 using kate.shared.Helpers;
 using Minalyze.Shared.Helpers;
@@ -15,10 +16,6 @@ namespace BuildServiceAPI
         /*internal List<string> LoadedFirebaseAssets = new();
          * internal FirestoreDb database;*/
 
-        public ContentManager()
-        {
-            databaseDeserialize();
-        }
 
         private readonly string DATABASE_FILENAME = Path.Combine(
             Directory.GetCurrentDirectory(),
@@ -27,9 +24,19 @@ namespace BuildServiceAPI
             Directory.GetCurrentDirectory(),
             "content.json");
         private int DatabaseVersion;
-
-        private void databaseDeserialize()
+        private class JSONBackupContent
         {
+            public List<ReleaseInfo> ReleaseInfoContent = new();
+            public Dictionary<string, ProductRelease> Releases = new();
+            public Dictionary<string, PublishedRelease> Published = new();
+        }
+        internal void databaseDeserialize()
+        {
+            if (!File.Exists(DATABASE_FILENAME) && File.Exists(JSONBACKUP_FILENAME))
+            {
+                RestoreFromJSON();
+                return;
+            }
             DatabaseHelper.Read(DATABASE_FILENAME, sr =>
             {
                 DatabaseVersion = sr.ReadInt32();
@@ -49,17 +56,11 @@ namespace BuildServiceAPI
         }
         private void RestoreFromJSON()
         {
-            var content = new Dictionary<string, object>()
-            {
-                {"ReleaseInfoContent", new List<ReleaseInfo>() },
-                {"Releases", new Dictionary<string, ProductRelease>() },
-                {"Published", new Dictionary<string, PublishedRelease>() }
-            };
-            Dictionary<string, object>? deserialized = null;
+            JSONBackupContent? deserialized = null;
             Exception? deserializeException = null;
             try
             {
-                deserialized = JsonSerializer.Deserialize<Dictionary<string, object>>(File.ReadAllText(JSONBACKUP_FILENAME), MainClass.serializerOptions);
+                deserialized = JsonSerializer.Deserialize<JSONBackupContent>(File.ReadAllText(JSONBACKUP_FILENAME), MainClass.serializerOptions);
             }
             catch
             (Exception e)
@@ -72,10 +73,13 @@ namespace BuildServiceAPI
                 Console.Error.Write($"\n[ContentManager->RestoreFromJSON] Failed to restore ;w;{addedContent}");
                 return;
             }
+            Console.WriteLine($"[ContentManager->RestoreFromJSON] Restored from JSON.");
 
-            ReleaseInfoContent = (List<ReleaseInfo>)content["ReleaseInfoContent"];
-            Releases = (Dictionary<string, ProductRelease>)content["Releases"];
-            Published = (Dictionary<string, PublishedRelease>)content["Published"];
+            ReleaseInfoContent = deserialized.ReleaseInfoContent;
+            Releases = deserialized.Releases;
+            Published = deserialized.Published;
+            System.Threading.Thread.Sleep(500);
+            DatabaseSerialize();
         }
         public void DatabaseSerialize()
         {
