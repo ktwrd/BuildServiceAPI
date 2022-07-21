@@ -3,6 +3,7 @@ using BuildServiceCommon.AutoUpdater;
 using System.Text.Json;
 using Microsoft.AspNetCore.Http.Features;
 using System.Net;
+using BuildServiceCommon;
 
 namespace BuildServiceAPI.Controllers
 {
@@ -65,28 +66,7 @@ namespace BuildServiceAPI.Controllers
             };
             foreach (var file in parameters.files)
             {
-                var prf = new PublishedReleaseFile()
-                {
-                    Location = file.Location,
-                    CommitHash = publishedRelease.CommitHash
-                };
-                if (file.Location.EndsWith(@"win-amd64.exe") || file.Location.EndsWith("setup.exe"))
-                {
-                    prf.Platform = FilePlatform.Windows;
-                    prf.Type = FileType.Installer;
-                }
-                else if (file.Location.EndsWith(@"win-amd64.zip"))
-                {
-                    prf.Platform = FilePlatform.Windows;
-                    prf.Type = FileType.Portable;
-                }
-                else if (file.Location.EndsWith(@".tar.gz") || file.Location.EndsWith(@"linux-amd64.tar.gz"))
-                {
-                    prf.Platform = FilePlatform.Linux;
-                    prf.Type = FileType.Portable;
-                }
-
-                fileList.Add(prf);
+                fileList.Add(file.ToPublishedReleaseFile(publishedRelease.CommitHash));
             }
             publishedRelease.Files = fileList.ToArray();
             var result = new Dictionary<string, bool>()

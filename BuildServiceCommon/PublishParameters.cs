@@ -1,6 +1,6 @@
 ﻿using BuildServiceCommon.AutoUpdater;
 
-namespace BuildServiceAPI
+namespace BuildServiceCommon
 {
     public class PublishParameters
     {
@@ -29,5 +29,30 @@ namespace BuildServiceAPI
         public string ETag = "";
         public string Bucket = "";
         public string Key = "";
+
+        public PublishedReleaseFile ToPublishedReleaseFile(string commitHash)
+        {
+            var prf = new PublishedReleaseFile()
+            {
+                Location = Location,
+                CommitHash = commitHash
+            };
+            if (Location.EndsWith(@"win-amd64.exe") || Location.EndsWith("setup.exe"))
+            {
+                prf.Platform = FilePlatform.Windows;
+                prf.Type = FileType.Installer;
+            }
+            else if (Location.EndsWith(@"win-amd64.zip"))
+            {
+                prf.Platform = FilePlatform.Windows;
+                prf.Type = FileType.Portable;
+            }
+            else if (Location.EndsWith(@".tar.gz") || Location.EndsWith(@"linux-amd64.tar.gz"))
+            {
+                prf.Platform = FilePlatform.Linux;
+                prf.Type = FileType.Portable;
+            }
+            return prf;
+        }
     }
 }
