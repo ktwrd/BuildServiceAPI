@@ -2,6 +2,7 @@
 using BuildServiceCommon.AutoUpdater;
 using System.Text.Json;
 using Microsoft.AspNetCore.Http.Features;
+using System.Net;
 
 namespace BuildServiceAPI.Controllers
 {
@@ -16,6 +17,11 @@ namespace BuildServiceAPI.Controllers
             {
                 Response.StatusCode = 401;
                 return Json(new HttpException(401, @"Invalid token"), MainClass.serializerOptions);
+            }
+            if (!Request.HasJsonContentType())
+            {
+                Response.StatusCode = (int)HttpStatusCode.UnsupportedMediaType;
+                return Json(new HttpException(401, "Unsupported Media Type"), MainClass.serializerOptions);
             }
             var syncIOFeature = HttpContext.Features.Get<IHttpBodyControlFeature>();
             if (syncIOFeature != null)
@@ -108,8 +114,7 @@ namespace BuildServiceAPI.Controllers
             return Json(result, MainClass.serializerOptions);
         }
 
-        [HttpGet]
-        [Route("all")]
+        [HttpGet("all")]
         public ActionResult All(string token)
         {
             if (!MainClass.ValidTokens.Contains(token))
@@ -120,8 +125,7 @@ namespace BuildServiceAPI.Controllers
             return Json(MainClass.contentManager?.Published ?? new Dictionary<string, PublishedRelease>(), MainClass.serializerOptions);
         }
 
-        [HttpGet]
-        [Route("hash")]
+        [HttpGet("hash")]
         public ActionResult ByCommitHashFromParameter(string token, string hash)
         {
             if (!MainClass.ValidTokens.Contains(token))
@@ -139,8 +143,7 @@ namespace BuildServiceAPI.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("hash/{hash}")]
+        [HttpGet("hash/{hash}")]
         public ActionResult ByCommitHashFromPath(string token, string hash) => ByCommitHashFromParameter(token, hash);
     }
 }

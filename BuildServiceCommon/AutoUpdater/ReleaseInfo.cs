@@ -16,6 +16,7 @@ namespace BuildServiceCommon.AutoUpdater
     }
     public interface IReleaseInfo
     {
+        public string UID { get; }
         public string version { get; set; }
         public string name { get; set; }
         public string productName { get; set; }
@@ -32,7 +33,7 @@ namespace BuildServiceCommon.AutoUpdater
     [Serializable]
     public class ReleaseInfo : IReleaseInfo, bSerializable, bFirebaseSerializable
     {
-        public string UID = GeneralHelper.GenerateUID();
+        public string UID { get; private set; }
         public string version { get; set; }
         public string name { get; set; }
         public string productName { get; set; }
@@ -95,6 +96,7 @@ namespace BuildServiceCommon.AutoUpdater
         }
         public ReleaseInfo()
         {
+            UID = GeneralHelper.GenerateUID();
             version = @"";
             name = @"";
             productName = @"";
@@ -124,6 +126,7 @@ namespace BuildServiceCommon.AutoUpdater
             releaseType = (ReleaseType)sr.ReadInt32();
             files = (Dictionary<string, string>)sr.ReadDictionary<string, string>();
             executable = (Dictionary<string, string>)sr.ReadDictionary<string, string>();
+            UID = sr.ReadString();
         }
         public void WriteToStream(SerializationWriter sw)
         {
@@ -139,6 +142,7 @@ namespace BuildServiceCommon.AutoUpdater
             sw.Write(Convert.ToInt32(releaseType));
             sw.Write(files);
             sw.Write(executable);
+            sw.Write(UID);
         }
         #endregion
     }

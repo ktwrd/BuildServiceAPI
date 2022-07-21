@@ -6,12 +6,25 @@ using System.Text;
 
 namespace BuildServiceCommon.AutoUpdater
 {
-    [Serializable]
-    public class ProductExecutable : bSerializable, bFirebaseSerializable
+    public interface IProductExecutable
     {
-        public string UID = GeneralHelper.GenerateUID();
-        public string Linux = @"";
-        public string Windows = @"";
+        string UID { get; }
+        string Linux { get; set; }
+        string Windows { get; set; }
+    }
+    [Serializable]
+    public class ProductExecutable : bSerializable, bFirebaseSerializable, IProductExecutable
+    {
+        public string UID { get; private set; }
+        public string Linux { get; set; }
+        public string Windows { get; set; }
+
+        public ProductExecutable()
+        {
+            UID = GeneralHelper.GenerateUID();
+            Linux = "";
+            Windows = "";
+        }
 
         #region bSerializable
         public void ReadFromStream(SerializationReader sr)
