@@ -1,10 +1,8 @@
 ﻿using BuildServiceCommon.AutoUpdater;
 using Google.Cloud.Firestore;
-using Microsoft.AspNetCore.Mvc;
-using Minalyze.Shared.Helpers;
 using kate.shared.Helpers;
 
-namespace BuildServiceAPI
+namespace BuildServiceCommon
 {
     [Serializable]
     public class PublishedRelease : bSerializable, bFirebaseSerializable
