@@ -121,22 +121,26 @@ namespace BuildServiceAPI.Controllers
         }
 
         [HttpGet]
-        [Route("uid/{uid}")]
-        public ActionResult All(string uid, string token)
+        [Route("hash")]
+        public ActionResult ByCommitHashFromParameter(string token, string hash)
         {
             if (!MainClass.ValidTokens.Contains(token))
             {
                 Response.StatusCode = 401;
                 return Json(new HttpException(401, @"Invalid token"), MainClass.serializerOptions);
             }
-            if (MainClass.contentManager?.Published.ContainsKey(uid) ?? false)
+            if (MainClass.contentManager?.Published.ContainsKey(hash) ?? false)
             {
-                return Json(MainClass.contentManager.Published[uid], MainClass.serializerOptions);
+                return Json(MainClass.contentManager.Published[hash], MainClass.serializerOptions);
             }
             else
             {
                 return Json(new object(), MainClass.serializerOptions);
             }
         }
+
+        [HttpGet]
+        [Route("hash/{hash}")]
+        public ActionResult ByCommitHashFromPath(string token, string hash) => ByCommitHashFromParameter(token, hash);
     }
 }
