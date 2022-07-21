@@ -29,35 +29,23 @@ namespace BuildServiceCommon.AutoUpdater
         public Dictionary<string, string> executable { get; set; }
     }
     [Serializable]
-    [FirestoreData]
     public class ReleaseInfo : IReleaseInfo, bSerializable, bFirebaseSerializable
     {
         public string UID = GeneralHelper.GenerateUID();
-        [FirestoreProperty]
         public string version { get; set; }
-        [FirestoreProperty]
         public string name { get; set; }
-        [FirestoreProperty]
         public string productName { get; set; }
-        [FirestoreProperty]
         public string appID { get; set; }
-        [FirestoreProperty]
         public long timestamp { get; set; }
-        [FirestoreProperty]
         public long envtimestamp { get; set; }
-        [FirestoreProperty]
         public string remoteLocation { get; set; }
-        [FirestoreProperty]
         public string commitHash { get; set; }
-        [FirestoreProperty]
         public string commitHashShort { get; set; }
-        [FirestoreProperty]
         public ReleaseType releaseType { get; set; }
-        [FirestoreProperty]
         public Dictionary<string, string> files { get; set; }
-        [FirestoreProperty]
         public Dictionary<string, string> executable { get; set; }
 
+        #region bFirebaseSerializable
         public Task FromFirebase(DocumentSnapshot document, VoidDelegate completeIncrement)
         {
             this.UID = document.Reference.Id;
@@ -98,6 +86,7 @@ namespace BuildServiceCommon.AutoUpdater
             completeIncrement();
         }
         public DocumentReference GetFirebaseDocumentReference(FirestoreDb database) => database.Document(FirebaseHelper.FirebaseCollection[this.GetType()] + "/" + UID);
+        #endregion
 
         public static ReleaseInfo Blank()
         {
@@ -119,6 +108,7 @@ namespace BuildServiceCommon.AutoUpdater
             executable = new();
         }
 
+        #region bSerializable
         public void ReadFromStream(SerializationReader sr)
         {
             version = sr.ReadString();
@@ -149,5 +139,6 @@ namespace BuildServiceCommon.AutoUpdater
             sw.Write(files);
             sw.Write(executable);
         }
+        #endregion
     }
 }

@@ -13,6 +13,7 @@ namespace BuildServiceCommon.AutoUpdater
         public string Linux = @"";
         public string Windows = @"";
 
+        #region bSerializable
         public void ReadFromStream(SerializationReader sr)
         {
             Linux = sr.ReadString();
@@ -23,7 +24,9 @@ namespace BuildServiceCommon.AutoUpdater
             sw.Write(Linux);
             sw.Write(Windows);
         }
+        #endregion
 
+        #region bFirebaseSerializable
         public Task FromFirebase(DocumentSnapshot document, VoidDelegate completeIncrement)
         {
             this.UID = document.Reference.Id;
@@ -43,5 +46,6 @@ namespace BuildServiceCommon.AutoUpdater
             completeIncrement();
         }
         public DocumentReference GetFirebaseDocumentReference(FirestoreDb database) => database.Document(FirebaseHelper.FirebaseCollection[this.GetType()] + "/" + UID);
+        #endregion
     }
 }

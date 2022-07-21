@@ -25,6 +25,7 @@ namespace BuildServiceCommon.AutoUpdater
         public string RemoteSignature = @"";
         public ProductExecutable Executable = new ProductExecutable();
         public string CommitHash = @"";
+        #region bFirebaseSerializable
         public async Task FromFirebase(DocumentSnapshot document, VoidDelegate completeIncrement)
         {
             this.UID = document.Reference.Id;
@@ -65,6 +66,9 @@ namespace BuildServiceCommon.AutoUpdater
             completeIncrement();
         }
         public DocumentReference GetFirebaseDocumentReference(FirestoreDb database) => database.Document(FirebaseHelper.FirebaseCollection[this.GetType()] + "/" + UID);
+        #endregion bFirebaseSerializable
+
+        #region bSerializable
         public void ReadFromStream(SerializationReader sr)
         {
             ProductID = sr.ReadString();
@@ -96,6 +100,7 @@ namespace BuildServiceCommon.AutoUpdater
 
             sw.Write(CommitHash);
         }
+        #endregion
     }
     [Serializable]
     public class ProductRelease : bSerializable, bFirebaseSerializable
@@ -105,7 +110,8 @@ namespace BuildServiceCommon.AutoUpdater
         public string ProductID = @"";
         public ProductReleaseStream[] Streams = Array.Empty<ProductReleaseStream>();
 
-        
+
+        #region bFirebaseSerializable
         public async Task FromFirebase(DocumentSnapshot document, VoidDelegate completeIncrement)
         {
             this.UID = document.Reference.Id;
@@ -155,7 +161,9 @@ namespace BuildServiceCommon.AutoUpdater
             completeIncrement();
         }
         public DocumentReference GetFirebaseDocumentReference(FirestoreDb database) => database.Document(FirebaseHelper.FirebaseCollection[this.GetType()] + "/" + UID);
+        #endregion
 
+        #region bSerializable
         public void ReadFromStream(SerializationReader sr)
         {
             ProductName = sr.ReadString();
@@ -168,5 +176,6 @@ namespace BuildServiceCommon.AutoUpdater
             sw.Write(ProductID);
             sw.Write<ProductReleaseStream>(new List<ProductReleaseStream>(Streams));
         }
+        #endregion
     }
 }
