@@ -21,7 +21,7 @@ namespace BuildServiceAPI.Controllers
 
         [HttpGet]
         [Route("latest/{app}")]
-        public ActionResult Latest(string app)
+        public ActionResult LatestFromPath(string app)
         {
             var returnContent = new List<ProductRelease>();
             if (MainClass.contentManager?.Releases.ContainsKey(app) ?? false)
@@ -54,5 +54,9 @@ namespace BuildServiceAPI.Controllers
             }
             return Json(returnContent, MainClass.serializerOptions);
         }
+
+        [HttpGet]
+        [Route("latest")]
+        public ActionResult LatestFromParameter(string id) => LatestFromPath(id);
     }
 }
