@@ -15,7 +15,11 @@ namespace BuildServiceAPI
 
         /*internal List<string> LoadedFirebaseAssets = new();
          * internal FirestoreDb database;*/
-
+         
+        public ContentManager()
+        {
+            databaseDeserialize();
+        }
 
         private readonly string DATABASE_FILENAME = Path.Combine(
             Directory.GetCurrentDirectory(),
@@ -30,7 +34,7 @@ namespace BuildServiceAPI
             public Dictionary<string, ProductRelease> Releases = new();
             public Dictionary<string, PublishedRelease> Published = new();
         }
-        internal void databaseDeserialize()
+        private void databaseDeserialize()
         {
             if (!File.Exists(DATABASE_FILENAME) && File.Exists(JSONBACKUP_FILENAME))
             {
