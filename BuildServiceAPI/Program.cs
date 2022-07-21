@@ -104,14 +104,47 @@ namespace BuildServiceAPI
                 var repository = splitted[splitted.Length - 3];
                 deserialized.remoteLocation = $"{organization}/{repository}";
 
-                if (repository.EndsWith("-dev") || repository.EndsWith("-nightly"))
-                    deserialized.releaseType = ReleaseType.Nightly;
-                else if (repository.EndsWith("-beta"))
-                    deserialized.releaseType = ReleaseType.Beta;
-                else if (repository.Split('-').Length == 1)
-                    deserialized.releaseType = ReleaseType.Stable;
-                else
-                    deserialized.releaseType = ReleaseType.Other;
+                var recognitionMap = new Dictionary<ReleaseType, string[]>()
+                {
+                    {ReleaseType.Beta, new string[] {
+                        "-beta",
+                        "-canary"
+                    } },
+                    {ReleaseType.Nightly, new string[] {
+                        "-dev",
+                        "-devel",
+                        "-debug",
+                        "-nightly"
+                    } },
+                    {ReleaseType.Stable, new string[] {
+                        "-stable",
+                        "-public",
+                        "-prod"
+                    } }
+                };
+                var targetReleaseType = ReleaseType.Invalid;
+
+                foreach (var pair in recognitionMap)
+                {
+                    var pairTarget = ReleaseType.Invalid;
+                    foreach (var item in pair.Value)
+                    {
+                        if (pairTarget != ReleaseType.Invalid) continue;
+                        if (repository.EndsWith(item))
+                            pairTarget = pair.Key;
+                    }
+                    if (pairTarget != ReleaseType.Invalid)
+                    {
+                        targetReleaseType = pairTarget;
+                        break;
+                    }
+                }
+                if (repository.Split('-').Length == 1)
+                    targetReleaseType = ReleaseType.Stable;
+                else if (targetReleaseType == ReleaseType.Invalid)
+                    targetReleaseType = ReleaseType.Other;
+
+                deserialized.releaseType = targetReleaseType;
                 if ((deserialized.files.ContainsKey("windows") && deserialized.executable.ContainsKey("windows")) ||
                     (deserialized.files.ContainsKey("linux")   && deserialized.executable.ContainsKey("linux")))
                     releaseList.Add(deserialized);
