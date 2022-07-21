@@ -352,4 +352,7 @@ MigrationBackup/
 content.db
 *.bak.db
 *.bak
+**content.json
+*content.json
+content.json
 Report20220719-1507.diagsession
