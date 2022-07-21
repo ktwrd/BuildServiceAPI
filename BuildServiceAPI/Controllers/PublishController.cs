@@ -10,6 +10,11 @@ namespace BuildServiceAPI.Controllers
     [Route("[controller]")]
     public class PublishController : Controller
     {
+        /// <summary>
+        /// Body is required to be type of <see cref="PublishParameters"/>
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult Index(string token)
         {
