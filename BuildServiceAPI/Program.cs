@@ -101,7 +101,8 @@ namespace BuildServiceAPI
                 var splitted = file.Split(Path.DirectorySeparatorChar);
                 var organization = splitted[splitted.Length - 4];
                 var repository = splitted[splitted.Length - 3];
-                deserialized.remoteLocation = $"{organization}/{repository}";
+                if (deserialized.remoteLocation.Length < 1)
+                    deserialized.remoteLocation = $"{organization}/{repository}";
 
                 var recognitionMap = new Dictionary<ReleaseType, string[]>()
                 {
@@ -118,7 +119,8 @@ namespace BuildServiceAPI
                     {ReleaseType.Stable, new string[] {
                         "-stable",
                         "-public",
-                        "-prod"
+                        "-prod",
+                        "-main"
                     } }
                 };
                 var targetReleaseType = ReleaseType.Invalid;
@@ -128,8 +130,7 @@ namespace BuildServiceAPI
                     var pairTarget = ReleaseType.Invalid;
                     foreach (var item in pair.Value)
                     {
-                        if (pairTarget != ReleaseType.Invalid) continue;
-                        if (repository.EndsWith(item))
+                        if (pairTarget != ReleaseType.Invalid && (repository.EndsWith(item) || deserialized.remoteLocation.EndsWith(item)))
                             pairTarget = pair.Key;
                     }
                     if (pairTarget != ReleaseType.Invalid)
@@ -138,7 +139,7 @@ namespace BuildServiceAPI
                         break;
                     }
                 }
-                if (repository.Split('-').Length == 1)
+                if (repository.Split('-').Length == 1 || deserialized.remoteLocation.Split('-').Length == 1)
                     targetReleaseType = ReleaseType.Stable;
                 else if (targetReleaseType == ReleaseType.Invalid)
                     targetReleaseType = ReleaseType.Other;
@@ -164,6 +165,49 @@ namespace BuildServiceAPI
                     Linux = release.executable["linux"],
                     Windows = release.executable["windows"]
                 };
+                if (release.releaseType == ReleaseType.Other)
+                {
+                    var recognitionMap = new Dictionary<ReleaseType, string[]>()
+                    {
+                        {ReleaseType.Beta, new string[] {
+                            "-beta",
+                            "-canary"
+                        } },
+                        {ReleaseType.Nightly, new string[] {
+                            "-dev",
+                            "-devel",
+                            "-debug",
+                            "-nightly"
+                        } },
+                        {ReleaseType.Stable, new string[] {
+                            "-stable",
+                            "-public",
+                            "-prod",
+                            "-main"
+                        } }
+                    };
+                    var targetReleaseType = ReleaseType.Invalid;
+
+                    foreach (var pair in recognitionMap)
+                    {
+                        var pairTarget = ReleaseType.Invalid;
+                        foreach (var item in pair.Value)
+                        {
+                            if (pairTarget == ReleaseType.Invalid && (release.remoteLocation.Split('/')[1].EndsWith(item) || release.remoteLocation.EndsWith(item)))
+                                pairTarget = pair.Key;
+                        }
+                        if (pairTarget != ReleaseType.Invalid)
+                        {
+                            targetReleaseType = pairTarget;
+                            break;
+                        }
+                    }
+                    if (release.remoteLocation.Split('/')[1].Split('-').Length == 1 || release.remoteLocation.Split('-').Length == 1)
+                        targetReleaseType = ReleaseType.Stable;
+                    else if (targetReleaseType == ReleaseType.Invalid)
+                        targetReleaseType = ReleaseType.Other;
+                    release.releaseType = targetReleaseType;
+                }
                 var stream = new ProductReleaseStream()
                 {
                     ProductName = release.name,
