@@ -52,6 +52,8 @@ namespace BuildServiceAPI.Controllers
                 return Json(new HttpException(401, "Invalid Body"), MainClass.serializerOptions);
             }
             var parameters = decodedBody;
+            if (parameters.releaseInfo.remoteLocation.Length < 1)
+                parameters.releaseInfo.remoteLocation = $"{parameters.organization}/{parameters.product}-{parameters.branch}";
 
             for (int i = 0; i < parameters.files.Count; i++)
             {
