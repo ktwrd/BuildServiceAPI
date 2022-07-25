@@ -38,8 +38,7 @@ namespace BuildServiceAPI
 
             App.UseAuthorization();
             App.MapControllers();
-            App.RunAsync();
-            Console.ReadKey(true);
+            App.Run();
         }
 
         public static void Save()
