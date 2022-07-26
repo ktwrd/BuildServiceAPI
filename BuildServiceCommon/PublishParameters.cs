@@ -1,4 +1,5 @@
 ﻿using BuildServiceCommon.AutoUpdater;
+using System.Collections.Generic;
 
 namespace BuildServiceCommon
 {
@@ -10,7 +11,7 @@ namespace BuildServiceCommon
         public string branch { get; set; }
         public long timestamp { get; set; }
         public ReleaseInfo releaseInfo { get; set; }
-        public List<ManagedUploadSendData> files = new();
+        public List<ManagedUploadSendData> files = new List<ManagedUploadSendData>();
 
         public PublishParameters()
         {

@@ -1,9 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0</TargetFrameworks>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <TargetFrameworks>net48</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,10 +9,11 @@
     <PackageReference Include="Google.Cloud.Firestore" Version="3.0.0" />
     <PackageReference Include="Microsoft.NETCore.Portable.Compatibility" Version="1.0.1" />
     <PackageReference Include="System.Runtime.Serialization.Formatters" Version="4.3.0" />
+    <PackageReference Include="System.Text.Json" Version="6.0.5" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\csharp-kate.shared\kate.shared.Firebase\kate.shared.Firebase.csproj" />
+    <ProjectReference Include="..\..\csharp-kate.shared\kate.shared.Firebase\kate.shared.Firebase-Framework.csproj" />
   </ItemGroup>
 
 </Project>

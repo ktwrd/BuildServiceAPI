@@ -1,8 +1,10 @@
 ﻿using Google.Cloud.Firestore;
 using kate.shared.Helpers;
+using kate.shared.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BuildServiceCommon.AutoUpdater
 {
@@ -55,7 +57,7 @@ namespace BuildServiceCommon.AutoUpdater
         }
 
         #region bFirebaseSerializable
-        public async Task FromFirebase(DocumentSnapshot document, VoidDelegate completeIncrement)
+        public Task FromFirebase(DocumentSnapshot document, VoidDelegate completeIncrement)
         {
             this.UID = document.Reference.Id;
 
@@ -70,11 +72,12 @@ namespace BuildServiceCommon.AutoUpdater
             {
                 var dc = (DocumentReference)dict["Executable"];
                 var exec = FirebaseHelper.DeserializeDocumentReference<ProductExecutable>(dc, completeIncrement);
-                await exec.WaitAsync(TimeSpan.FromSeconds(15));
+                exec.Wait();
                 Executable = exec.Result;
             }
             this.CommitHash = FirebaseHelper.ParseString(document, "CommitHash");
             completeIncrement();
+            return Task.CompletedTask;
         }
         public async Task ToFirebase(DocumentReference document, VoidDelegate completeIncrement)
         {

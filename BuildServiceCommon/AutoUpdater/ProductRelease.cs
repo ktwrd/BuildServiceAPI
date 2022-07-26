@@ -51,7 +51,7 @@ namespace BuildServiceCommon.AutoUpdater
                     {
                         var f = (DocumentReference)fz;
                         var res = FirebaseHelper.DeserializeDocumentReference<ProductReleaseStream>(f, completeIncrement);
-                        await res.WaitAsync(TimeSpan.FromSeconds(15));
+                        res.Wait(TimeSpan.FromSeconds(15));
                         if (res.Result != null)
                             streamList.Add(res.Result);
                     })));

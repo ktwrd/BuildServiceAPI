@@ -3,6 +3,7 @@ using kate.shared.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BuildServiceCommon.AutoUpdater
 {
@@ -16,19 +17,19 @@ namespace BuildServiceCommon.AutoUpdater
     }
     public interface IReleaseInfo
     {
-        public string UID { get; }
-        public string version { get; set; }
-        public string name { get; set; }
-        public string productName { get; set; }
-        public string appID { get; set; }
-        public long timestamp { get; set; }
-        public long envtimestamp { get; set; }
-        public string remoteLocation { get; set; }
-        public string commitHash { get; set; }
-        public string commitHashShort { get; set; }
-        public ReleaseType releaseType { get; set; }
-        public Dictionary<string, string> files { get; set; }
-        public Dictionary<string, string> executable { get; set; }
+        string UID { get; }
+        string version { get; set; }
+        string name { get; set; }
+        string productName { get; set; }
+        string appID { get; set; }
+        long timestamp { get; set; }
+        long envtimestamp { get; set; }
+        string remoteLocation { get; set; }
+        string commitHash { get; set; }
+        string commitHashShort { get; set; }
+        ReleaseType releaseType { get; set; }
+        Dictionary<string, string> files { get; set; }
+        Dictionary<string, string> executable { get; set; }
     }
     [Serializable]
     public class ReleaseInfo : IReleaseInfo, bSerializable, bFirebaseSerializable
@@ -62,8 +63,8 @@ namespace BuildServiceCommon.AutoUpdater
             this.commitHash = FirebaseHelper.ParseString(document, "commitHash");
             this.commitHashShort = FirebaseHelper.ParseString(document, "commitHashShort");
             this.releaseType = FirebaseHelper.Parse<ReleaseType>(document, "releaseType", ReleaseType.Other);
-            this.files = FirebaseHelper.Parse<Dictionary<string, string>>(document, "files", new());
-            this.executable = FirebaseHelper.Parse<Dictionary<string, string>>(document, "executable", new());
+            this.files = FirebaseHelper.Parse<Dictionary<string, string>>(document, "files", new Dictionary<string, string>());
+            this.executable = FirebaseHelper.Parse<Dictionary<string, string>>(document, "executable", new Dictionary<string, string>());
             completeIncrement();
             return Task.CompletedTask;
         }
@@ -107,8 +108,8 @@ namespace BuildServiceCommon.AutoUpdater
             commitHash = @"";
             commitHashShort = @"";
             releaseType = ReleaseType.Other;
-            files = new();
-            executable = new();
+            files = new Dictionary<string, string>();
+            executable = new Dictionary<string, string>();
         }
 
         #region bSerializable

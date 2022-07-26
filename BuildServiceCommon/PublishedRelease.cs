@@ -1,6 +1,9 @@
 ﻿using BuildServiceCommon.AutoUpdater;
 using Google.Cloud.Firestore;
 using kate.shared.Helpers;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BuildServiceCommon
 {
@@ -81,13 +84,13 @@ namespace BuildServiceCommon
             CommitHash = sr.ReadString();
             Timestamp = sr.ReadInt64();
             Release = (ReleaseInfo)sr.ReadObject();
-            Files = sr.ReadBList<PublishedReleaseFile>().ToArray();
+            Files = new List<PublishedReleaseFile>(sr.ReadBList<PublishedReleaseFile>()).ToArray();
         }
         public void WriteToStream(SerializationWriter sw)
         {
             sw.Write(CommitHash);
             sw.Write(Timestamp);
-            sw.WriteObject(Release == null ? (byte)ObjectType.nullType : Release);
+            sw.WriteObject(Release);
             sw.Write(new List<PublishedReleaseFile>(Files));
         }
     }

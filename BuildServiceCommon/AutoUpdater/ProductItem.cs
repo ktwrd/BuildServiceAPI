@@ -22,10 +22,10 @@ namespace BuildServiceCommon.AutoUpdater
         public string UpdateServerPath = @"";
 
         public ProductSettings Settings = new ProductSettings();
-        public ProductExecutable? Executable;
+        public ProductExecutable Executable = null;
 
-        public ProductReleaseStream? TargetStream;
-        public ReleaseInfo? ReleaseInfo;
+        public ProductReleaseStream TargetStream = null;
+        public ReleaseInfo ReleaseInfo = null;
 
         public static string ToJSON(ProductItem product)
         {
@@ -38,7 +38,7 @@ namespace BuildServiceCommon.AutoUpdater
             var output = JsonSerializer.Serialize(product, options);
             return output;
         }
-        public static ProductItem? FromJSON(string content)
+        public static ProductItem FromJSON(string content)
         {
             var options = new JsonSerializerOptions()
             {

@@ -1,5 +1,7 @@
-﻿using System;
+﻿using kate.shared.Extensions;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace BuildServiceCommon.AutoUpdater
@@ -25,7 +27,7 @@ namespace BuildServiceCommon.AutoUpdater
             var lines = File.ReadAllLines(location);
             foreach (var line in lines)
             {
-                var key = line.Split(@"=")[0];
+                var key = line.Split("=")[0];
                 var value = line.Replace($"{key}=", "");
                 if (dict.ContainsKey(key))
                     dict[key] = value;
