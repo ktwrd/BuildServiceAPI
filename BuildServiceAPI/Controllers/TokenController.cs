@@ -11,12 +11,14 @@ namespace BuildServiceAPI.Controllers
         public string Grant(string username, string password)
         {
             var isValid = false;
+            var validatorSignature = "";
             foreach (var validator in MainClass.TokenGrantList)
             {
                 var res = validator.Grant(username, password);
                 if (res)
                 {
                     isValid = true;
+                    validatorSignature = validator.GetType().ToString();
                     break;
                 }
             }
@@ -26,6 +28,8 @@ namespace BuildServiceAPI.Controllers
                 Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 return "";
             }
+
+            return MainClass.RegisterToken(validatorSignature, username, password);
         }
     }
 }
