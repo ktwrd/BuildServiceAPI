@@ -1,4 +1,6 @@
 using BuildServiceCommon.AutoUpdater;
+using kate.shared.Helpers;
+using System.Security.Cryptography;
 using System.Text.Json;
 
 namespace BuildServiceAPI
