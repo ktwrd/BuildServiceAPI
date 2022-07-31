@@ -8,6 +8,7 @@ namespace BuildServiceAPI
         public static WebApplicationBuilder? Builder;
         public static WebApplication? App;
         public static List<string> ValidTokens = new List<string>();
+        public static List<ITokenGranter> TokenGrantList = new List<ITokenGranter>();
 
         public static ContentManager? contentManager;
 
