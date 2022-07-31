@@ -7,7 +7,15 @@ namespace BuildServiceAPI
     {
         public static WebApplicationBuilder? Builder;
         public static WebApplication? App;
-        public static List<string> ValidTokens = new List<string>();
+        /// <summary>
+        /// <para>
+        /// Key is the Token
+        /// </para>
+        /// <para>
+        /// Value is the SHA256 of (Username + Password)
+        /// </para>
+        /// </summary>
+        public static Dictionary<string, string> ValidTokens = new Dictionary<string, string>();
         public static List<ITokenGranter> TokenGrantList = new List<ITokenGranter>();
 
         public static ContentManager? contentManager;
