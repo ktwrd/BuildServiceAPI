@@ -49,6 +49,7 @@ Global
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		..\csharp-kate.shared\kate.shared\kate.shared.projitems*{a1c98de4-b369-4821-a565-6c921caf8d88}*SharedItemsImports = 13
+		..\csharp-kate.shared\kate.shared\kate.shared.projitems*{dbd9cb6b-b764-4eb9-bdc5-eea33e4f27f2}*SharedItemsImports = 5
 		..\csharp-kate.shared\kate.shared\kate.shared.projitems*{edb26ff7-8b37-4e07-a83a-f1caab2d5293}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal

@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\csharp-kate.shared\kate.shared.Firebase\kate.shared.Firebase.csproj" />
     <ProjectReference Include="..\BuildServiceCommon\BuildServiceCommon.csproj" />
   </ItemGroup>
 

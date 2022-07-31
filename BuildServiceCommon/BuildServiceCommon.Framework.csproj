@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net48</TargetFrameworks>
+    <Configurations>Debug;Release;Debug (Build Service API)</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
