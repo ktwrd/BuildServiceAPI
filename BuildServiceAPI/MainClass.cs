@@ -45,6 +45,15 @@ namespace BuildServiceAPI
         {
             contentManager?.DatabaseSerialize();
         }
+        public static string RegisterToken(string validatorSignature, string username, string password)
+        {
+            SHA256 sha256Instance = SHA256.Create();
+            var computedHash = sha256Instance.ComputeHash(System.Text.Encoding.UTF8.GetBytes($"{username}{password}"));
+            var hash = GeneralHelper.Base62Encode(computedHash);
+            var token = GeneralHelper.GenerateToken(32);
+            ValidTokens.Add(token, hash);
+            return token;
+        }
 
         public static void LoadTokens()
         {
