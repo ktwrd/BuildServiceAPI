@@ -47,7 +47,7 @@ namespace BuildServiceCommon.AutoUpdater
             {
                 foreach (object fz in (List<object>)dict["Streams"])
                 {
-                    taskList.Add(new Task(new Action(async delegate
+                    taskList.Add(new Task(new Action(delegate
                     {
                         var f = (DocumentReference)fz;
                         var res = FirebaseHelper.DeserializeDocumentReference<ProductReleaseStream>(f, completeIncrement);
