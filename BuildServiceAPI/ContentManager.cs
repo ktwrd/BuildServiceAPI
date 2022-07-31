@@ -2,7 +2,6 @@
 using BuildServiceCommon;
 using Google.Cloud.Firestore;
 using kate.shared.Helpers;
-using Minalyze.Shared.Helpers;
 using System.Text.Json;
 
 namespace BuildServiceAPI

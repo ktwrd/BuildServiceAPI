@@ -21,7 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Minalyze\Minalyze.Shared\Minalyze.Shared.csproj" />
     <ProjectReference Include="..\BuildServiceCommon\BuildServiceCommon.csproj" />
   </ItemGroup>
 
