@@ -19,7 +19,7 @@ namespace BuildServiceAPI.Controllers
         [HttpPost]
         public ActionResult Index(string token)
         {
-            if (!MainClass.ValidTokens.Contains(token))
+            if (!MainClass.ValidTokens.ContainsKey(token))
             {
                 Response.StatusCode = 401;
                 return Json(new HttpException(401, @"Invalid token"), MainClass.serializerOptions);
@@ -104,7 +104,7 @@ namespace BuildServiceAPI.Controllers
         [HttpGet("all")]
         public ActionResult All(string token)
         {
-            if (!MainClass.ValidTokens.Contains(token))
+            if (!MainClass.ValidTokens.ContainsKey(token))
             {
                 Response.StatusCode = 401;
                 return Json(new HttpException(401, @"Invalid token"), MainClass.serializerOptions);
@@ -115,7 +115,7 @@ namespace BuildServiceAPI.Controllers
         [HttpGet("hash")]
         public ActionResult ByCommitHashFromParameter(string token, string hash)
         {
-            if (!MainClass.ValidTokens.Contains(token))
+            if (!MainClass.ValidTokens.ContainsKey(token))
             {
                 Response.StatusCode = 401;
                 return Json(new HttpException(401, @"Invalid token"), MainClass.serializerOptions);

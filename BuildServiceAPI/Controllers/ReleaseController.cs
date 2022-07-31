@@ -11,7 +11,7 @@ namespace BuildServiceAPI.Controllers
         [HttpGet]
         public ActionResult Index(string token)
         {
-            if (!MainClass.ValidTokens.Contains(token))
+            if (!MainClass.ValidTokens.ContainsKey(token))
             {
                 Response.StatusCode = 401;
                 return Json(new HttpException(401, @"Invalid token"), MainClass.serializerOptions);

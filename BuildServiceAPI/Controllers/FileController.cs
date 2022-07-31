@@ -14,7 +14,7 @@ namespace BuildServiceAPI.Controllers
         [Route("{hash}")]
         public ActionResult AddFileToHash(string token, string hash)
         {
-            if (!MainClass.ValidTokens.Contains(token))
+            if (!MainClass.ValidTokens.ContainsKey(token))
             {
                 Response.StatusCode = 401;
                 return Json(new HttpException(401, @"Invalid token"), MainClass.serializerOptions);

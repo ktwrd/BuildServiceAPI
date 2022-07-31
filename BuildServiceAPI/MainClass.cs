@@ -82,7 +82,10 @@ namespace BuildServiceAPI
                     Console.Error.WriteLine($"Failed to parse 'tokens.json' with content of\n{content}");
                     return;
                 }
-                ValidTokens = response;
+                var dict = new Dictionary<string, string>();
+                foreach (var i in response)
+                    dict.Add(i, "");
+                ValidTokens = dict;
             }
         }
 

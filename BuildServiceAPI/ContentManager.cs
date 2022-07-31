@@ -42,7 +42,7 @@ namespace BuildServiceAPI
             }
             DatabaseHelper.Read(DATABASE_FILENAME, sr =>
             {
-                DatabaseVersion = sr.ReadInt32();
+                DatabaseVersion = sr.ReadInt32(); // ContainsKey
                 ReleaseInfoContent = (List<ReleaseInfo>)sr.ReadBList<ReleaseInfo>();
                 Releases = (Dictionary<string, ProductRelease>)sr.ReadDictionary<string, ProductRelease>();
                 Published = (Dictionary<string, PublishedRelease>)sr.ReadDictionary<string, PublishedRelease>();
