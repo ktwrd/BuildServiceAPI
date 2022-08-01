@@ -3,6 +3,9 @@ using BuildServiceCommon;
 using Google.Cloud.Firestore;
 using kate.shared.Helpers;
 using System.Text.Json;
+using System.Collections.Generic;
+using System.IO;
+using System;
 
 namespace BuildServiceAPI
 {
@@ -59,8 +62,8 @@ namespace BuildServiceAPI
         }
         private void RestoreFromJSON()
         {
-            JSONBackupContent? deserialized = null;
-            Exception? deserializeException = null;
+            JSONBackupContent deserialized = null;
+            Exception deserializeException = null;
             try
             {
                 deserialized = JsonSerializer.Deserialize<JSONBackupContent>(File.ReadAllText(JSONBACKUP_FILENAME), MainClass.serializerOptions);

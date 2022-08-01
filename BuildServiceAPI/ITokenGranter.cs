@@ -1,4 +1,6 @@
-﻿namespace BuildServiceAPI
+﻿using System.Net.Http;
+
+namespace BuildServiceAPI
 {
     public interface ITokenGranter
     {

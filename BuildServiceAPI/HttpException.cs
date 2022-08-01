@@ -1,11 +1,13 @@
-﻿namespace BuildServiceAPI
+﻿using System;
+
+namespace BuildServiceAPI
 {
     public class HttpException
     {
         public HttpException(int code, string message)
             : this(code, message, null)
             { }
-        public HttpException(int code, string message, Exception? exception)
+        public HttpException(int code, string message, Exception exception = null)
         {
             Code = code;
             Message = message;

@@ -1,5 +1,12 @@
 using BuildServiceCommon.AutoUpdater;
 using kate.shared.Helpers;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text.Json;
 
@@ -7,8 +14,8 @@ namespace BuildServiceAPI
 {
     public static class MainClass
     {
-        public static WebApplicationBuilder? Builder;
-        public static WebApplication? App;
+        public static WebApplicationBuilder Builder;
+        public static WebApplication App;
         /// <summary>
         /// <para>
         /// Key is the Token
