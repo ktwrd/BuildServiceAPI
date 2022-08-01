@@ -1,9 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0</TargetFrameworks>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+	  <TargetFrameworks>netstandard2.1;net6.0;net48;</TargetFrameworks>
+	  <Configurations>Debug;Release;Debug API;Debug Launcher;Release API;Release Launcher</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,6 +10,7 @@
     <PackageReference Include="Google.Cloud.Firestore" Version="3.0.0" />
     <PackageReference Include="Microsoft.NETCore.Portable.Compatibility" Version="1.0.1" />
     <PackageReference Include="System.Runtime.Serialization.Formatters" Version="4.3.0" />
+    <PackageReference Include="System.Text.Json" Version="7.0.0-preview.6.22324.4" />
   </ItemGroup>
 
   <ItemGroup>
