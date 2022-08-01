@@ -8,6 +8,8 @@ namespace BuildServiceAPI.Controllers
     [ApiController]
     public class TokenController : ControllerBase
     {
+        [HttpGet]
+        [Route("grant")]
         public string Grant(string username, string password)
         {
             var isValid = false;
@@ -30,6 +32,13 @@ namespace BuildServiceAPI.Controllers
             }
 
             return MainClass.RegisterToken(validatorSignature, username, password);
+        }
+
+        [HttpGet]
+        [Route("reset")]
+        public string Reset(string token)
+        {
+            return "";
         }
     }
 }

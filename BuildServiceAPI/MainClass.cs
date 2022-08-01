@@ -1,3 +1,4 @@
+using BuildServiceCommon;
 using BuildServiceCommon.AutoUpdater;
 using kate.shared.Helpers;
 using Microsoft.AspNetCore.Builder;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 
 namespace BuildServiceAPI
@@ -27,8 +29,8 @@ namespace BuildServiceAPI
         public static Dictionary<string, string> ValidTokens = new Dictionary<string, string>();
         public static List<ITokenGranter> TokenGrantList = new List<ITokenGranter>();
 
-        public static ContentManager? contentManager;
-
+        public static ContentManager contentManager;
+        
         public static void Main(string[] args)
         {
             contentManager = new ContentManager();
@@ -54,6 +56,8 @@ namespace BuildServiceAPI
                 Console.WriteLine($"[BuildServiceAPI->Main] In development mode, so swagger is enabled. SwaggerUI can be accessed at 0.0.0.0:5010/");
             }
 
+            TokenGrantList.Add(new Minalyze.MinaloggerTokenGrant());
+
             App.UseAuthorization();
             App.MapControllers();
             App.Run();
@@ -68,9 +72,39 @@ namespace BuildServiceAPI
             SHA256 sha256Instance = SHA256.Create();
             var computedHash = sha256Instance.ComputeHash(System.Text.Encoding.UTF8.GetBytes($"{username}{password}"));
             var hash = GeneralHelper.Base62Encode(computedHash);
-            var token = GeneralHelper.GenerateToken(32);
+            var targetUser = FetchUser(username, password);
+            if (targetUser != null && targetUser.Token.Length > 0)
+                return targetUser.Token;
+            else if (targetUser == null)
+            {
+                targetUser = new AuthenticatedUser(username, password);
+                Accounts.Add(targetUser);
+            }
+            var token = targetUser.Token;
             ValidTokens.Add(token, hash);
             return token;
+        }
+        internal static List<AuthenticatedUser> Accounts = new List<AuthenticatedUser>();
+        public static AuthenticatedUser FetchUser(string username, string password)
+        {
+            SHA256 sha256Instance = SHA256.Create();
+            var computedHash = sha256Instance.ComputeHash(Encoding.UTF8.GetBytes($"{username}{password}"));
+            var hash = GeneralHelper.Base62Encode(computedHash);
+            foreach (var account in Accounts)
+            {
+                if (account.ValidateHash(hash))
+                    return account;
+            }
+            return null;
+        }
+        public static AuthenticatedUser FetchUserByToken(string token)
+        {
+            foreach (var account in Accounts)
+            {
+                if (account.ValidateToken(token))
+                    return account;
+            }
+            return null;
         }
 
         public static void LoadTokens()
