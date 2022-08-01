@@ -1,9 +1,11 @@
 ﻿using BuildServiceCommon;
+using BuildServiceCommon.AutoUpdater;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -17,9 +19,9 @@ namespace BuildServiceAPI.Controllers
     {
         [HttpPost]
         [Route("{hash}")]
-        public ActionResult AddFileToHash(string token, string hash)
+        public ActionResult AddFileToHash(string hash, string token)
         {
-            if (!MainClass.ValidTokens.ContainsKey(token))
+            if (token == null || token.Length < 1 || !MainClass.ValidTokens.ContainsKey(token))
             {
                 Response.StatusCode = 401;
                 return Json(new HttpException(401, @"Invalid token"), MainClass.serializerOptions);
@@ -75,7 +77,7 @@ namespace BuildServiceAPI.Controllers
 
         [HttpGet]
         [Route("{hash}")]
-        public ActionResult FetchFilesFromHash(string hash)
+        public ActionResult FetchFilesFromHash(string hash, string token = "")
         {
             var returnContent = new List<PublishedReleaseFile>();
             var contentManager = MainClass.contentManager;
@@ -83,8 +85,23 @@ namespace BuildServiceAPI.Controllers
             {
                 if (contentManager.Published.ContainsKey(hash))
                 {
+                    var allow = false;
                     var commit = contentManager.Published[hash];
-                    returnContent = new List<PublishedReleaseFile>(commit.Files);
+                    if (commit.Release.appID == "com.minalyze.minalogger")
+                    {
+                        if (MainClass.UserByTokenHasService(token, "ml2") && commit.Release.releaseType != ReleaseType.Other && commit.Release.releaseType != ReleaseType.Invalid)
+                            allow = true;
+                        else if (MainClass.UserByTokenIsAdmin(token))
+                        {
+                            allow = true;
+                        }
+                    }
+                    else
+                    {
+                        allow = true;
+                    }
+                    if (allow)
+                        returnContent = new List<PublishedReleaseFile>(commit.Files);
                 }
             }
             return Json(returnContent, MainClass.serializerOptions);
@@ -92,6 +109,6 @@ namespace BuildServiceAPI.Controllers
 
         [HttpGet]
         [Route("")]
-        public ActionResult FetchFilesFromHashByParameter(string hash) => FetchFilesFromHash(hash);
+        public ActionResult FetchFilesFromHashByParameter(string hash, string token = "") => FetchFilesFromHash(hash, token);
     }
 }

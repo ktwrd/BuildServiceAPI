@@ -117,7 +117,7 @@ namespace BuildServiceAPI.Controllers
         }
 
         [HttpGet("hash")]
-        public ActionResult ByCommitHashFromParameter(string token, string hash)
+        public ActionResult ByCommitHashFromParameter(string hash, string token = "")
         {
             if (!MainClass.ValidTokens.ContainsKey(token))
             {

@@ -23,10 +23,18 @@ namespace BuildServiceAPI.Controllers
 
         [HttpGet]
         [Route("latest/{app}")]
-        public ActionResult LatestFromPath(string app)
+        public ActionResult LatestFromPath(string app, string token = "")
         {
             var returnContent = new List<ProductRelease>();
-            if (MainClass.contentManager?.Releases.ContainsKey(app) ?? false)
+            var allowFetch = true;
+            if (app == "com.minalyze.minalogger")
+            {
+                if (token.Length < 1 || !MainClass.UserByTokenHasService(token, "ml2"))
+                {
+                    allowFetch = false;
+                }
+            }
+            if (allowFetch && (MainClass.contentManager?.Releases.ContainsKey(app) ?? false))
             {
                 var toMap = new Dictionary<string, List<ReleaseInfo>>();
                 foreach (var release in MainClass.contentManager.ReleaseInfoContent)
