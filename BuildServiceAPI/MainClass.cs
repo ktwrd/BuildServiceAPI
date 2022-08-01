@@ -85,7 +85,8 @@ namespace BuildServiceAPI
             return token;
         }
         internal static List<AuthenticatedUser> Accounts = new List<AuthenticatedUser>();
-        public static AuthenticatedUser FetchUser(string username, string password)
+#nullable enable
+        public static AuthenticatedUser? FetchUser(string username, string password)
         {
             SHA256 sha256Instance = SHA256.Create();
             var computedHash = sha256Instance.ComputeHash(Encoding.UTF8.GetBytes($"{username}{password}"));
@@ -97,7 +98,7 @@ namespace BuildServiceAPI
             }
             return null;
         }
-        public static AuthenticatedUser FetchUserByToken(string token)
+        public static AuthenticatedUser? FetchUserByToken(string token)
         {
             foreach (var account in Accounts)
             {
@@ -106,6 +107,8 @@ namespace BuildServiceAPI
             }
             return null;
         }
+#nullable restore
+        public static bool UserHasService(AuthenticatedUser user, string service) => user.AvailableServices.Contains(service);
 
         public static void LoadTokens()
         {
@@ -128,6 +131,24 @@ namespace BuildServiceAPI
                     dict.Add(i, "");
                 ValidTokens = dict;
             }
+        }
+        public static bool UserByTokenHasService(string token, string service)
+        {
+            if (token.Length < 1)
+                return false;
+            var targetAccount = FetchUserByToken(token);
+            if (targetAccount == null)
+                return false;
+            if (targetAccount.IsAdmin)
+                return true;
+            return targetAccount.AvailableServices.Contains(service);
+        }
+        public static bool UserByTokenIsAdmin(string token)
+        {
+            var targetAccount = FetchUserByToken(token);
+            if (targetAccount == null)
+                return false;
+            return targetAccount.IsAdmin;
         }
 
         public static JsonSerializerOptions serializerOptions = new JsonSerializerOptions()
@@ -215,23 +236,9 @@ namespace BuildServiceAPI
             }
             return releaseList;
         }
-        public static Dictionary<string, ProductRelease> TransformReleaseList(ReleaseInfo[] releases)
+        public static ReleaseType ReleaseTypeFromSignature(string signature)
         {
-            var products = new Dictionary<string, List<ProductReleaseStream>>();
-            var productIDLink = new Dictionary<string, List<string>>();
-
-            foreach (var release in releases)
-            {
-                if (release.executable == null || release.appID == null || release.appID.Length < 1) continue;
-
-                var executable = new ProductExecutable()
-                {
-                    Linux = release.executable["linux"],
-                    Windows = release.executable["windows"]
-                };
-                if (release.releaseType == ReleaseType.Other)
-                {
-                    var recognitionMap = new Dictionary<ReleaseType, string[]>()
+            var recognitionMap = new Dictionary<ReleaseType, string[]>()
                     {
                         {ReleaseType.Beta, new string[] {
                             "-beta",
@@ -250,27 +257,45 @@ namespace BuildServiceAPI
                             "-main"
                         } }
                     };
-                    var targetReleaseType = ReleaseType.Invalid;
+            var targetReleaseType = ReleaseType.Invalid;
 
-                    foreach (var pair in recognitionMap)
-                    {
-                        var pairTarget = ReleaseType.Invalid;
-                        foreach (var item in pair.Value)
-                        {
-                            if (pairTarget == ReleaseType.Invalid && (release.remoteLocation.Split('/')[1].EndsWith(item) || release.remoteLocation.EndsWith(item)))
-                                pairTarget = pair.Key;
-                        }
-                        if (pairTarget != ReleaseType.Invalid)
-                        {
-                            targetReleaseType = pairTarget;
-                            break;
-                        }
-                    }
-                    if (release.remoteLocation.Split('/')[1].Split('-').Length == 1 || release.remoteLocation.Split('-').Length == 1)
-                        targetReleaseType = ReleaseType.Stable;
-                    else if (targetReleaseType == ReleaseType.Invalid)
-                        targetReleaseType = ReleaseType.Other;
-                    release.releaseType = targetReleaseType;
+            foreach (var pair in recognitionMap)
+            {
+                var pairTarget = ReleaseType.Invalid;
+                foreach (var item in pair.Value)
+                {
+                    if (pairTarget == ReleaseType.Invalid && (signature.Split('/')[1].EndsWith(item) || signature.EndsWith(item)))
+                        pairTarget = pair.Key;
+                }
+                if (pairTarget != ReleaseType.Invalid)
+                {
+                    targetReleaseType = pairTarget;
+                    break;
+                }
+            }
+            if (signature.Split('/')[1].Split('-').Length == 1 || signature.Split('-').Length == 1)
+                targetReleaseType = ReleaseType.Stable;
+            else if (targetReleaseType == ReleaseType.Invalid)
+                targetReleaseType = ReleaseType.Other;
+            return targetReleaseType;
+        }
+        public static Dictionary<string, ProductRelease> TransformReleaseList(ReleaseInfo[] releases)
+        {
+            var products = new Dictionary<string, List<ProductReleaseStream>>();
+            var productIDLink = new Dictionary<string, List<string>>();
+
+            foreach (var release in releases)
+            {
+                if (release.executable == null || release.appID == null || release.appID.Length < 1) continue;
+
+                var executable = new ProductExecutable()
+                {
+                    Linux = release.executable["linux"],
+                    Windows = release.executable["windows"]
+                };
+                if (release.releaseType == ReleaseType.Other)
+                {
+                    release.releaseType = ReleaseTypeFromSignature(release.remoteLocation);
                 }
                 var stream = new ProductReleaseStream()
                 {
