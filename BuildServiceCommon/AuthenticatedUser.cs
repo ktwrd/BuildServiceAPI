@@ -80,7 +80,7 @@ namespace BuildServiceCommon
 
             var cnt = IsCredentialsValid();
             if (!cnt) return;
-            availableServices.Add("ml2");
+
             // Check admin
             taskList.Add(new Task(new Action(delegate
             {
@@ -95,7 +95,7 @@ namespace BuildServiceCommon
 
             taskList.Add(new Task(new Action(delegate
             {
-                var response = httpClient.GetAsync($"https://minalogger.com/api/hasSubscription?id=5").Result;
+                var response = httpClient.GetAsync($"https://minalogger.com/api/hasSubscription?id=4").Result;
                 var stringContent = response.Content.ReadAsStringAsync().Result;
                 var deserialized = JsonSerializer.Deserialize<resIsSubscribed>(stringContent, serializerOptions);
                 if (deserialized != null && deserialized.isSubscribed)
