@@ -1,6 +1,6 @@
 ﻿using System.Net.Http;
 
-namespace BuildServiceAPI
+namespace BuildServiceCommon
 {
     public interface ITokenGranter
     {

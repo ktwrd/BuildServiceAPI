@@ -75,6 +75,7 @@ namespace BuildServiceCommon
         public void RefreshFlags()
         {
             var taskList = new List<Task>();
+            var actionList = new List<Action>();
 
             availableServices.Clear();
 
@@ -82,49 +83,54 @@ namespace BuildServiceCommon
             if (!cnt) return;
 
             // Check admin
-            taskList.Add(new Task(new Action(delegate
+            actionList.Add(new Action(delegate
             {
                 var response = httpClient.GetAsync($"https://minalogger.com/api/IsUserAdmin").Result;
+                if ((int)response.StatusCode < 200 || (int)response.StatusCode > 299) return;
                 var stringContent = response.Content.ReadAsStringAsync().Result;
                 var deserialized = JsonSerializer.Deserialize<resIsAdmin>(stringContent, serializerOptions);
                 if (deserialized != null)
                     IsAdmin = deserialized.isAdmin;
                 else
                     IsAdmin = false;
-            })));
+            }));
 
-            taskList.Add(new Task(new Action(delegate
+            // Check if the user has the MINALOGGER_DESKTOP subscription
+            actionList.Add(new Action(delegate
             {
                 var response = httpClient.GetAsync($"https://minalogger.com/api/hasSubscription?id=4").Result;
+                if ((int)response.StatusCode < 200 || (int)response.StatusCode > 299) return;
                 var stringContent = response.Content.ReadAsStringAsync().Result;
                 var deserialized = JsonSerializer.Deserialize<resIsSubscribed>(stringContent, serializerOptions);
                 if (deserialized != null && deserialized.isSubscribed)
                     availableServices.Add("ml2");
-            })));
+            }));
 
             // Check Geolog
-            taskList.Add(new Task(new Action(delegate
+            actionList.Add(new Action(delegate
             {
                 var response = httpClient.GetAsync("https://minalogger.com/api/IsUserSubscribedToGeoLog").Result;
+                if ((int)response.StatusCode < 200 || (int)response.StatusCode > 299) return;
                 var stringContent = response.Content.ReadAsStringAsync().Result;
                 var deserialized = JsonSerializer.Deserialize<resIsSubscribed>(stringContent, serializerOptions);
                 if (deserialized != null && deserialized.isSubscribed)
                     availableServices.Add("geolog");
-            })));
+            }));
 
             // Check GeoTech
-            taskList.Add(new Task(new Action(delegate
+            actionList.Add(new Action(delegate
             {
                 var response = httpClient.GetAsync("https://minalogger.com/api/IsUserSubscribedToGeoTech").Result;
+                if ((int)response.StatusCode < 200 || (int)response.StatusCode > 299) return;
                 var stringContent = response.Content.ReadAsStringAsync().Result;
                 var deserialized = JsonSerializer.Deserialize<resIsSubscribed>(stringContent, serializerOptions);
                 if (deserialized != null && deserialized.isSubscribed)
                     availableServices.Add("geotech");
-            })));
+            }));
 
-            foreach (var i in taskList)
-                i.Start();
-            Task.WaitAll(taskList.ToArray());
+            foreach (var i in actionList)
+                taskList.Add(Task.Run(i));
+            Task.WhenAll(taskList.ToArray()).Wait();
         }
         #region Validation
         public bool ValidateHash(string hash)
