@@ -71,8 +71,14 @@ namespace BuildServiceAPI.Controllers
                     var streams = new List<ProductReleaseStream>();
                     foreach (var s in tmpStreams)
                     {
-                        if (s.BranchName == "Other" && showExtraBuilds)
+                        if (s.BranchName == "Other")
+                        {
+                            if (showExtraBuilds)
+                                streams.Add(s);
+                        }
+                        else
                             streams.Add(s);
+
                     }
                     rel.Streams = streams.ToArray();
                     returnContent.Add(rel);
