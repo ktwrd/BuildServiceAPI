@@ -3,6 +3,7 @@ using BuildServiceCommon.AutoUpdater;
 using System.Text.Json;
 using System.Collections.Generic;
 using System.Linq;
+using BuildServiceCommon;
 
 namespace BuildServiceAPI.Controllers
 {
@@ -34,6 +35,8 @@ namespace BuildServiceAPI.Controllers
                     allowFetch = false;
                 }
             }
+            AuthenticatedUser? targetUser = token.Length > 0 ? MainClass.FetchUserByToken(token) : null;
+            bool showExtraBuilds = targetUser?.IsAdmin ?? false;
             if (allowFetch && (MainClass.contentManager?.Releases.ContainsKey(app) ?? false))
             {
                 var toMap = new Dictionary<string, List<ReleaseInfo>>();
@@ -59,7 +62,20 @@ namespace BuildServiceAPI.Controllers
                 var latestOfAllArray = latestOfAll.ToArray();
                 foreach (var pair in MainClass.TransformReleaseList(latestOfAllArray))
                 {
-                    returnContent.Add(pair.Value);
+                    var rel = new ProductRelease()
+                    {
+                        ProductID = pair.Value.ProductID,
+                        ProductName = pair.Value.ProductName
+                    };
+                    var tmpStreams = pair.Value.Streams;
+                    var streams = new List<ProductReleaseStream>();
+                    foreach (var s in tmpStreams)
+                    {
+                        if (s.BranchName == "Other" && showExtraBuilds)
+                            streams.Add(s);
+                    }
+                    rel.Streams = streams.ToArray();
+                    returnContent.Add(rel);
                 }
             }
             return Json(returnContent, MainClass.serializerOptions);
