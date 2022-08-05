@@ -98,7 +98,7 @@ namespace BuildServiceCommon
             // Check if the user has the MINALOGGER_DESKTOP subscription
             actionList.Add(new Action(delegate
             {
-                var response = httpClient.GetAsync($"https://minalogger.com/api/hasSubscription?id=4").Result;
+                var response = httpClient.GetAsync($"https://minalogger.com/api/hasSubscription?tool_id=4").Result;
                 if ((int)response.StatusCode < 200 || (int)response.StatusCode > 299) return;
                 var stringContent = response.Content.ReadAsStringAsync().Result;
                 var deserialized = JsonSerializer.Deserialize<resIsSubscribed>(stringContent, serializerOptions);
