@@ -2,7 +2,7 @@
 
   <PropertyGroup>
 	  <TargetFrameworks>netstandard2.1;net6.0;net48;</TargetFrameworks>
-	  <Configurations>Debug;Release;Debug API;Debug Launcher;Release API;Release Launcher</Configurations>
+	  <Configurations>Debug;Release;Debug API;Debug Launcher;Release API;Release Launcher;Debug (ML2 Backend);Release (ML2 Backennd)</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
