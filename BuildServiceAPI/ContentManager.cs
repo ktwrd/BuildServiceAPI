@@ -17,6 +17,7 @@ namespace BuildServiceAPI
         public Dictionary<string, ProductRelease> Releases = new();
         public Dictionary<string, PublishedRelease> Published = new();
         public AccountManager AccountManager = new();
+        public SystemAnnouncement SystemAnnouncement = new();
 
         /*internal List<string> LoadedFirebaseAssets = new();
          * internal FirestoreDb database;*/
@@ -26,6 +27,15 @@ namespace BuildServiceAPI
             databaseDeserialize();
 
             AccountManager.PendingWrite += AccountManager_PendingWrite;
+            SystemAnnouncement.Update += SystemAnnouncement_Update;
+        }
+
+        private void SystemAnnouncement_Update()
+        {
+            File.WriteAllText(JSON_SYSANNOUNCE_FILENAME, SystemAnnouncement.ToJSON());
+            string txt = $"[ContentManager->SystemAnnouncement_Update:{GeneralHelper.GetNanoseconds()}] Wrote SystemAnnouncements to to {Path.GetRelativePath(Directory.GetCurrentDirectory(), JSON_SYSANNOUNCE_FILENAME)}";
+            Trace.WriteLine(txt);
+            Console.WriteLine(txt);
         }
 
         private void AccountManager_PendingWrite()
@@ -46,6 +56,9 @@ namespace BuildServiceAPI
         private readonly string JSON_ACCOUNT_FILENAME = Path.Combine(
             Directory.GetCurrentDirectory(),
             "account.json");
+        private readonly string JSON_SYSANNOUNCE_FILENAME = Path.Combine(
+            Directory.GetCurrentDirectory(),
+            "systemAnnouncement.json");
         private int DatabaseVersion;
         private class JSONBackupContent
         {
@@ -63,6 +76,17 @@ namespace BuildServiceAPI
             catch (Exception except)
             {
                 string txt = $"[ContentManager->databaseSerialize:{GeneralHelper.GetNanoseconds()}] [ERR] Failed to read Account Details\n--------\n{except}\n--------\n";
+                Trace.WriteLine(txt);
+                Console.Error.WriteLine(txt);
+            }
+            try
+            {
+                if (File.Exists(JSON_SYSANNOUNCE_FILENAME))
+                    SystemAnnouncement.Read(File.ReadAllText(JSON_SYSANNOUNCE_FILENAME));
+            }
+            catch (Exception except)
+            {
+                string txt = $"[ContentManager->databaseSerialize:{GeneralHelper.GetNanoseconds()}] [ERR] Failed to read Announcement Details\n--------\n{except}\n--------\n";
                 Trace.WriteLine(txt);
                 Console.Error.WriteLine(txt);
             }
