@@ -143,6 +143,51 @@ namespace BuildServiceCommon.Authorization
             return response;
         }
 
+        public bool AccountHasPermission(Account account, AccountPermission[] permissions, bool ignoreAdmin=false)
+        {
+            bool match = false;
+            foreach (var target in account.Permissions)
+            {
+                if (permissions.Contains(target))
+                    match = true;
+            }
+            if (account.Permissions.Contains(AccountPermission.ADMINISTRATOR) && !ignoreAdmin)
+                return true;
+            return match;
+        }
+        /// <summary>
+        /// Singular Permission overload for <see cref="AccountHasPermission(Account, AccountPermission[], bool)"/>
+        /// </summary>
+        public bool AccountHasPermission(
+            Account account,
+            AccountPermission permission,
+            bool ignoreAdmin = false)
+                => AccountHasPermission(
+                    account,
+                    new AccountPermission[] { permission },
+                    ignoreAdmin);
+        /// <summary>
+        /// Token overload for <see cref="AccountHasPermission(Account, AccountPermission[], bool)"/>
+        /// </summary>
+        public bool AccountHasPermission(string token, AccountPermission[] permissions, bool ignoreAdmin=false)
+        {
+            if (token == null || token.Length < AccountToken.TokenLength || token.Length > AccountToken.TokenLength) return false;
+            var account = GetAccount(token);
+            if (account == null) return false;
+            return AccountHasPermission(account, permissions, ignoreAdmin);
+        }
+        /// <summary>
+        /// Singular Permission overload for <see cref="AccountHasPermission(string, AccountPermission[], bool)"/>
+        /// </summary>
+        public bool AccountHasPermission(
+            string token,
+            AccountPermission permission,
+            bool ignoreAdmin = false)
+                => AccountHasPermission(
+                    token,
+                    new AccountPermission[] { permission },
+                    ignoreAdmin);
+
         public void Read(string jsonContent)
         {
             if (jsonContent.Length < 1)
