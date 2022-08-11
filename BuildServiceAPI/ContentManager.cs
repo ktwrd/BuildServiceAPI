@@ -6,6 +6,8 @@ using System.Text.Json;
 using System.Collections.Generic;
 using System.IO;
 using System;
+using System.Diagnostics;
+using BuildServiceCommon.Authorization;
 
 namespace BuildServiceAPI
 {
@@ -14,6 +16,7 @@ namespace BuildServiceAPI
         public List<ReleaseInfo> ReleaseInfoContent = new();
         public Dictionary<string, ProductRelease> Releases = new();
         public Dictionary<string, PublishedRelease> Published = new();
+        public AccountManager AccountManager = new();
 
         /*internal List<string> LoadedFirebaseAssets = new();
          * internal FirestoreDb database;*/
@@ -21,6 +24,17 @@ namespace BuildServiceAPI
         public ContentManager()
         {
             databaseDeserialize();
+
+            AccountManager.PendingWrite += AccountManager_PendingWrite;
+        }
+
+        private void AccountManager_PendingWrite()
+        {
+            File.WriteAllText(JSON_ACCOUNT_FILENAME, AccountManager.ToJSON());
+            AccountManager.ClearPendingWrite();
+            string txt = $"[ContentManager->AccountManager_PendingWrite:{GeneralHelper.GetNanoseconds()}] Wrote accounts to {Path.GetRelativePath(Directory.GetCurrentDirectory(), JSON_ACCOUNT_FILENAME)}";
+            Trace.WriteLine(txt);
+            Console.WriteLine(txt);
         }
 
         private readonly string DATABASE_FILENAME = Path.Combine(
@@ -29,6 +43,9 @@ namespace BuildServiceAPI
         private readonly string JSONBACKUP_FILENAME = Path.Combine(
             Directory.GetCurrentDirectory(),
             "content.json");
+        private readonly string JSON_ACCOUNT_FILENAME = Path.Combine(
+            Directory.GetCurrentDirectory(),
+            "account.json");
         private int DatabaseVersion;
         private class JSONBackupContent
         {
@@ -38,6 +55,17 @@ namespace BuildServiceAPI
         }
         private void databaseDeserialize()
         {
+            try
+            {
+                if (File.Exists(JSON_ACCOUNT_FILENAME))
+                    AccountManager.Read(File.ReadAllText(JSON_ACCOUNT_FILENAME));
+            }
+            catch (Exception except)
+            {
+                string txt = $"[ContentManager->databaseSerialize:{GeneralHelper.GetNanoseconds()}] [ERR] Failed to read Account Details\n--------\n{except}\n--------\n";
+                Trace.WriteLine(txt);
+                Console.Error.WriteLine(txt);
+            }
             if (!File.Exists(DATABASE_FILENAME) && File.Exists(JSONBACKUP_FILENAME))
             {
                 RestoreFromJSON();
