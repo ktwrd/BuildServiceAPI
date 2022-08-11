@@ -129,6 +129,16 @@ namespace BuildServiceCommon.Authorization
             }
             return null;
         }
+        public AccountDetailsResponse GetDetails()
+        {
+            return new AccountDetailsResponse()
+            {
+                Username = this.Username,
+                Enabled = this.Enabled,
+                Permissions = this.Permissions.ToArray(),
+                DisableReasons = this.DisableReasons.ToArray()
+            };
+        }
         public void RemoveToken(string token) => RemoveToken(new string[] { token });
         public void RemoveToken(string[] tokens)
         {
