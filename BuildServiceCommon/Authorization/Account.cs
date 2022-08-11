@@ -64,6 +64,20 @@ namespace BuildServiceCommon.Authorization
                 return timestamp;
             }
         }
+        public long LastSeenTimestamp
+        {
+            get
+            {
+                long timestamp = long.MinValue;
+                foreach (var token in Tokens)
+                {
+                    if (token.CreatedTimestamp > timestamp)
+                        timestamp = token.CreatedTimestamp;
+                }
+                return timestamp;
+            }
+        }
+
         private bool _pendingWrite = false;
 
         /// <summary>
