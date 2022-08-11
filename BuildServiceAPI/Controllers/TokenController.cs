@@ -10,7 +10,7 @@ namespace BuildServiceAPI.Controllers
     {
         public bool Success { get; set; }
         public T Data { get; set; }
-        public string DataType => Data?.GetType().ToString();
+        public string DataType => Data?.GetType().FullName;
     }
 
     [Route("[controller]")]
@@ -29,7 +29,7 @@ namespace BuildServiceAPI.Controllers
             {
                 Success = grantTokenResponse.Success,
                 Data = grantTokenResponse
-            });
+            }, MainClass.serializerOptions);
         }
 
         [HttpGet]
@@ -43,7 +43,7 @@ namespace BuildServiceAPI.Controllers
                 {
                     Success = false,
                     Data = false
-                });
+                }, MainClass.serializerOptions);
             }
 
             try
@@ -57,7 +57,7 @@ namespace BuildServiceAPI.Controllers
                 {
                     Success = res,
                     Data = res
-                });
+                }, MainClass.serializerOptions);
             }
             catch (Exception)
             { }
@@ -67,7 +67,7 @@ namespace BuildServiceAPI.Controllers
             {
                 Success = false,
                 Data = false
-            });
+            }, MainClass.serializerOptions);
         }
 
         [HttpGet]
@@ -81,7 +81,7 @@ namespace BuildServiceAPI.Controllers
                 {
                     Success = false,
                     Data = "Invalid Account"
-                });
+                }, MainClass.serializerOptions);
             }
 
             var account = MainClass.contentManager.AccountManager.GetAccount(token);
@@ -92,7 +92,7 @@ namespace BuildServiceAPI.Controllers
                 {
                     Success = false,
                     Data = "Invalid Account"
-                });
+                }, MainClass.serializerOptions);
             }
 
             var details = account.GetTokenDetails(token);
@@ -103,14 +103,14 @@ namespace BuildServiceAPI.Controllers
                 {
                     Success = false,
                     Data = "Invalid Account"
-                });
+                }, MainClass.serializerOptions);
             }
 
             return Json(new ObjectResponse<AccountTokenDetailsResponse>()
             {
                 Success = true,
                 Data = details
-            });
+            }, MainClass.serializerOptions);
         }
 
         [HttpGet]
@@ -124,7 +124,7 @@ namespace BuildServiceAPI.Controllers
                 {
                     Success = false,
                     Data = "Invalid Account"
-                });
+                }, MainClass.serializerOptions);
             }
 
             var account = MainClass.contentManager.AccountManager.GetAccount(token);
@@ -135,7 +135,7 @@ namespace BuildServiceAPI.Controllers
                 {
                     Success = false,
                     Data = "Invalid Account"
-                });
+                }, MainClass.serializerOptions);
             }
 
             if (all)
@@ -145,7 +145,7 @@ namespace BuildServiceAPI.Controllers
                 {
                     Success = true,
                     Data = null
-                });
+                }, MainClass.serializerOptions);
             }
             else
             {
@@ -154,7 +154,7 @@ namespace BuildServiceAPI.Controllers
                 {
                     Success = true,
                     Data = null
-                });
+                }, MainClass.serializerOptions);
             }
         }
     }

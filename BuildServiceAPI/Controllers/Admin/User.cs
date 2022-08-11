@@ -41,7 +41,7 @@ namespace BuildServiceAPI.Controllers.Admin
                 {
                     Success = false,
                     Data = "Invalid Account"
-                });
+                }, MainClass.serializerOptions);
             }
 
             var detailList = new List<AccountDetailsResponse>();
@@ -82,7 +82,7 @@ namespace BuildServiceAPI.Controllers.Admin
             {
                 Success = true,
                 Data = detailList.ToArray()
-            });
+            }, MainClass.serializerOptions);
         }
     }
 }
