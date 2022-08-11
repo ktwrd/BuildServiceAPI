@@ -18,11 +18,13 @@ namespace BuildServiceAPI.Controllers
                 foreach (var pair in contentManager.Published)
                 {
                     var allowAdd = true;
+#if BUILDSERVICEAPI_APP_WHITELIST
                     if (pair.Value.Release.appID == "com.minalyze.minalogger")
                     {
                         if (!MainClass.UserByTokenHasService(token, "ml2"))
                             allowAdd = false;
                     }
+#endif
                     if (allowAdd && !productIDList.Contains(pair.Value.Release.appID))
                         productIDList.Add(pair.Value.Release.appID);
                 }

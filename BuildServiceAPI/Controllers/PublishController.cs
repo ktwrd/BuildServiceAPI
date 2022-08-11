@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using System;
 using System.Collections.Generic;
+using BuildServiceCommon.Authorization;
 
 namespace BuildServiceAPI.Controllers
 {
@@ -108,7 +109,7 @@ namespace BuildServiceAPI.Controllers
         [HttpGet("all")]
         public ActionResult All(string token)
         {
-            if (!MainClass.ValidTokens.ContainsKey(token))
+            if (!MainClass.ValidTokens.ContainsKey(token) || MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.READ_RELEASE_BYPASS))
             {
                 Response.StatusCode = 401;
                 return Json(new HttpException(401, @"Invalid token"), MainClass.serializerOptions);
@@ -119,11 +120,13 @@ namespace BuildServiceAPI.Controllers
         [HttpGet("hash")]
         public ActionResult ByCommitHashFromParameter(string hash, string token = "")
         {
+            #if BUILDSERVICEAPI_APP_WHITELIST
             if (!MainClass.ValidTokens.ContainsKey(token))
             {
                 Response.StatusCode = 401;
                 return Json(new HttpException(401, @"Invalid token"), MainClass.serializerOptions);
             }
+            #endif
             if (MainClass.contentManager?.Published.ContainsKey(hash) ?? false)
             {
                 return Json(MainClass.contentManager.Published[hash], MainClass.serializerOptions);

@@ -13,28 +13,18 @@ namespace BuildServiceAPI.Controllers.Admin
     [ApiController]
     public class UserController : Controller
     {
-        public static bool IsAllowed(string token)
+        public static AccountPermission[] RequiredPermissions = new AccountPermission[]
         {
-            if (token == null || token.Length < 32 || token.Length > 32)
-            {
-                return false;
-            }
-
-            var account = MainClass.contentManager.AccountManager.GetAccount(token);
-            if (account == null)
-            {
-                return false;
-            }
-
-            return IsAllowed(account);
-        }
-        public static bool IsAllowed(Account account) => account.HasPermission(AccountPermission.ADMINISTRATOR);
+            AccountPermission.ADMINISTRATOR
+        };
+        public static bool IsAllowed(string token) => MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions);
+        public static bool IsAllowed(Account account) => MainClass.contentManager.AccountManager.AccountHasPermission(account, RequiredPermissions);
 
         [HttpGet]
         [Route("list")]
         public ActionResult List(string token, string username=null, SearchMethod usernameSearchType = SearchMethod.Equals, long firstSeenTimestamp=0, long lastSeenTimestamp=long.MaxValue)
         {
-            if (!IsAllowed(token))
+            if (MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions))
             {
                 Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 return Json(new ObjectResponse<string>()

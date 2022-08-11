@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Collections.Generic;
 using System.Linq;
 using BuildServiceCommon;
+using BuildServiceCommon.Authorization;
 
 namespace BuildServiceAPI.Controllers
 {
@@ -14,7 +15,7 @@ namespace BuildServiceAPI.Controllers
         [HttpGet]
         public ActionResult Index(string token)
         {
-            if (!MainClass.ValidTokens.ContainsKey(token))
+            if (!MainClass.ValidTokens.ContainsKey(token) || MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.READ_RELEASE_BYPASS))
             {
                 Response.StatusCode = 401;
                 return Json(new HttpException(401, @"Invalid token"), MainClass.serializerOptions);
@@ -28,6 +29,7 @@ namespace BuildServiceAPI.Controllers
         {
             var returnContent = new List<ProductRelease>();
             var allowFetch = true;
+#if BUILDSERVICEAPI_APP_WHITELIST
             if (app == "com.minalyze.minalogger")
             {
                 if (token.Length < 1 || !MainClass.UserByTokenHasService(token, "ml2"))
@@ -35,8 +37,8 @@ namespace BuildServiceAPI.Controllers
                     allowFetch = false;
                 }
             }
-            AuthenticatedUser? targetUser = token.Length > 0 ? MainClass.FetchUserByToken(token) : null;
-            bool showExtraBuilds = targetUser?.IsAdmin ?? false;
+#endif
+            bool showExtraBuilds = MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.READ_RELEASE_BYPASS);
             if (allowFetch && (MainClass.contentManager?.Releases.ContainsKey(app) ?? false))
             {
                 var toMap = new Dictionary<string, List<ReleaseInfo>>();

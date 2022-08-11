@@ -21,11 +21,13 @@ namespace BuildServiceAPI.Controllers
         [Route("{hash}")]
         public ActionResult AddFileToHash(string hash, string token)
         {
+#if BUILDSERVICEAPI_APP_WHITELIST
             if (token == null || token.Length < 1 || !MainClass.ValidTokens.ContainsKey(token))
             {
                 Response.StatusCode = 401;
                 return Json(new HttpException(401, @"Invalid token"), MainClass.serializerOptions);
             }
+#endif
             if (!MainClass.contentManager?.Published.ContainsKey(hash) ?? false)
             {
                 Response.StatusCode = (int)HttpStatusCode.NotFound;
@@ -87,6 +89,7 @@ namespace BuildServiceAPI.Controllers
                 {
                     var allow = false;
                     var commit = contentManager.Published[hash];
+#if BUILDSERVICEAPI_APP_WHITELIST
                     if (commit.Release.appID == "com.minalyze.minalogger")
                     {
                         if (MainClass.UserByTokenHasService(token, "ml2") && commit.Release.releaseType != ReleaseType.Other && commit.Release.releaseType != ReleaseType.Invalid)
@@ -100,6 +103,9 @@ namespace BuildServiceAPI.Controllers
                     {
                         allow = true;
                     }
+#else
+                    allow = true;
+#endif
                     if (allow)
                         returnContent = new List<PublishedReleaseFile>(commit.Files);
                 }
