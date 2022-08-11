@@ -51,6 +51,19 @@ namespace BuildServiceCommon.Authorization
         public bool Enabled { get; set; }
         public List<AccountDisableReason> DisableReasons = new List<AccountDisableReason>();
 
+        public long FirstSeenTimestamp
+        {
+            get
+            {
+                long timestamp = long.MaxValue;
+                foreach (var token in Tokens)
+                {
+                    if (token.CreatedTimestamp < timestamp)
+                        timestamp = token.CreatedTimestamp;
+                }
+                return timestamp;
+            }
+        }
         private bool _pendingWrite = false;
 
         /// <summary>
