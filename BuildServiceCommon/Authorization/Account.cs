@@ -29,12 +29,21 @@ namespace BuildServiceCommon.Authorization
         public bool Enabled { get; set; }
         public long CreatedTimestamp { get; set; }
     }
+    public class AccountDetailsResponse
+    {
+        public string Username { get; set; }
+        public bool Enabled { get; set; }
+        public AccountPermission[] Permissions { get; set; }
+        public AccountDisableReason[] DisableReasons { get; set; }
+    }
     public class Account
     {
+        #region Fields
         internal AccountManager accountManager = null;
         public string Username { get; set; }
         public List<AccountToken> Tokens { get; set; }
         public List<AccountPermission> Permissions { get; set; }
+        #endregion
         public Account(AccountManager accountManager)
         {
             this.accountManager = accountManager;
