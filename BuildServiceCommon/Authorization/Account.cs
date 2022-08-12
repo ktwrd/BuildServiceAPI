@@ -47,10 +47,12 @@ namespace BuildServiceCommon.Authorization
             this.accountManager = accountManager;
 
             Username = "";
-            PendingWrite = false;
             Tokens = new List<AccountToken>();
             Permissions = new List<AccountPermission>();
+            Groups = new List<string>();
+            DisableReasons = new List<AccountDisableReason>();
             Enabled = true;
+            PendingWrite = false;
         }
         public Account() : this(null)
         { }
@@ -71,7 +73,7 @@ namespace BuildServiceCommon.Authorization
         /// <summary>
         /// Reasons why this account was disabled.
         /// </summary>
-        public List<AccountDisableReason> DisableReasons = new List<AccountDisableReason>();
+        public List<AccountDisableReason> DisableReasons { get; set; }
 
         /// <summary>
         /// Timestamp of the first token for this account.
