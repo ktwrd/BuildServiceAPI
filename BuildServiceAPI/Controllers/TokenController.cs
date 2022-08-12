@@ -6,12 +6,6 @@ using System.Net;
 
 namespace BuildServiceAPI.Controllers
 {
-    public class ObjectResponse<T>
-    {
-        public bool Success { get; set; }
-        public T Data { get; set; }
-        public string DataType => Data?.GetType().FullName;
-    }
 
     [Route("[controller]")]
     [ApiController]
