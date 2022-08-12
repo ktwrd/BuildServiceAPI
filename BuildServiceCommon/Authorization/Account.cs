@@ -303,6 +303,31 @@ namespace BuildServiceCommon.Authorization
                     return true;
             return false;
         }
+
+        /// <summary>
+        /// Remove a permission from this account
+        /// </summary>
+        /// <param name="target"></param>
+        /// <returns>Did this account already have the target permission?</returns>
+        public bool RevokePermission(AccountPermission target)
+        {
+            bool found = false;
+            var newPermissionArray = new List<AccountPermission>();
+            foreach (var item in Permissions)
+            {
+                if (item != target)
+                {
+                    newPermissionArray.Add(item);
+                }
+                else
+                {
+                    found = true;
+                }
+            }
+            Permissions = newPermissionArray;
+            PendingWrite = true;
+            return found;
+        }
         #endregion
 
 
