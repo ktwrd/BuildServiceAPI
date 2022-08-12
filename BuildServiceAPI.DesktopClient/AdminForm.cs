@@ -125,7 +125,6 @@ namespace BuildServiceAPI.DesktopClient
             }
 
             AnnouncementSummary = content.Data;
-            RefreshAnnouncementList();
         }
         public void PushAnnouncements()
         {
@@ -161,6 +160,7 @@ namespace BuildServiceAPI.DesktopClient
 
         public void RefreshAnnouncementList()
         {
+            UpdateSelectedAnnouncementItem();
             listViewAnnouncement.Items.Clear();
             foreach (var item in AnnouncementSummary.Entries)
             {
@@ -173,24 +173,33 @@ namespace BuildServiceAPI.DesktopClient
                 lvitem.Name = Array.IndexOf(AnnouncementSummary.Entries, item).ToString();
                 listViewAnnouncement.Items.Add(lvitem);
             }
+            UpdateSelectedAnnouncementItem();
         }
-
-        private void toolStripButtonAnnouncementRefresh_Click(object sender, EventArgs e) => RefreshAnnouncements();
-
-        private void listViewAnnouncement_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        public void UpdateSelectedAnnouncementItem()
         {
             toolStripButtonAnnouncementDelete.Enabled = false;
             toolStripButtonAnnouncementEdit.Enabled = false;
             SelectedAnnouncementEntry = null;
+            if (listViewAnnouncement.SelectedItems.Count < 1) return;
             try
             {
-                int index = int.Parse(e.Item.Name);
+                int index = int.Parse(listViewAnnouncement.SelectedItems[0].Name);
                 if (index > AnnouncementSummary.Entries.Length || index < 0) return;
                 toolStripButtonAnnouncementDelete.Enabled = true;
                 toolStripButtonAnnouncementEdit.Enabled = true;
                 SelectedAnnouncementEntry = AnnouncementSummary.Entries[index];
-            } catch (Exception){ }
+            }
+            catch (Exception) { }
         }
+
+        private void toolStripButtonAnnouncementRefresh_Click(object sender, EventArgs e)
+        {
+            RefreshAnnouncements();
+            RefreshAnnouncementList();
+            UpdateSelectedAnnouncementItem();
+        }
+
+        private void listViewAnnouncement_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e) => UpdateSelectedAnnouncementItem();
 
         private void toolStripButtonAnnouncementDelete_Click(object sender, EventArgs e)
         {
@@ -216,6 +225,7 @@ namespace BuildServiceAPI.DesktopClient
             Task.WhenAll(taskArray).Wait();
             toolStripAnnouncement.Enabled = true;
             listViewAnnouncement.Enabled = true;
+            RefreshAnnouncementList();
         }
 
         private void buttonRefresh_Click(object sender, EventArgs e)
@@ -232,11 +242,14 @@ namespace BuildServiceAPI.DesktopClient
             Enabled = true;
             toolStripAnnouncement.Enabled = true;
             listViewAnnouncement.Enabled = true;
+            RefreshAnnouncementList();
         }
 
         private void toolStripButtonAnnouncementPushChanges_Click(object sender, EventArgs e)
         {
             PushAnnouncements();
         }
+
+        private void listViewAnnouncement_SelectedIndexChanged(object sender, EventArgs e) => UpdateSelectedAnnouncementItem();
     }
 }

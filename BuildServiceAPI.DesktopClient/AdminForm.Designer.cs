@@ -239,6 +239,7 @@
             this.listViewAnnouncement.UseCompatibleStateImageBehavior = false;
             this.listViewAnnouncement.View = System.Windows.Forms.View.Details;
             this.listViewAnnouncement.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.listViewAnnouncement_ItemSelectionChanged);
+            this.listViewAnnouncement.SelectedIndexChanged += new System.EventHandler(this.listViewAnnouncement_SelectedIndexChanged);
             // 
             // columnHeaderContent
             // 
@@ -284,6 +285,7 @@
             // toolStripButtonAnnouncementEdit
             // 
             this.toolStripButtonAnnouncementEdit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonAnnouncementEdit.Enabled = false;
             this.toolStripButtonAnnouncementEdit.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonAnnouncementEdit.Image")));
             this.toolStripButtonAnnouncementEdit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonAnnouncementEdit.Name = "toolStripButtonAnnouncementEdit";
@@ -293,6 +295,7 @@
             // toolStripButtonAnnouncementDelete
             // 
             this.toolStripButtonAnnouncementDelete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonAnnouncementDelete.Enabled = false;
             this.toolStripButtonAnnouncementDelete.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonAnnouncementDelete.Image")));
             this.toolStripButtonAnnouncementDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonAnnouncementDelete.Name = "toolStripButtonAnnouncementDelete";
