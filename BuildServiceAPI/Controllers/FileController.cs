@@ -21,14 +21,12 @@ namespace BuildServiceAPI.Controllers
         [Route("{hash}")]
         public ActionResult AddFileToHash(string hash, string token)
         {
-#if BUILDSERVICEAPI_APP_WHITELIST
-            if (token == null || token.Length < 1 || !MainClass.ValidTokens.ContainsKey(token))
+            if (token == null || token.Length < 1 || !MainClass.ValidTokens.ContainsKey(token) || !MainClass.contentManager.AccountManager.AccountHasPermission(token, BuildServiceCommon.Authorization.AccountPermission.CREATE_RELEASE))
             {
                 Response.StatusCode = 401;
                 return Json(new HttpException(401, @"Invalid token"), MainClass.serializerOptions);
             }
-#endif
-            if (!MainClass.contentManager?.Published.ContainsKey(hash) ?? false)
+            else if (!MainClass.contentManager?.Published.ContainsKey(hash) ?? false)
             {
                 Response.StatusCode = (int)HttpStatusCode.NotFound;
                 return Json(new HttpException(404, @"Commit not published"), MainClass.serializerOptions);
