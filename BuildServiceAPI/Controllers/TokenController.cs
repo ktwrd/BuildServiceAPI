@@ -1,4 +1,5 @@
-﻿using BuildServiceCommon.Authorization;
+﻿using BuildServiceCommon;
+using BuildServiceCommon.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -15,7 +16,7 @@ namespace BuildServiceAPI.Controllers
         [Route("grant")]
         public ActionResult Grant(string username, string password)
         {
-            var grantTokenResponse = MainClass.contentManager.AccountManager.GrantTokenAndOrAccount(username, password);
+            var grantTokenResponse = MainClass.contentManager.AccountManager.GrantTokenAndOrAccount(WebUtility.UrlDecode(username), WebUtility.UrlDecode(password));
 
             if (!grantTokenResponse.Success)
                 Response.StatusCode = (int)HttpStatusCode.Unauthorized;
