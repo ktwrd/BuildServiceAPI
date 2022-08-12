@@ -64,6 +64,7 @@
             this.buttonPushAll = new System.Windows.Forms.Button();
             this.buttonRefresh = new System.Windows.Forms.Button();
             this.toolStripButtonAnnouncementPushChanges = new System.Windows.Forms.ToolStripButton();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabControl1.SuspendLayout();
             this.tabPageAccountMan.SuspendLayout();
             this.toolStripAccountMan.SuspendLayout();
@@ -80,6 +81,7 @@
             // 
             this.tabControl1.Controls.Add(this.tabPageAccountMan);
             this.tabControl1.Controls.Add(this.tabPageAnnouncementManagement);
+            this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -452,6 +454,16 @@
             this.toolStripButtonAnnouncementPushChanges.Text = "Push";
             this.toolStripButtonAnnouncementPushChanges.Click += new System.EventHandler(this.toolStripButtonAnnouncementPushChanges_Click);
             // 
+            // tabPage1
+            // 
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(537, 415);
+            this.tabPage1.TabIndex = 2;
+            this.tabPage1.Text = "tabPage1";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
             // AdminForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -519,5 +531,6 @@
         private System.Windows.Forms.Button buttonPushAll;
         private System.Windows.Forms.Button buttonRefresh;
         private System.Windows.Forms.ToolStripButton toolStripButtonAnnouncementPushChanges;
+        private System.Windows.Forms.TabPage tabPage1;
     }
 }
