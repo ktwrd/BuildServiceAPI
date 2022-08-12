@@ -92,5 +92,25 @@ namespace BuildServiceAPI.Controllers.Admin
                 Data = MainClass.contentManager.SystemAnnouncement.Entries.ToArray()
             }, MainClass.serializerOptions);
         }
+
+        [HttpGet]
+        [Route("summary")]
+        public ActionResult GetSummary(string token)
+        {
+            if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.ADMINISTRATOR))
+            {
+                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return Json(new ObjectResponse<string>()
+                {
+                    Success = false,
+                    Data = "Invalid Permissions"
+                }, MainClass.serializerOptions);
+            }
+            return Json(new ObjectResponse<SystemAnnouncementSummary>()
+            {
+                Success = true,
+                Data = MainClass.contentManager.SystemAnnouncement.GetSummary()
+            }, MainClass.serializerOptions);
+        }
     }
 }
