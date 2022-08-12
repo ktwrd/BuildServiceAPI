@@ -61,6 +61,15 @@ namespace BuildServiceCommon.Authorization
             }
             return null;
         }
+        public Account GetAccountByUsername(string username)
+        {
+            foreach (var account in AccountList)
+            {
+                if (account.Username == username)
+                    return account;
+            }
+            return null;
+        }
 
         public GrantTokenResponse CreateToken(Account account)
         {
