@@ -101,6 +101,7 @@ namespace BuildServiceAPI.DesktopClient
 
         public SystemAnnouncementSummary AnnouncementSummary = new SystemAnnouncementSummary();
         public SystemAnnouncementEntry SelectedAnnouncementEntry = null;
+        public AllDataResult ContentManagerAlias = null;
 
         public void RefreshAnnouncements()
         {
@@ -156,6 +157,28 @@ namespace BuildServiceAPI.DesktopClient
                 return;
             }
             AnnouncementSummary = content.Data;
+        }
+        public void PushContentManager()
+        {
+            if (ContentManagerAlias == null)
+            {
+                Trace.WriteLine($"[AdminForm->PushContentManager] Cannot push since ContentManagerAlias is null");
+                MessageBox.Show("ContentManagerAlias is null ;w;", "Failed to push Content Manager");
+                return;
+            }
+
+            var targetURL = Endpoint.DumpSetData(Token.Token, DataType.All, ContentManagerAlias);
+            var response = httpClient.GetAsync(targetURL).Result;
+            var stringContent = response.Content.ReadAsStringAsync().Result;
+            var dynamicContent = JsonSerializer.Deserialize<ObjectResponse<dynamic>>(stringContent, Program.serializerOptions);
+            var content = JsonSerializer.Deserialize<ObjectResponse<AllDataResult>>(stringContent, Program.serializerOptions);
+            if (!dynamicContent.Success || content == null)
+            {
+                MessageBox.Show($"{stringContent}", $"Failed to push content manager");
+                Trace.WriteLine($"[AdminForm->PushContentManager] Failed to push content manager\n--------\n{JsonSerializer.Serialize(dynamicContent, Program.serializerOptions)}\n--------\n");
+                return;
+            }
+            ContentManagerAlias = content.Data;
         }
 
         public void RefreshAnnouncementList()
@@ -218,7 +241,8 @@ namespace BuildServiceAPI.DesktopClient
             listViewAnnouncement.Enabled = false;
             var taskArray = new Task[]
             {
-                new Task(delegate { PushAnnouncements();  })
+                new Task(delegate { PushAnnouncements(); }),
+                new Task(delegate { PushContentManager(); })
             };
             foreach (var i in taskArray)
                 i.Start();
