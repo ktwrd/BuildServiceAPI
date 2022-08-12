@@ -89,6 +89,14 @@ namespace BuildServiceAPI.Controllers
                 {
                     var allow = false;
                     var commit = contentManager.Published[hash];
+                    if (commit.Release.releaseType == ReleaseType.Other)
+                    {
+                        allow = MainClass.contentManager.AccountManager.AccountHasPermission(token, BuildServiceCommon.Authorization.AccountPermission.READ_RELEASE_BYPASS);
+                    }
+                    else
+                    {
+                        allow = true;
+                    }
 #if BUILDSERVICEAPI_APP_WHITELIST
                     if (commit.Release.appID == "com.minalyze.minalogger")
                     {
@@ -103,8 +111,6 @@ namespace BuildServiceAPI.Controllers
                     {
                         allow = true;
                     }
-#else
-                    allow = true;
 #endif
                     if (allow)
                         returnContent = new List<PublishedReleaseFile>(commit.Files);
