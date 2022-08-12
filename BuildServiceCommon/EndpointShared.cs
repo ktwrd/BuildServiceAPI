@@ -12,4 +12,11 @@ namespace BuildServiceCommon
         Includes,
         IncludesNot
     }
+    public enum DataType
+    {
+        ReleaseInfoArray,
+        ReleaseDict,
+        PublishDict,
+        All
+    }
 }
