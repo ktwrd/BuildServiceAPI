@@ -74,5 +74,36 @@ namespace BuildServiceAPI.Controllers.Admin
                 Data = detailList.ToArray()
             }, MainClass.serializerOptions);
         }
+    
+        [HttpGet("permission/grant")]
+        public ActionResult GrantPermission(string token, string username, AccountPermission permission)
+        {
+            if (MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions))
+            {
+                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return Json(new ObjectResponse<string>()
+                {
+                    Success = false,
+                    Data = "Invalid Account"
+                }, MainClass.serializerOptions);
+            }
+
+            var account = MainClass.contentManager.AccountManager.GetAccountByUsername(username);
+            if (account == null)
+            {
+                Response.StatusCode = (int)HttpStatusCode.NotFound;
+                return Json(new ObjectResponse<string>()
+                {
+                    Success = false,
+                    Data = $"Could not find account with username of \"{username}\""
+                }, MainClass.serializerOptions);
+            }
+
+            return Json(new ObjectResponse<bool>()
+            {
+                Success = true,
+                Data = account.GrantPermission(permission)
+            }, MainClass.serializerOptions);
+        }
     }
 }
