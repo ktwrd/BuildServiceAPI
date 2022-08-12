@@ -94,7 +94,7 @@ namespace BuildServiceAPI.Controllers
                 MainClass.contentManager?.ReleaseInfoContent.Add(parameters.releaseInfo);
                 if (MainClass.contentManager != null)
                 {
-                    MainClass.contentManager.Releases = MainClass.TransformReleaseList(MainClass.contentManager.ReleaseInfoContent.ToArray());
+                    MainClass.contentManager.Releases = ReleaseHelper.TransformReleaseList(MainClass.contentManager.ReleaseInfoContent.ToArray());
                 }
                 result["releaseAlreadyExists"] = false;
             }

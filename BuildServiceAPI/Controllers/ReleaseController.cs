@@ -62,7 +62,7 @@ namespace BuildServiceAPI.Controllers
                 }
 
                 var latestOfAllArray = latestOfAll.ToArray();
-                foreach (var pair in MainClass.TransformReleaseList(latestOfAllArray))
+                foreach (var pair in ReleaseHelper.TransformReleaseList(latestOfAllArray))
                 {
                     var rel = new ProductRelease()
                     {
