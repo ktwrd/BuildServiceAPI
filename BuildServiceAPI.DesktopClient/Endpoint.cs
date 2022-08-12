@@ -68,6 +68,9 @@ namespace BuildServiceAPI.DesktopClient
         internal static string AnnouncementSummary(string token)
             => $"{Base}/admin/announcement/summary?token={encode(token)}";
 
+        internal static string DumpSetData(string token, DataType type, AllDataResult data)
+            => $"{Base}/admin/dump/setdata?token={encode(token)}&type={encode((int)type)}&content={encode(JsonSerializer.Serialize(data, Program.serializerOptions))}";
+
         internal static string UserList(
             string token,
             string username = "",
