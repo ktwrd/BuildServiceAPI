@@ -1,5 +1,6 @@
 ﻿using BuildServiceCommon;
 using BuildServiceCommon.Authorization;
+using BuildServiceCommon.AutoUpdater;
 using kate.shared.Helpers;
 using System;
 using System.Collections.Generic;
@@ -158,6 +159,21 @@ namespace BuildServiceAPI.DesktopClient
             }
             AnnouncementSummary = content.Data;
         }
+        public void RefreshContentManager()
+        {
+            var targetURL = Endpoint.DumpDataFetch(Token.Token, DataType.All);
+            var response = httpClient.GetAsync(targetURL).Result;
+            var stringContent = response.Content.ReadAsStringAsync().Result;
+            var dynamicContent = JsonSerializer.Deserialize<ObjectResponse<dynamic>>(stringContent, Program.serializerOptions);
+            var content = JsonSerializer.Deserialize<ObjectResponse<AllDataResult>>(stringContent, Program.serializerOptions);
+            if (!dynamicContent.Success || content == null)
+            {
+                MessageBox.Show($"{stringContent}", $"Failed to refresh content manager");
+                Trace.WriteLine($"[AdminForm->RefreshContentManager] Failed to fetch content manager\n--------\n{JsonSerializer.Serialize(dynamicContent, Program.serializerOptions)}\n--------\n");
+                return;
+            }
+            ContentManagerAlias = content.Data;
+        }
         public void PushContentManager()
         {
             if (ContentManagerAlias == null)
@@ -258,7 +274,8 @@ namespace BuildServiceAPI.DesktopClient
             listViewAnnouncement.Enabled = false;
             var taskArray = new Task[]
             {
-                new Task(delegate { RefreshAnnouncements(); })
+                new Task(delegate { RefreshAnnouncements(); }),
+                new Task(delegate { RefreshContentManager(); })
             };
             foreach (var i in taskArray)
                 i.Start();
@@ -267,6 +284,8 @@ namespace BuildServiceAPI.DesktopClient
             toolStripAnnouncement.Enabled = true;
             listViewAnnouncement.Enabled = true;
             RefreshAnnouncementList();
+            RefreshReleaseTree();
+            RefreshReleaseListView();
         }
 
         private void toolStripButtonAnnouncementPushChanges_Click(object sender, EventArgs e)
@@ -275,5 +294,76 @@ namespace BuildServiceAPI.DesktopClient
         }
 
         private void listViewAnnouncement_SelectedIndexChanged(object sender, EventArgs e) => UpdateSelectedAnnouncementItem();
+    
+        public void RefreshReleaseTree()
+        {
+            treeViewReleaseProduct.Nodes.Clear();
+            if (ContentManagerAlias == null)
+            {
+                Trace.WriteLine($"[AdminForm->RefreshReleaseTree] ContentManagerAlias is null");
+                return;
+            }
+
+            Dictionary<string, List<ReleaseInfo>> releaseInfoDict = new Dictionary<string, List<ReleaseInfo>>();
+            foreach (var release in ContentManagerAlias.ReleaseInfoContent)
+            {
+                if (release.appID.Length < 1) continue;
+                if (!releaseInfoDict.ContainsKey(release.appID))
+                    releaseInfoDict.Add(release.appID, new List<ReleaseInfo>());
+                releaseInfoDict[release.appID].Add(release);
+            }
+            foreach (var pair in releaseInfoDict)
+            {
+                treeViewReleaseProduct.Nodes.Add($"{pair.Key}");
+            }
+        }
+        public void RefreshReleaseListView()
+        {
+            listViewReleases.Items.Clear();
+            if (ContentManagerAlias == null)
+            {
+                Trace.WriteLine($"[AdminForm->RefreshReleaseTree] ContentManagerAlias is null");
+                return;
+            }
+            if (treeViewReleaseProduct.SelectedNode == null) return;
+            var targetReleaseList = ContentManagerAlias.ReleaseInfoContent
+                .Where(v => v.appID == treeViewReleaseProduct.SelectedNode.Text)
+                .OrderBy(s => s.timestamp).ToList();
+            if ((bool)Properties.Settings.Default["ShowLatestRelease"])
+            {
+                targetReleaseList = targetReleaseList.GroupBy(v => v.remoteLocation)
+                    .Select(v => v.First()).ToList();
+            }
+            foreach (var item in targetReleaseList)
+            {
+                var lvitem = new ListViewItem(
+                    new string[]
+                    {
+                        item.commitHashShort,
+                        item.remoteLocation,
+                        DateTimeOffset.FromUnixTimeMilliseconds(item.timestamp).ToString()
+                    });
+                lvitem.Name = ContentManagerAlias.ReleaseInfoContent.IndexOf(item).ToString();
+                listViewReleases.Items.Add(lvitem);
+            }
+        }
+
+        private void toolStripButtonReleaseRefresh_Click(object sender, EventArgs e)
+        {
+            RefreshReleaseTree();
+            RefreshReleaseListView();
+        }
+
+        private void treeViewReleaseProduct_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            RefreshReleaseListView();
+        }
+
+        private void showLatestReleaseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default["ShowLatestRelease"] = showLatestReleaseToolStripMenuItem.Checked;
+            Program.Save();
+            RefreshReleaseListView();
+        }
     }
 }
