@@ -58,5 +58,17 @@ namespace BuildServiceAPI.DesktopClient.Properties {
                 this["ServerEndpoint"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ShowLatestRelease {
+            get {
+                return ((bool)(this["ShowLatestRelease"]));
+            }
+            set {
+                this["ShowLatestRelease"] = value;
+            }
+        }
     }
 }

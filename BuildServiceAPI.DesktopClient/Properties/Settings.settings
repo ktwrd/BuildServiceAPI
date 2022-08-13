@@ -11,5 +11,8 @@
     <Setting Name="ServerEndpoint" Type="System.String" Scope="User">
       <Value Profile="(Default)">http://localhost:5010</Value>
     </Setting>
+    <Setting Name="ShowLatestRelease" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
