@@ -25,6 +25,7 @@ namespace BuildServiceAPI.DesktopClient
             textBoxLabelUsername.TextboxContent = (string)Properties.Settings.Default["Username"];
             textBoxLabelPassword.TextboxContent = (string)Properties.Settings.Default["Password"];
             textBoxLabelEndpoint.TextboxContent = (string)Properties.Settings.Default["ServerEndpoint"];
+            showLatestReleaseToolStripMenuItem.Checked = (bool)Properties.Settings.Default["ShowLatestRelease"];
             httpClient = new HttpClient();
             Refresh += AdminForm_Refresh;
             PushChanges += AdminForm_PushChanges;
