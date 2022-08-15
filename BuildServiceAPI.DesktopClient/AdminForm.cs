@@ -29,6 +29,24 @@ namespace BuildServiceAPI.DesktopClient
             httpClient = new HttpClient();
             Refresh += AdminForm_Refresh;
             PushChanges += AdminForm_PushChanges;
+            SelectedReleasesChange += AdminForm_SelectedReleasesChange;
+            toolStripSplitButtonReleaseDelete.Enabled = false;
+            toolStripButtonReleaseEdit.Enabled = false;
+        }
+
+        private void AdminForm_SelectedReleasesChange()
+        {
+            toolStripSplitButtonReleaseDelete.Enabled = false;
+            toolStripButtonReleaseEdit.Enabled = false;
+            if (SelectedReleases.Count > 0)
+            {
+                toolStripSplitButtonReleaseDelete.Enabled = true;
+                toolStripButtonReleaseEdit.Enabled = true;
+            }
+            if (SelectedReleases.Count > 1)
+            {
+                toolStripButtonReleaseEdit.Enabled = false;
+            }
         }
 
         private void AdminForm_PushChanges()
@@ -183,6 +201,8 @@ namespace BuildServiceAPI.DesktopClient
                 MessageBox.Show("ContentManagerAlias is null ;w;", "Failed to push Content Manager");
                 return;
             }
+
+            ContentManagerAlias.Releases = ReleaseHelper.TransformReleaseList(ContentManagerAlias.ReleaseInfoContent.ToArray());
 
             var targetURL = Endpoint.DumpSetData(Token.Token, DataType.All, ContentManagerAlias);
             var response = httpClient.GetAsync(targetURL).Result;
@@ -365,6 +385,32 @@ namespace BuildServiceAPI.DesktopClient
             Properties.Settings.Default["ShowLatestRelease"] = showLatestReleaseToolStripMenuItem.Checked;
             Program.Save();
             RefreshReleaseListView();
+        }
+
+        public List<ReleaseInfo> SelectedReleases = new List<ReleaseInfo>();
+        public event VoidDelegate SelectedReleasesChange;
+        private void listViewReleases_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SelectedReleases.Clear();
+            for (int i = 0; i < listViewReleases.SelectedItems.Count; i++)
+            {
+                var item = listViewReleases.SelectedItems[i];
+                int attemptedIndex = int.Parse(item.Name);
+                if (attemptedIndex >= 0)
+                {
+                    SelectedReleases.Add(ContentManagerAlias.ReleaseInfoContent[attemptedIndex]);
+                }
+            }
+            if (SelectedReleasesChange != null)
+                SelectedReleasesChange?.Invoke();
+        }
+
+        private void toolStripButtonReleaseEdit_Click(object sender, EventArgs e)
+        {
+            var form = new ReleaseEditForm(SelectedReleases[0]);
+            form.Show();
+            form.MdiParent = MdiParent;
+            form.AdminForm = this;
         }
     }
 }

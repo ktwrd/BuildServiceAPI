@@ -57,30 +57,35 @@
             this.toolStripButtonAnnouncementRefresh = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonAnnouncementPushChanges = new System.Windows.Forms.ToolStripButton();
             this.tabPageReleaseDetails = new System.Windows.Forms.TabPage();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolStripButtonReleaseRefresh = new System.Windows.Forms.ToolStripButton();
+            this.toolStripDropDownButtonReleaseFilter = new System.Windows.Forms.ToolStripDropDownButton();
+            this.showLatestReleaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.treeViewReleaseProduct = new System.Windows.Forms.TreeView();
+            this.listViewReleases = new System.Windows.Forms.ListView();
+            this.columnHeaderCommitHashShort = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeaderReleaseSignature = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeaderReleaseTimestamp = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.buttonConnectionTokenFetch = new System.Windows.Forms.Button();
             this.buttonPushAll = new System.Windows.Forms.Button();
             this.buttonRefresh = new System.Windows.Forms.Button();
-            this.listViewReleases = new System.Windows.Forms.ListView();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripButtonReleaseRefresh = new System.Windows.Forms.ToolStripButton();
-            this.columnHeaderCommitHashShort = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeaderReleaseSignature = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeaderReleaseTimestamp = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSplitButtonReleaseDelete = new System.Windows.Forms.ToolStripSplitButton();
+            this.toolStripMenuItemDeleteRemoteSignature = new System.Windows.Forms.ToolStripMenuItem();
             this.textBoxLabelUsername = new BuildServiceAPI.DesktopClient.TextBoxLabel();
             this.textBoxLabelPassword = new BuildServiceAPI.DesktopClient.TextBoxLabel();
             this.textBoxLabelEndpoint = new BuildServiceAPI.DesktopClient.TextBoxLabel();
-            this.toolStripDropDownButtonReleaseFilter = new System.Windows.Forms.ToolStripDropDownButton();
-            this.showLatestReleaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripButtonReleaseEdit = new System.Windows.Forms.ToolStripButton();
             this.tabControl1.SuspendLayout();
             this.tabPageAccountMan.SuspendLayout();
             this.toolStripAccountMan.SuspendLayout();
             this.tabPageAnnouncementManagement.SuspendLayout();
             this.toolStripAnnouncement.SuspendLayout();
             this.tabPageReleaseDetails.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
@@ -90,7 +95,6 @@
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
-            this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -102,7 +106,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(545, 441);
+            this.tabControl1.Size = new System.Drawing.Size(643, 441);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPageAccountMan
@@ -112,7 +116,7 @@
             this.tabPageAccountMan.Location = new System.Drawing.Point(4, 22);
             this.tabPageAccountMan.Name = "tabPageAccountMan";
             this.tabPageAccountMan.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageAccountMan.Size = new System.Drawing.Size(537, 415);
+            this.tabPageAccountMan.Size = new System.Drawing.Size(635, 415);
             this.tabPageAccountMan.TabIndex = 0;
             this.tabPageAccountMan.Text = "Account Management";
             this.tabPageAccountMan.UseVisualStyleBackColor = true;
@@ -127,7 +131,7 @@
             this.listViewAccount.HideSelection = false;
             this.listViewAccount.Location = new System.Drawing.Point(3, 28);
             this.listViewAccount.Name = "listViewAccount";
-            this.listViewAccount.Size = new System.Drawing.Size(531, 384);
+            this.listViewAccount.Size = new System.Drawing.Size(629, 384);
             this.listViewAccount.TabIndex = 1;
             this.listViewAccount.UseCompatibleStateImageBehavior = false;
             this.listViewAccount.View = System.Windows.Forms.View.Details;
@@ -162,7 +166,7 @@
             this.toolStripButtonAccountGroupMan});
             this.toolStripAccountMan.Location = new System.Drawing.Point(3, 3);
             this.toolStripAccountMan.Name = "toolStripAccountMan";
-            this.toolStripAccountMan.Size = new System.Drawing.Size(531, 25);
+            this.toolStripAccountMan.Size = new System.Drawing.Size(629, 25);
             this.toolStripAccountMan.TabIndex = 0;
             this.toolStripAccountMan.Text = "Account Management";
             // 
@@ -237,7 +241,7 @@
             this.tabPageAnnouncementManagement.Location = new System.Drawing.Point(4, 22);
             this.tabPageAnnouncementManagement.Name = "tabPageAnnouncementManagement";
             this.tabPageAnnouncementManagement.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageAnnouncementManagement.Size = new System.Drawing.Size(537, 415);
+            this.tabPageAnnouncementManagement.Size = new System.Drawing.Size(635, 415);
             this.tabPageAnnouncementManagement.TabIndex = 1;
             this.tabPageAnnouncementManagement.Text = "Announcements";
             this.tabPageAnnouncementManagement.UseVisualStyleBackColor = true;
@@ -252,7 +256,7 @@
             this.listViewAnnouncement.HideSelection = false;
             this.listViewAnnouncement.Location = new System.Drawing.Point(3, 28);
             this.listViewAnnouncement.Name = "listViewAnnouncement";
-            this.listViewAnnouncement.Size = new System.Drawing.Size(531, 384);
+            this.listViewAnnouncement.Size = new System.Drawing.Size(629, 384);
             this.listViewAnnouncement.TabIndex = 1;
             this.listViewAnnouncement.UseCompatibleStateImageBehavior = false;
             this.listViewAnnouncement.View = System.Windows.Forms.View.Details;
@@ -287,7 +291,7 @@
             this.toolStripButtonAnnouncementPushChanges});
             this.toolStripAnnouncement.Location = new System.Drawing.Point(3, 3);
             this.toolStripAnnouncement.Name = "toolStripAnnouncement";
-            this.toolStripAnnouncement.Size = new System.Drawing.Size(531, 25);
+            this.toolStripAnnouncement.Size = new System.Drawing.Size(629, 25);
             this.toolStripAnnouncement.TabIndex = 0;
             this.toolStripAnnouncement.Text = "Announcement Management";
             // 
@@ -353,10 +357,53 @@
             this.tabPageReleaseDetails.Location = new System.Drawing.Point(4, 22);
             this.tabPageReleaseDetails.Name = "tabPageReleaseDetails";
             this.tabPageReleaseDetails.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageReleaseDetails.Size = new System.Drawing.Size(537, 415);
+            this.tabPageReleaseDetails.Size = new System.Drawing.Size(635, 415);
             this.tabPageReleaseDetails.TabIndex = 2;
             this.tabPageReleaseDetails.Text = "Releases";
             this.tabPageReleaseDetails.UseVisualStyleBackColor = true;
+            // 
+            // toolStrip1
+            // 
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButtonReleaseRefresh,
+            this.toolStripDropDownButtonReleaseFilter,
+            this.toolStripSeparator4,
+            this.toolStripSplitButtonReleaseDelete,
+            this.toolStripButtonReleaseEdit});
+            this.toolStrip1.Location = new System.Drawing.Point(3, 3);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(629, 25);
+            this.toolStrip1.TabIndex = 1;
+            this.toolStrip1.Text = "toolStrip1";
+            // 
+            // toolStripButtonReleaseRefresh
+            // 
+            this.toolStripButtonReleaseRefresh.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonReleaseRefresh.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonReleaseRefresh.Image")));
+            this.toolStripButtonReleaseRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonReleaseRefresh.Name = "toolStripButtonReleaseRefresh";
+            this.toolStripButtonReleaseRefresh.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonReleaseRefresh.Text = "Refresh";
+            this.toolStripButtonReleaseRefresh.Click += new System.EventHandler(this.toolStripButtonReleaseRefresh_Click);
+            // 
+            // toolStripDropDownButtonReleaseFilter
+            // 
+            this.toolStripDropDownButtonReleaseFilter.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripDropDownButtonReleaseFilter.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showLatestReleaseToolStripMenuItem});
+            this.toolStripDropDownButtonReleaseFilter.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButtonReleaseFilter.Image")));
+            this.toolStripDropDownButtonReleaseFilter.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripDropDownButtonReleaseFilter.Name = "toolStripDropDownButtonReleaseFilter";
+            this.toolStripDropDownButtonReleaseFilter.Size = new System.Drawing.Size(29, 22);
+            this.toolStripDropDownButtonReleaseFilter.Text = "Filter";
+            // 
+            // showLatestReleaseToolStripMenuItem
+            // 
+            this.showLatestReleaseToolStripMenuItem.CheckOnClick = true;
+            this.showLatestReleaseToolStripMenuItem.Name = "showLatestReleaseToolStripMenuItem";
+            this.showLatestReleaseToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.showLatestReleaseToolStripMenuItem.Text = "Show Latest Release";
+            this.showLatestReleaseToolStripMenuItem.Click += new System.EventHandler(this.showLatestReleaseToolStripMenuItem_Click);
             // 
             // splitContainer2
             // 
@@ -373,8 +420,8 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.listViewReleases);
             this.splitContainer2.Panel2.Padding = new System.Windows.Forms.Padding(0, 25, 0, 0);
-            this.splitContainer2.Size = new System.Drawing.Size(531, 409);
-            this.splitContainer2.SplitterDistance = 177;
+            this.splitContainer2.Size = new System.Drawing.Size(629, 409);
+            this.splitContainer2.SplitterDistance = 176;
             this.splitContainer2.TabIndex = 0;
             // 
             // treeViewReleaseProduct
@@ -382,9 +429,43 @@
             this.treeViewReleaseProduct.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeViewReleaseProduct.Location = new System.Drawing.Point(0, 25);
             this.treeViewReleaseProduct.Name = "treeViewReleaseProduct";
-            this.treeViewReleaseProduct.Size = new System.Drawing.Size(177, 384);
+            this.treeViewReleaseProduct.Size = new System.Drawing.Size(176, 384);
             this.treeViewReleaseProduct.TabIndex = 0;
             this.treeViewReleaseProduct.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewReleaseProduct_AfterSelect);
+            // 
+            // listViewReleases
+            // 
+            this.listViewReleases.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeaderCommitHashShort,
+            this.columnHeaderReleaseSignature,
+            this.columnHeaderReleaseTimestamp});
+            this.listViewReleases.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listViewReleases.FullRowSelect = true;
+            this.listViewReleases.GridLines = true;
+            this.listViewReleases.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.listViewReleases.HideSelection = false;
+            this.listViewReleases.Location = new System.Drawing.Point(0, 25);
+            this.listViewReleases.Name = "listViewReleases";
+            this.listViewReleases.Size = new System.Drawing.Size(449, 384);
+            this.listViewReleases.TabIndex = 0;
+            this.listViewReleases.UseCompatibleStateImageBehavior = false;
+            this.listViewReleases.View = System.Windows.Forms.View.Details;
+            this.listViewReleases.SelectedIndexChanged += new System.EventHandler(this.listViewReleases_SelectedIndexChanged);
+            // 
+            // columnHeaderCommitHashShort
+            // 
+            this.columnHeaderCommitHashShort.Text = "Hash";
+            this.columnHeaderCommitHashShort.Width = 80;
+            // 
+            // columnHeaderReleaseSignature
+            // 
+            this.columnHeaderReleaseSignature.Text = "Signature";
+            this.columnHeaderReleaseSignature.Width = 150;
+            // 
+            // columnHeaderReleaseTimestamp
+            // 
+            this.columnHeaderReleaseTimestamp.Text = "Timestamp";
+            this.columnHeaderReleaseTimestamp.Width = 160;
             // 
             // splitContainer1
             // 
@@ -400,7 +481,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
-            this.splitContainer1.Size = new System.Drawing.Size(704, 441);
+            this.splitContainer1.Size = new System.Drawing.Size(802, 441);
             this.splitContainer1.SplitterDistance = 155;
             this.splitContainer1.TabIndex = 1;
             // 
@@ -462,56 +543,30 @@
             this.buttonRefresh.UseVisualStyleBackColor = true;
             this.buttonRefresh.Click += new System.EventHandler(this.buttonRefresh_Click);
             // 
-            // listViewReleases
+            // toolStripSeparator4
             // 
-            this.listViewReleases.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeaderCommitHashShort,
-            this.columnHeaderReleaseSignature,
-            this.columnHeaderReleaseTimestamp});
-            this.listViewReleases.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listViewReleases.HideSelection = false;
-            this.listViewReleases.Location = new System.Drawing.Point(0, 25);
-            this.listViewReleases.Name = "listViewReleases";
-            this.listViewReleases.Size = new System.Drawing.Size(350, 384);
-            this.listViewReleases.TabIndex = 0;
-            this.listViewReleases.UseCompatibleStateImageBehavior = false;
-            this.listViewReleases.View = System.Windows.Forms.View.Details;
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
             // 
-            // toolStrip1
+            // toolStripSplitButtonReleaseDelete
             // 
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButtonReleaseRefresh,
-            this.toolStripDropDownButtonReleaseFilter});
-            this.toolStrip1.Location = new System.Drawing.Point(3, 3);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(531, 25);
-            this.toolStrip1.TabIndex = 1;
-            this.toolStrip1.Text = "toolStrip1";
+            this.toolStripSplitButtonReleaseDelete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripSplitButtonReleaseDelete.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemDeleteRemoteSignature});
+            this.toolStripSplitButtonReleaseDelete.Image = ((System.Drawing.Image)(resources.GetObject("toolStripSplitButtonReleaseDelete.Image")));
+            this.toolStripSplitButtonReleaseDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripSplitButtonReleaseDelete.Name = "toolStripSplitButtonReleaseDelete";
+            this.toolStripSplitButtonReleaseDelete.Size = new System.Drawing.Size(32, 22);
+            this.toolStripSplitButtonReleaseDelete.Text = "Delete Selected";
+            this.toolStripSplitButtonReleaseDelete.ToolTipText = "Delete Selected";
             // 
-            // toolStripButtonReleaseRefresh
+            // toolStripMenuItemDeleteRemoteSignature
             // 
-            this.toolStripButtonReleaseRefresh.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonReleaseRefresh.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonReleaseRefresh.Image")));
-            this.toolStripButtonReleaseRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonReleaseRefresh.Name = "toolStripButtonReleaseRefresh";
-            this.toolStripButtonReleaseRefresh.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButtonReleaseRefresh.Text = "Refresh";
-            this.toolStripButtonReleaseRefresh.Click += new System.EventHandler(this.toolStripButtonReleaseRefresh_Click);
-            // 
-            // columnHeaderCommitHashShort
-            // 
-            this.columnHeaderCommitHashShort.Text = "Hash";
-            this.columnHeaderCommitHashShort.Width = 80;
-            // 
-            // columnHeaderReleaseSignature
-            // 
-            this.columnHeaderReleaseSignature.Text = "Signature";
-            this.columnHeaderReleaseSignature.Width = 100;
-            // 
-            // columnHeaderReleaseTimestamp
-            // 
-            this.columnHeaderReleaseTimestamp.Text = "Timestamp";
-            this.columnHeaderReleaseTimestamp.Width = 120;
+            this.toolStripMenuItemDeleteRemoteSignature.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemDeleteRemoteSignature.Image")));
+            this.toolStripMenuItemDeleteRemoteSignature.Name = "toolStripMenuItemDeleteRemoteSignature";
+            this.toolStripMenuItemDeleteRemoteSignature.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItemDeleteRemoteSignature.Text = "Remote Signature";
+            this.toolStripMenuItemDeleteRemoteSignature.ToolTipText = "Delete all Release Streams that have the same Remote Signature";
             // 
             // textBoxLabelUsername
             // 
@@ -561,30 +616,21 @@
             this.textBoxLabelEndpoint.TextboxContent = "";
             this.textBoxLabelEndpoint.TextboxLines = new string[0];
             // 
-            // toolStripDropDownButtonReleaseFilter
+            // toolStripButtonReleaseEdit
             // 
-            this.toolStripDropDownButtonReleaseFilter.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripDropDownButtonReleaseFilter.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.showLatestReleaseToolStripMenuItem});
-            this.toolStripDropDownButtonReleaseFilter.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButtonReleaseFilter.Image")));
-            this.toolStripDropDownButtonReleaseFilter.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripDropDownButtonReleaseFilter.Name = "toolStripDropDownButtonReleaseFilter";
-            this.toolStripDropDownButtonReleaseFilter.Size = new System.Drawing.Size(29, 22);
-            this.toolStripDropDownButtonReleaseFilter.Text = "Filter";
-            // 
-            // showLatestReleaseToolStripMenuItem
-            // 
-            this.showLatestReleaseToolStripMenuItem.CheckOnClick = true;
-            this.showLatestReleaseToolStripMenuItem.Name = "showLatestReleaseToolStripMenuItem";
-            this.showLatestReleaseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.showLatestReleaseToolStripMenuItem.Text = "Show Latest Release";
-            this.showLatestReleaseToolStripMenuItem.Click += new System.EventHandler(this.showLatestReleaseToolStripMenuItem_Click);
+            this.toolStripButtonReleaseEdit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonReleaseEdit.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonReleaseEdit.Image")));
+            this.toolStripButtonReleaseEdit.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonReleaseEdit.Name = "toolStripButtonReleaseEdit";
+            this.toolStripButtonReleaseEdit.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonReleaseEdit.Text = "Edit";
+            this.toolStripButtonReleaseEdit.Click += new System.EventHandler(this.toolStripButtonReleaseEdit_Click);
             // 
             // AdminForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(704, 441);
+            this.ClientSize = new System.Drawing.Size(802, 441);
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(720, 480);
@@ -602,6 +648,8 @@
             this.toolStripAnnouncement.PerformLayout();
             this.tabPageReleaseDetails.ResumeLayout(false);
             this.tabPageReleaseDetails.PerformLayout();
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
@@ -612,8 +660,6 @@
             this.splitContainer1.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -666,5 +712,9 @@
         private System.Windows.Forms.ColumnHeader columnHeaderReleaseTimestamp;
         private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButtonReleaseFilter;
         private System.Windows.Forms.ToolStripMenuItem showLatestReleaseToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripSplitButton toolStripSplitButtonReleaseDelete;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemDeleteRemoteSignature;
+        private System.Windows.Forms.ToolStripButton toolStripButtonReleaseEdit;
     }
 }
