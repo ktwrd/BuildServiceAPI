@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -15,6 +17,8 @@ namespace BuildServiceAPI.DesktopClient
         [STAThread]
         public static void Main()
         {
+            serializerOptions.Converters.Add(new kate.shared.DateTimeConverterUsingDateTimeParse());
+            serializerOptions.Converters.Add(new kate.shared.DateTimeConverterUsingDateTimeOffsetParse());
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());
@@ -29,7 +33,7 @@ namespace BuildServiceAPI.DesktopClient
             IgnoreReadOnlyFields = false,
             IgnoreReadOnlyProperties = false,
             IncludeFields = true,
-            WriteIndented = true
+            WriteIndented = true,
         };
     }
 }

@@ -2,6 +2,7 @@ using BuildServiceCommon;
 using BuildServiceCommon.AutoUpdater;
 using kate.shared.Helpers;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -33,6 +34,8 @@ namespace BuildServiceAPI
         
         public static void Main(string[] args)
         {
+            serializerOptions.Converters.Add(new kate.shared.DateTimeConverterUsingDateTimeParse());
+            serializerOptions.Converters.Add(new kate.shared.DateTimeConverterUsingDateTimeOffsetParse());
             contentManager = new ContentManager();
             LoadTokens();
             Builder = WebApplication.CreateBuilder(args);
