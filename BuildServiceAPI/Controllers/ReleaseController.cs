@@ -29,7 +29,7 @@ namespace BuildServiceAPI.Controllers
         {
             var returnContent = new List<ProductRelease>();
             var allowFetch = true;
-#if BUILDSERVICEAPI_APP_WHITELIST
+/*#if BUILDSERVICEAPI_APP_WHITELIST
             if (app == "com.minalyze.minalogger")
             {
                 if (token.Length < 1 || !MainClass.UserByTokenHasService(token, "ml2"))
@@ -37,7 +37,7 @@ namespace BuildServiceAPI.Controllers
                     allowFetch = false;
                 }
             }
-#endif
+#endif*/
             bool showExtraBuilds = MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.READ_RELEASE_BYPASS);
             if (allowFetch && (MainClass.contentManager?.Releases.ContainsKey(app) ?? false))
             {
