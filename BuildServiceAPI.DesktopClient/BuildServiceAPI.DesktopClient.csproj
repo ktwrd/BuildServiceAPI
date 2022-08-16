@@ -117,6 +117,12 @@
     <Compile Include="AdminForm.Designer.cs">
       <DependentUpon>AdminForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="AnnouncementEditModal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AnnouncementEditModal.Designer.cs">
+      <DependentUpon>AnnouncementEditModal.cs</DependentUpon>
+    </Compile>
     <Compile Include="ComponentZoo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -165,6 +171,9 @@
     </Compile>
     <EmbeddedResource Include="AdminForm.resx">
       <DependentUpon>AdminForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AnnouncementEditModal.resx">
+      <DependentUpon>AnnouncementEditModal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
