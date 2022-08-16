@@ -61,6 +61,10 @@
             this.toolStripButtonReleaseRefresh = new System.Windows.Forms.ToolStripButton();
             this.toolStripDropDownButtonReleaseFilter = new System.Windows.Forms.ToolStripDropDownButton();
             this.showLatestReleaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSplitButtonReleaseDelete = new System.Windows.Forms.ToolStripSplitButton();
+            this.toolStripMenuItemDeleteRemoteSignature = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripButtonReleaseEdit = new System.Windows.Forms.ToolStripButton();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.treeViewReleaseProduct = new System.Windows.Forms.TreeView();
             this.listViewReleases = new System.Windows.Forms.ListView();
@@ -69,16 +73,15 @@
             this.columnHeaderReleaseTimestamp = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.buttonConnectionTokenFetch = new System.Windows.Forms.Button();
-            this.buttonPushAll = new System.Windows.Forms.Button();
-            this.buttonRefresh = new System.Windows.Forms.Button();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSplitButtonReleaseDelete = new System.Windows.Forms.ToolStripSplitButton();
-            this.toolStripMenuItemDeleteRemoteSignature = new System.Windows.Forms.ToolStripMenuItem();
             this.textBoxLabelUsername = new BuildServiceAPI.DesktopClient.TextBoxLabel();
             this.textBoxLabelPassword = new BuildServiceAPI.DesktopClient.TextBoxLabel();
             this.textBoxLabelEndpoint = new BuildServiceAPI.DesktopClient.TextBoxLabel();
-            this.toolStripButtonReleaseEdit = new System.Windows.Forms.ToolStripButton();
+            this.buttonConnectionTokenFetch = new System.Windows.Forms.Button();
+            this.buttonPushAll = new System.Windows.Forms.Button();
+            this.buttonRefresh = new System.Windows.Forms.Button();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButtonAnnouncementEnforce = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonAnnouncementsDisable = new System.Windows.Forms.ToolStripButton();
             this.tabControl1.SuspendLayout();
             this.tabPageAccountMan.SuspendLayout();
             this.toolStripAccountMan.SuspendLayout();
@@ -288,7 +291,10 @@
             this.toolStripButtonAnnouncementDelete,
             this.toolStripSeparator1,
             this.toolStripButtonAnnouncementRefresh,
-            this.toolStripButtonAnnouncementPushChanges});
+            this.toolStripButtonAnnouncementPushChanges,
+            this.toolStripSeparator5,
+            this.toolStripButtonAnnouncementEnforce,
+            this.toolStripButtonAnnouncementsDisable});
             this.toolStripAnnouncement.Location = new System.Drawing.Point(3, 3);
             this.toolStripAnnouncement.Name = "toolStripAnnouncement";
             this.toolStripAnnouncement.Size = new System.Drawing.Size(629, 25);
@@ -405,6 +411,43 @@
             this.showLatestReleaseToolStripMenuItem.Text = "Show Latest Release";
             this.showLatestReleaseToolStripMenuItem.Click += new System.EventHandler(this.showLatestReleaseToolStripMenuItem_Click);
             // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripSplitButtonReleaseDelete
+            // 
+            this.toolStripSplitButtonReleaseDelete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripSplitButtonReleaseDelete.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemDeleteRemoteSignature});
+            this.toolStripSplitButtonReleaseDelete.Image = ((System.Drawing.Image)(resources.GetObject("toolStripSplitButtonReleaseDelete.Image")));
+            this.toolStripSplitButtonReleaseDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripSplitButtonReleaseDelete.Name = "toolStripSplitButtonReleaseDelete";
+            this.toolStripSplitButtonReleaseDelete.Size = new System.Drawing.Size(32, 22);
+            this.toolStripSplitButtonReleaseDelete.Text = "Delete Selected";
+            this.toolStripSplitButtonReleaseDelete.ToolTipText = "Delete Selected";
+            this.toolStripSplitButtonReleaseDelete.ButtonClick += new System.EventHandler(this.toolStripSplitButtonReleaseDelete_ButtonClick);
+            // 
+            // toolStripMenuItemDeleteRemoteSignature
+            // 
+            this.toolStripMenuItemDeleteRemoteSignature.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemDeleteRemoteSignature.Image")));
+            this.toolStripMenuItemDeleteRemoteSignature.Name = "toolStripMenuItemDeleteRemoteSignature";
+            this.toolStripMenuItemDeleteRemoteSignature.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItemDeleteRemoteSignature.Text = "Remote Signature";
+            this.toolStripMenuItemDeleteRemoteSignature.ToolTipText = "Delete all Release Streams that have the same Remote Signature";
+            this.toolStripMenuItemDeleteRemoteSignature.Click += new System.EventHandler(this.toolStripMenuItemDeleteRemoteSignature_Click);
+            // 
+            // toolStripButtonReleaseEdit
+            // 
+            this.toolStripButtonReleaseEdit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonReleaseEdit.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonReleaseEdit.Image")));
+            this.toolStripButtonReleaseEdit.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonReleaseEdit.Name = "toolStripButtonReleaseEdit";
+            this.toolStripButtonReleaseEdit.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonReleaseEdit.Text = "Edit";
+            this.toolStripButtonReleaseEdit.Click += new System.EventHandler(this.toolStripButtonReleaseEdit_Click);
+            // 
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -450,7 +493,9 @@
             this.listViewReleases.TabIndex = 0;
             this.listViewReleases.UseCompatibleStateImageBehavior = false;
             this.listViewReleases.View = System.Windows.Forms.View.Details;
+            this.listViewReleases.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.listViewReleases_ItemSelectionChanged);
             this.listViewReleases.SelectedIndexChanged += new System.EventHandler(this.listViewReleases_SelectedIndexChanged);
+            this.listViewReleases.Click += new System.EventHandler(this.listViewReleases_Click);
             // 
             // columnHeaderCommitHashShort
             // 
@@ -501,73 +546,6 @@
             this.flowLayoutPanel1.TabIndex = 0;
             this.flowLayoutPanel1.WrapContents = false;
             // 
-            // buttonConnectionTokenFetch
-            // 
-            this.buttonConnectionTokenFetch.Dock = System.Windows.Forms.DockStyle.Top;
-            this.buttonConnectionTokenFetch.Image = ((System.Drawing.Image)(resources.GetObject("buttonConnectionTokenFetch.Image")));
-            this.buttonConnectionTokenFetch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonConnectionTokenFetch.Location = new System.Drawing.Point(3, 138);
-            this.buttonConnectionTokenFetch.Name = "buttonConnectionTokenFetch";
-            this.buttonConnectionTokenFetch.Size = new System.Drawing.Size(150, 23);
-            this.buttonConnectionTokenFetch.TabIndex = 3;
-            this.buttonConnectionTokenFetch.Text = "Get Token";
-            this.buttonConnectionTokenFetch.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.buttonConnectionTokenFetch.UseVisualStyleBackColor = true;
-            this.buttonConnectionTokenFetch.Click += new System.EventHandler(this.buttonConnectionTokenFetch_Click);
-            // 
-            // buttonPushAll
-            // 
-            this.buttonPushAll.Dock = System.Windows.Forms.DockStyle.Top;
-            this.buttonPushAll.Image = ((System.Drawing.Image)(resources.GetObject("buttonPushAll.Image")));
-            this.buttonPushAll.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonPushAll.Location = new System.Drawing.Point(3, 167);
-            this.buttonPushAll.Name = "buttonPushAll";
-            this.buttonPushAll.Size = new System.Drawing.Size(150, 23);
-            this.buttonPushAll.TabIndex = 4;
-            this.buttonPushAll.Text = "Push Changes";
-            this.buttonPushAll.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.buttonPushAll.UseVisualStyleBackColor = true;
-            this.buttonPushAll.Click += new System.EventHandler(this.buttonPushAll_Click);
-            // 
-            // buttonRefresh
-            // 
-            this.buttonRefresh.Dock = System.Windows.Forms.DockStyle.Top;
-            this.buttonRefresh.Image = ((System.Drawing.Image)(resources.GetObject("buttonRefresh.Image")));
-            this.buttonRefresh.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonRefresh.Location = new System.Drawing.Point(3, 196);
-            this.buttonRefresh.Name = "buttonRefresh";
-            this.buttonRefresh.Size = new System.Drawing.Size(150, 23);
-            this.buttonRefresh.TabIndex = 5;
-            this.buttonRefresh.Text = "Refresh";
-            this.buttonRefresh.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.buttonRefresh.UseVisualStyleBackColor = true;
-            this.buttonRefresh.Click += new System.EventHandler(this.buttonRefresh_Click);
-            // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
-            // 
-            // toolStripSplitButtonReleaseDelete
-            // 
-            this.toolStripSplitButtonReleaseDelete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripSplitButtonReleaseDelete.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItemDeleteRemoteSignature});
-            this.toolStripSplitButtonReleaseDelete.Image = ((System.Drawing.Image)(resources.GetObject("toolStripSplitButtonReleaseDelete.Image")));
-            this.toolStripSplitButtonReleaseDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripSplitButtonReleaseDelete.Name = "toolStripSplitButtonReleaseDelete";
-            this.toolStripSplitButtonReleaseDelete.Size = new System.Drawing.Size(32, 22);
-            this.toolStripSplitButtonReleaseDelete.Text = "Delete Selected";
-            this.toolStripSplitButtonReleaseDelete.ToolTipText = "Delete Selected";
-            // 
-            // toolStripMenuItemDeleteRemoteSignature
-            // 
-            this.toolStripMenuItemDeleteRemoteSignature.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemDeleteRemoteSignature.Image")));
-            this.toolStripMenuItemDeleteRemoteSignature.Name = "toolStripMenuItemDeleteRemoteSignature";
-            this.toolStripMenuItemDeleteRemoteSignature.Size = new System.Drawing.Size(180, 22);
-            this.toolStripMenuItemDeleteRemoteSignature.Text = "Remote Signature";
-            this.toolStripMenuItemDeleteRemoteSignature.ToolTipText = "Delete all Release Streams that have the same Remote Signature";
-            // 
             // textBoxLabelUsername
             // 
             this.textBoxLabelUsername.AutoSize = true;
@@ -616,15 +594,72 @@
             this.textBoxLabelEndpoint.TextboxContent = "";
             this.textBoxLabelEndpoint.TextboxLines = new string[0];
             // 
-            // toolStripButtonReleaseEdit
+            // buttonConnectionTokenFetch
             // 
-            this.toolStripButtonReleaseEdit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonReleaseEdit.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonReleaseEdit.Image")));
-            this.toolStripButtonReleaseEdit.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonReleaseEdit.Name = "toolStripButtonReleaseEdit";
-            this.toolStripButtonReleaseEdit.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButtonReleaseEdit.Text = "Edit";
-            this.toolStripButtonReleaseEdit.Click += new System.EventHandler(this.toolStripButtonReleaseEdit_Click);
+            this.buttonConnectionTokenFetch.Dock = System.Windows.Forms.DockStyle.Top;
+            this.buttonConnectionTokenFetch.Image = ((System.Drawing.Image)(resources.GetObject("buttonConnectionTokenFetch.Image")));
+            this.buttonConnectionTokenFetch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonConnectionTokenFetch.Location = new System.Drawing.Point(3, 138);
+            this.buttonConnectionTokenFetch.Name = "buttonConnectionTokenFetch";
+            this.buttonConnectionTokenFetch.Size = new System.Drawing.Size(150, 23);
+            this.buttonConnectionTokenFetch.TabIndex = 3;
+            this.buttonConnectionTokenFetch.Text = "Get Token";
+            this.buttonConnectionTokenFetch.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.buttonConnectionTokenFetch.UseVisualStyleBackColor = true;
+            this.buttonConnectionTokenFetch.Click += new System.EventHandler(this.buttonConnectionTokenFetch_Click);
+            // 
+            // buttonPushAll
+            // 
+            this.buttonPushAll.Dock = System.Windows.Forms.DockStyle.Top;
+            this.buttonPushAll.Image = ((System.Drawing.Image)(resources.GetObject("buttonPushAll.Image")));
+            this.buttonPushAll.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonPushAll.Location = new System.Drawing.Point(3, 167);
+            this.buttonPushAll.Name = "buttonPushAll";
+            this.buttonPushAll.Size = new System.Drawing.Size(150, 23);
+            this.buttonPushAll.TabIndex = 4;
+            this.buttonPushAll.Text = "Push Changes";
+            this.buttonPushAll.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.buttonPushAll.UseVisualStyleBackColor = true;
+            this.buttonPushAll.Click += new System.EventHandler(this.buttonPushAll_Click);
+            // 
+            // buttonRefresh
+            // 
+            this.buttonRefresh.Dock = System.Windows.Forms.DockStyle.Top;
+            this.buttonRefresh.Image = ((System.Drawing.Image)(resources.GetObject("buttonRefresh.Image")));
+            this.buttonRefresh.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonRefresh.Location = new System.Drawing.Point(3, 196);
+            this.buttonRefresh.Name = "buttonRefresh";
+            this.buttonRefresh.Size = new System.Drawing.Size(150, 23);
+            this.buttonRefresh.TabIndex = 5;
+            this.buttonRefresh.Text = "Refresh";
+            this.buttonRefresh.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.buttonRefresh.UseVisualStyleBackColor = true;
+            this.buttonRefresh.Click += new System.EventHandler(this.buttonRefresh_Click);
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripButtonAnnouncementEnforce
+            // 
+            this.toolStripButtonAnnouncementEnforce.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonAnnouncementEnforce.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonAnnouncementEnforce.Image")));
+            this.toolStripButtonAnnouncementEnforce.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonAnnouncementEnforce.Name = "toolStripButtonAnnouncementEnforce";
+            this.toolStripButtonAnnouncementEnforce.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonAnnouncementEnforce.Text = "Enable Announcements";
+            this.toolStripButtonAnnouncementEnforce.Click += new System.EventHandler(this.toolStripButtonAnnouncementEnforce_Click);
+            // 
+            // toolStripButtonAnnouncementsDisable
+            // 
+            this.toolStripButtonAnnouncementsDisable.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonAnnouncementsDisable.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonAnnouncementsDisable.Image")));
+            this.toolStripButtonAnnouncementsDisable.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonAnnouncementsDisable.Name = "toolStripButtonAnnouncementsDisable";
+            this.toolStripButtonAnnouncementsDisable.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonAnnouncementsDisable.Text = "Disable Announcements";
+            this.toolStripButtonAnnouncementsDisable.Click += new System.EventHandler(this.toolStripButtonAnnouncementsDisable_Click);
             // 
             // AdminForm
             // 
@@ -716,5 +751,8 @@
         private System.Windows.Forms.ToolStripSplitButton toolStripSplitButtonReleaseDelete;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemDeleteRemoteSignature;
         private System.Windows.Forms.ToolStripButton toolStripButtonReleaseEdit;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripButton toolStripButtonAnnouncementEnforce;
+        private System.Windows.Forms.ToolStripButton toolStripButtonAnnouncementsDisable;
     }
 }

@@ -83,7 +83,7 @@ namespace BuildServiceAPI.DesktopClient
             var stringContent = response.Content.ReadAsStringAsync().Result;
             var dynamicContent = JsonSerializer.Deserialize<ObjectResponse<dynamic>>(stringContent, Program.serializerOptions);
             var deserialized = JsonSerializer.Deserialize<ObjectResponse<GrantTokenResponse>>(stringContent, Program.serializerOptions);
-            if (deserialized == null || deserialized.DataType != "BuildServiceCommon.Authorization.GrantTokenResponse" || deserialized.Success == false)
+            if (deserialized == null || Type.GetType(deserialized.DataType) != typeof(BuildServiceCommon.Authorization.GrantTokenResponse) || deserialized.Success == false)
             {
                 MessageBox.Show($"{JsonSerializer.Serialize(dynamicContent, Program.serializerOptions)}", $"Failed to refresh announcements");
                 Trace.WriteLine($"[AdminForm->RefreshAnnouncements] Failed to fetch announcements\n--------\n{JsonSerializer.Serialize(dynamicContent, Program.serializerOptions)}\n--------\n");
@@ -204,18 +204,31 @@ namespace BuildServiceAPI.DesktopClient
 
             ContentManagerAlias.Releases = ReleaseHelper.TransformReleaseList(ContentManagerAlias.ReleaseInfoContent.ToArray());
 
-            var targetURL = Endpoint.DumpSetData(Token.Token, DataType.All, ContentManagerAlias);
-            var response = httpClient.GetAsync(targetURL).Result;
+            var targetURL = Endpoint.DumpSetData(Token.Token, DataType.All);
+            var pushContent = new ObjectResponse<AllDataResult>()
+            {
+                Success = true,
+                Data = ContentManagerAlias
+            };
+            var _strcon = new StringContent(JsonSerializer.Serialize(pushContent, Program.serializerOptions));
+            var response = httpClient.PostAsync(targetURL, _strcon).Result;
             var stringContent = response.Content.ReadAsStringAsync().Result;
             var dynamicContent = JsonSerializer.Deserialize<ObjectResponse<dynamic>>(stringContent, Program.serializerOptions);
-            var content = JsonSerializer.Deserialize<ObjectResponse<AllDataResult>>(stringContent, Program.serializerOptions);
+            if (dynamicContent.Success == false)
+            {
+                MessageBox.Show($"{stringContent}", $"Failed to push content manager");
+                Trace.WriteLine($"[AdminForm->PushContentManager] Failed to push content manager\n--------\n{JsonSerializer.Serialize(dynamicContent, Program.serializerOptions)}\n--------\n");
+                return;
+            }
+            var content = JsonSerializer.Deserialize<ObjectResponse<object>>(stringContent, Program.serializerOptions);
             if (!dynamicContent.Success || content == null)
             {
                 MessageBox.Show($"{stringContent}", $"Failed to push content manager");
                 Trace.WriteLine($"[AdminForm->PushContentManager] Failed to push content manager\n--------\n{JsonSerializer.Serialize(dynamicContent, Program.serializerOptions)}\n--------\n");
                 return;
             }
-            ContentManagerAlias = content.Data;
+            var contentTyped = JsonSerializer.Deserialize<ObjectResponse<AllDataResult>>(stringContent, Program.serializerOptions);
+            ContentManagerAlias = contentTyped.Data;
         }
 
         public void RefreshAnnouncementList()
@@ -337,6 +350,7 @@ namespace BuildServiceAPI.DesktopClient
             {
                 treeViewReleaseProduct.Nodes.Add($"{pair.Key}");
             }
+            listViewReleases_SelectedIndexChanged(null, null);
         }
         public void RefreshReleaseListView()
         {
@@ -411,6 +425,51 @@ namespace BuildServiceAPI.DesktopClient
             form.Show();
             form.MdiParent = MdiParent;
             form.AdminForm = this;
+        }
+
+        private void toolStripSplitButtonReleaseDelete_ButtonClick(object sender, EventArgs e)
+        {
+            foreach (var selected in SelectedReleases)
+            {
+                RemoveRelease(selected);
+            }
+            RefreshReleaseListView();
+            RefreshReleaseTree();
+        }
+        public bool RemoveRelease(ReleaseInfo releaseInfo) => ContentManagerAlias.ReleaseInfoContent.Remove(releaseInfo);
+        public void RemoveReleaseBySignature(string signature)
+        {
+            var newReleaseInfoList = new List<ReleaseInfo>();
+            foreach (var item in ContentManagerAlias.ReleaseInfoContent)
+            {
+                if (item.remoteLocation != signature)
+                    newReleaseInfoList.Add(item);
+            }
+            ContentManagerAlias.ReleaseInfoContent = newReleaseInfoList;
+        }
+
+        private void toolStripMenuItemDeleteRemoteSignature_Click(object sender, EventArgs e)
+        {
+            foreach (var selected in SelectedReleases)
+            {
+                RemoveReleaseBySignature(selected.remoteLocation);
+            }
+            RefreshReleaseListView();
+            RefreshReleaseTree();
+        }
+
+        private void listViewReleases_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e) => listViewReleases_SelectedIndexChanged(null, null);
+
+        private void listViewReleases_Click(object sender, EventArgs e) => listViewReleases_SelectedIndexChanged(null, null);
+
+        private void toolStripButtonAnnouncementEnforce_Click(object sender, EventArgs e)
+        {
+            AnnouncementSummary.Active = true;
+        }
+
+        private void toolStripButtonAnnouncementsDisable_Click(object sender, EventArgs e)
+        {
+            AnnouncementSummary.Active = false;
         }
     }
 }
