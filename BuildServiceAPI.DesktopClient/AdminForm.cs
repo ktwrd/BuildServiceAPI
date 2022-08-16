@@ -485,9 +485,7 @@ namespace BuildServiceAPI.DesktopClient
         private void toolStripButtonAnnouncementAdd_Click(object sender, EventArgs e)
         {
             var announcement = new SystemAnnouncementEntry();
-            var l = new List<SystemAnnouncementEntry>(AnnouncementSummary.Entries);
-            l.Add(announcement);
-            AnnouncementSummary.Entries = l.ToArray();
+            AnnouncementSummary.Entries.Add(announcement);
 
             var popup = new AnnouncementEditModal(announcement);
             popup.Show();
