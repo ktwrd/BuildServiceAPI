@@ -32,11 +32,11 @@ namespace BuildServiceCommon.AutoUpdater
         public string ProductName { get; set; }
         public string ProductVersion { get; set; }
         public long ProductExpiryTimestamp { get; set; }
-        public DateTimeOffset ProductExpiryAt = DateTimeOffset.FromUnixTimeMilliseconds(0);
+        public DateTimeOffset ProductExpiryAt => DateTimeOffset.FromUnixTimeMilliseconds(ProductExpiryTimestamp);
 
         public string BranchName { get; set; }
         public long UpdatedTimestamp { get; set; }
-        public DateTimeOffset UpdatedAt = DateTimeOffset.FromUnixTimeMilliseconds(0);
+        public DateTimeOffset UpdatedAt => DateTimeOffset.FromUnixTimeMilliseconds(UpdatedTimestamp);
 
         public string RemoteSignature { get; set; }
         public ProductExecutable Executable { get; set; }
@@ -111,11 +111,9 @@ namespace BuildServiceCommon.AutoUpdater
             ProductName = sr.ReadString();
             ProductVersion = sr.ReadString();
             ProductExpiryTimestamp = sr.ReadInt64();
-            ProductExpiryAt = DateTimeOffset.FromUnixTimeMilliseconds(ProductExpiryTimestamp);
 
             BranchName = sr.ReadString();
             UpdatedTimestamp = sr.ReadInt64();
-            UpdatedAt = DateTimeOffset.FromUnixTimeMilliseconds(UpdatedTimestamp);
 
             RemoteSignature = sr.ReadString();
             Executable = (ProductExecutable)sr.ReadObject();

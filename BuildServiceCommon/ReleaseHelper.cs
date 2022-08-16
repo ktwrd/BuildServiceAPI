@@ -76,7 +76,6 @@ namespace BuildServiceCommon
                     ProductExpiryTimestamp = 0,
                     BranchName = release.releaseType.ToString(),
                     UpdatedTimestamp = release.envtimestamp,
-                    UpdatedAt = DateTimeOffset.FromUnixTimeMilliseconds(release.envtimestamp),
                     RemoteSignature = release.remoteLocation,
                     Executable = executable,
                     ProductID = release.appID,
