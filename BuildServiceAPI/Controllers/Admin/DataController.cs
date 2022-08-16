@@ -7,9 +7,13 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text.Json;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Filters;
+using System.IO;
 
 namespace BuildServiceAPI.Controllers.Admin
 {
+
     [Route("admin/[controller]")]
     [ApiController]
     public class DataController : Controller
@@ -73,8 +77,8 @@ namespace BuildServiceAPI.Controllers.Admin
                 }, MainClass.serializerOptions);
             }
         }
-        [HttpGet("setdata")]
-        public ActionResult SetData(string token, string content)
+        [HttpPost("setdata")]
+        public ActionResult SetData(string token)
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.ADMINISTRATOR))
             {
@@ -85,6 +89,8 @@ namespace BuildServiceAPI.Controllers.Admin
                     Data = "Invalid Permissions"
                 }, MainClass.serializerOptions);
             }
+            HttpContext.Request.Body.Seek(0, SeekOrigin.Begin);
+            string content = new StreamReader(HttpContext.Request.Body).ReadToEndAsync().Result.ReplaceLineEndings("");
             var deserializedDynamic = JsonSerializer.Deserialize<ObjectResponse<dynamic>>(WebUtility.UrlDecode(content), MainClass.serializerOptions);
             Type targetType = Type.GetType(deserializedDynamic.DataType);
             bool success = false;
@@ -95,17 +101,21 @@ namespace BuildServiceAPI.Controllers.Admin
             }
             else if (targetType == MainClass.contentManager.Releases.GetType())
             {
-                MainClass.contentManager.Releases = deserializedDynamic.Data;
+                var des = JsonSerializer.Deserialize<ObjectResponse<Dictionary<string, ProductRelease>>>(content, MainClass.serializerOptions);
+                MainClass.contentManager.Releases = des.Data;
                 success = true;
             }
             else if (targetType == MainClass.contentManager.Published.GetType())
             {
-                MainClass.contentManager.Published = deserializedDynamic.Data;
+                var des = JsonSerializer.Deserialize<ObjectResponse<Dictionary<string, PublishedRelease>>>(content, MainClass.serializerOptions);
+                MainClass.contentManager.Published = des.Data;
                 success = true;
             }
             else if (targetType == typeof(AllDataResult))
             {
-                var c = (AllDataResult)deserializedDynamic.Data;
+                var des = JsonSerializer.Deserialize<ObjectResponse<AllDataResult>>(content, MainClass.serializerOptions);
+
+                var c = des.Data;
                 MainClass.contentManager.ReleaseInfoContent = new List<ReleaseInfo>(c.ReleaseInfoContent);
                 MainClass.contentManager.Releases = c.Releases;
                 MainClass.contentManager.Published = c.Published;
@@ -118,7 +128,8 @@ namespace BuildServiceAPI.Controllers.Admin
                 return Json(new ObjectResponse<object>()
                 {
                     Success = true,
-                    Data = deserializedDynamic.Data
+                    Data = deserializedDynamic.Data,
+                    DataType = deserializedDynamic.DataType
                 }, MainClass.serializerOptions);
             }
             else
