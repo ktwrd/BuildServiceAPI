@@ -56,6 +56,9 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonAnnouncementRefresh = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonAnnouncementPushChanges = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButtonAnnouncementEnforce = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonAnnouncementsDisable = new System.Windows.Forms.ToolStripButton();
             this.tabPageReleaseDetails = new System.Windows.Forms.TabPage();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButtonReleaseRefresh = new System.Windows.Forms.ToolStripButton();
@@ -79,9 +82,6 @@
             this.buttonConnectionTokenFetch = new System.Windows.Forms.Button();
             this.buttonPushAll = new System.Windows.Forms.Button();
             this.buttonRefresh = new System.Windows.Forms.Button();
-            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripButtonAnnouncementEnforce = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButtonAnnouncementsDisable = new System.Windows.Forms.ToolStripButton();
             this.tabControl1.SuspendLayout();
             this.tabPageAccountMan.SuspendLayout();
             this.toolStripAccountMan.SuspendLayout();
@@ -309,6 +309,7 @@
             this.toolStripButtonAnnouncementAdd.Name = "toolStripButtonAnnouncementAdd";
             this.toolStripButtonAnnouncementAdd.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonAnnouncementAdd.Text = "Create";
+            this.toolStripButtonAnnouncementAdd.Click += new System.EventHandler(this.toolStripButtonAnnouncementAdd_Click);
             // 
             // toolStripButtonAnnouncementEdit
             // 
@@ -355,6 +356,31 @@
             this.toolStripButtonAnnouncementPushChanges.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonAnnouncementPushChanges.Text = "Push";
             this.toolStripButtonAnnouncementPushChanges.Click += new System.EventHandler(this.toolStripButtonAnnouncementPushChanges_Click);
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripButtonAnnouncementEnforce
+            // 
+            this.toolStripButtonAnnouncementEnforce.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonAnnouncementEnforce.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonAnnouncementEnforce.Image")));
+            this.toolStripButtonAnnouncementEnforce.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonAnnouncementEnforce.Name = "toolStripButtonAnnouncementEnforce";
+            this.toolStripButtonAnnouncementEnforce.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonAnnouncementEnforce.Text = "Enable Announcements";
+            this.toolStripButtonAnnouncementEnforce.Click += new System.EventHandler(this.toolStripButtonAnnouncementEnforce_Click);
+            // 
+            // toolStripButtonAnnouncementsDisable
+            // 
+            this.toolStripButtonAnnouncementsDisable.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonAnnouncementsDisable.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonAnnouncementsDisable.Image")));
+            this.toolStripButtonAnnouncementsDisable.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonAnnouncementsDisable.Name = "toolStripButtonAnnouncementsDisable";
+            this.toolStripButtonAnnouncementsDisable.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonAnnouncementsDisable.Text = "Disable Announcements";
+            this.toolStripButtonAnnouncementsDisable.Click += new System.EventHandler(this.toolStripButtonAnnouncementsDisable_Click);
             // 
             // tabPageReleaseDetails
             // 
@@ -433,7 +459,7 @@
             // 
             this.toolStripMenuItemDeleteRemoteSignature.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemDeleteRemoteSignature.Image")));
             this.toolStripMenuItemDeleteRemoteSignature.Name = "toolStripMenuItemDeleteRemoteSignature";
-            this.toolStripMenuItemDeleteRemoteSignature.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItemDeleteRemoteSignature.Size = new System.Drawing.Size(168, 22);
             this.toolStripMenuItemDeleteRemoteSignature.Text = "Remote Signature";
             this.toolStripMenuItemDeleteRemoteSignature.ToolTipText = "Delete all Release Streams that have the same Remote Signature";
             this.toolStripMenuItemDeleteRemoteSignature.Click += new System.EventHandler(this.toolStripMenuItemDeleteRemoteSignature_Click);
@@ -635,31 +661,6 @@
             this.buttonRefresh.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.buttonRefresh.UseVisualStyleBackColor = true;
             this.buttonRefresh.Click += new System.EventHandler(this.buttonRefresh_Click);
-            // 
-            // toolStripSeparator5
-            // 
-            this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
-            // 
-            // toolStripButtonAnnouncementEnforce
-            // 
-            this.toolStripButtonAnnouncementEnforce.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonAnnouncementEnforce.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonAnnouncementEnforce.Image")));
-            this.toolStripButtonAnnouncementEnforce.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonAnnouncementEnforce.Name = "toolStripButtonAnnouncementEnforce";
-            this.toolStripButtonAnnouncementEnforce.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButtonAnnouncementEnforce.Text = "Enable Announcements";
-            this.toolStripButtonAnnouncementEnforce.Click += new System.EventHandler(this.toolStripButtonAnnouncementEnforce_Click);
-            // 
-            // toolStripButtonAnnouncementsDisable
-            // 
-            this.toolStripButtonAnnouncementsDisable.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonAnnouncementsDisable.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonAnnouncementsDisable.Image")));
-            this.toolStripButtonAnnouncementsDisable.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonAnnouncementsDisable.Name = "toolStripButtonAnnouncementsDisable";
-            this.toolStripButtonAnnouncementsDisable.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButtonAnnouncementsDisable.Text = "Disable Announcements";
-            this.toolStripButtonAnnouncementsDisable.Click += new System.EventHandler(this.toolStripButtonAnnouncementsDisable_Click);
             // 
             // AdminForm
             // 

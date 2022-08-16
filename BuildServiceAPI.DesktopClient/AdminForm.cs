@@ -119,13 +119,23 @@ namespace BuildServiceAPI.DesktopClient
 
         public AccountToken Token;
 
-        public SystemAnnouncementSummary AnnouncementSummary = new SystemAnnouncementSummary();
+        public class SystemAnnouncementSummaryAsList : SystemAnnouncementSummary
+        {
+            public new List<SystemAnnouncementEntry> Entries { get; set; }
+            public SystemAnnouncementSummaryAsList()
+                : base()
+            {
+                Entries = new List<SystemAnnouncementEntry>();
+            }
+        }
+
+        public SystemAnnouncementSummaryAsList AnnouncementSummary = new SystemAnnouncementSummaryAsList();
         public SystemAnnouncementEntry SelectedAnnouncementEntry = null;
         public AllDataResult ContentManagerAlias = null;
 
         public void RefreshAnnouncements()
         {
-            AnnouncementSummary = new SystemAnnouncementSummary();
+            AnnouncementSummary = new SystemAnnouncementSummaryAsList();
             if (Token == null)
             {
                 Trace.WriteLine($"[AdminForm->RefreshAnnouncements] Token is null");
@@ -137,7 +147,7 @@ namespace BuildServiceAPI.DesktopClient
             var response = httpClient.GetAsync(targetURL).Result;
             var stringContent = response.Content.ReadAsStringAsync().Result;
             var dynamicContent = JsonSerializer.Deserialize<ObjectResponse<dynamic>>(stringContent, Program.serializerOptions);
-            var content = JsonSerializer.Deserialize<ObjectResponse<SystemAnnouncementSummary>>(stringContent, Program.serializerOptions);
+            var content = JsonSerializer.Deserialize<ObjectResponse<SystemAnnouncementSummaryAsList>>(stringContent, Program.serializerOptions);
             if (content == null || dynamicContent.Success == false)
             {
                 MessageBox.Show($"{JsonSerializer.Serialize(dynamicContent, Program.serializerOptions)}", $"Failed to refresh announcements");
@@ -156,7 +166,7 @@ namespace BuildServiceAPI.DesktopClient
                 return;
             }
 
-            if (AnnouncementSummary.Entries.Length < 1)
+            if (AnnouncementSummary.Entries.Count < 1)
                 AnnouncementSummary.Active = false;
             int activeCount = 0;
             foreach (var item in AnnouncementSummary.Entries)
@@ -169,7 +179,7 @@ namespace BuildServiceAPI.DesktopClient
             var response = httpClient.GetAsync(targetURL).Result;
             var stringContent = response.Content.ReadAsStringAsync().Result;
             var dynamicContent = JsonSerializer.Deserialize<ObjectResponse<dynamic>>(stringContent, Program.serializerOptions);
-            var content = JsonSerializer.Deserialize<ObjectResponse<SystemAnnouncementSummary>>(stringContent, Program.serializerOptions);
+            var content = JsonSerializer.Deserialize<ObjectResponse<SystemAnnouncementSummaryAsList>>(stringContent, Program.serializerOptions);
             if (!dynamicContent.Success || content == null)
             {
                 MessageBox.Show($"{stringContent}", $"Failed to push announcements");
@@ -243,7 +253,7 @@ namespace BuildServiceAPI.DesktopClient
                     item.Active.ToString(),
                     item.Timestamp.ToString()
                 });
-                lvitem.Name = Array.IndexOf(AnnouncementSummary.Entries, item).ToString();
+                lvitem.Name = AnnouncementSummary.Entries.IndexOf(item).ToString();
                 listViewAnnouncement.Items.Add(lvitem);
             }
             UpdateSelectedAnnouncementItem();
@@ -257,7 +267,7 @@ namespace BuildServiceAPI.DesktopClient
             try
             {
                 int index = int.Parse(listViewAnnouncement.SelectedItems[0].Name);
-                if (index > AnnouncementSummary.Entries.Length || index < 0) return;
+                if (index > AnnouncementSummary.Entries.Count || index < 0) return;
                 toolStripButtonAnnouncementDelete.Enabled = true;
                 toolStripButtonAnnouncementEdit.Enabled = true;
                 SelectedAnnouncementEntry = AnnouncementSummary.Entries[index];
@@ -281,7 +291,7 @@ namespace BuildServiceAPI.DesktopClient
             foreach (var item in AnnouncementSummary.Entries)
                 if (item != SelectedAnnouncementEntry)
                     newEntries.Add(item);
-            AnnouncementSummary.Entries = newEntries.ToArray();
+            AnnouncementSummary.Entries = newEntries;
             RefreshAnnouncementList();
         }
 
@@ -470,6 +480,19 @@ namespace BuildServiceAPI.DesktopClient
         private void toolStripButtonAnnouncementsDisable_Click(object sender, EventArgs e)
         {
             AnnouncementSummary.Active = false;
+        }
+
+        private void toolStripButtonAnnouncementAdd_Click(object sender, EventArgs e)
+        {
+            var announcement = new SystemAnnouncementEntry();
+            var l = new List<SystemAnnouncementEntry>(AnnouncementSummary.Entries);
+            l.Add(announcement);
+            AnnouncementSummary.Entries = l.ToArray();
+
+            var popup = new AnnouncementEditModal(announcement);
+            popup.Show();
+            popup.MdiParent = MdiParent;
+            popup.AdminForm = this;
         }
     }
 }
