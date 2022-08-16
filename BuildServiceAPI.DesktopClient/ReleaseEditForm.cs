@@ -23,6 +23,8 @@ namespace BuildServiceAPI.DesktopClient
             comboBoxLabelReleaseType.Items.Add(ReleaseType.Beta);
             comboBoxLabelReleaseType.Items.Add(ReleaseType.Stable);
             comboBoxLabelReleaseType.Items.Add(ReleaseType.Other);
+
+            Text = $"Release Edit Form - {ReleaseInfo.commitHash}";
         }
     }
 }
