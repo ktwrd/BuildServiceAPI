@@ -55,6 +55,11 @@ namespace BuildServiceAPI
                 });
                 Console.WriteLine($"[BuildServiceAPI->Main] In development mode, so swagger is enabled. SwaggerUI can be accessed at 0.0.0.0:5010/");
             }
+            App.Use((context, next) =>
+            {
+                context.Request.EnableBuffering();
+                return next();
+            });
 
             TokenGrantList.Add(new Minalyze.MinaloggerTokenGrant());
 
