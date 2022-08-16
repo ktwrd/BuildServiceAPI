@@ -34,8 +34,8 @@ namespace BuildServiceAPI
         
         public static void Main(string[] args)
         {
-            serializerOptions.Converters.Add(new kate.shared.DateTimeConverterUsingDateTimeParse());
             serializerOptions.Converters.Add(new kate.shared.DateTimeConverterUsingDateTimeOffsetParse());
+            serializerOptions.Converters.Add(new kate.shared.DateTimeConverterUsingDateTimeParse());
             contentManager = new ContentManager();
             LoadTokens();
             Builder = WebApplication.CreateBuilder(args);

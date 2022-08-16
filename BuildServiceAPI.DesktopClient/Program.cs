@@ -17,8 +17,8 @@ namespace BuildServiceAPI.DesktopClient
         [STAThread]
         public static void Main()
         {
-            serializerOptions.Converters.Add(new kate.shared.DateTimeConverterUsingDateTimeParse());
             serializerOptions.Converters.Add(new kate.shared.DateTimeConverterUsingDateTimeOffsetParse());
+            serializerOptions.Converters.Add(new kate.shared.DateTimeConverterUsingDateTimeParse());
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());
