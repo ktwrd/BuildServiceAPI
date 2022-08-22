@@ -2,103 +2,139 @@
 
   <PropertyGroup>
 	  <TargetFrameworks>netstandard2.1;net6.0;net48;</TargetFrameworks>
-	  <Configurations>Debug;Release;Debug API;Debug Launcher;Release API;Release Launcher;Debug (ML2 Backend);Release (ML2 Backennd)</Configurations>
+	  <Configurations>Debug;Release;Debug API;Debug Launcher;Release API;Release Launcher;Debug (ML2 Backend);Release (ML2 Backennd);Debug - Library;Debug - Launcher;Debug - Server</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.1|AnyCPU'">
     <DefineConstants>$(DefineConstants)TRACE BUILDSERVICEAPI_APP_WHITELIST</DefineConstants>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug - Server|netstandard2.1|AnyCPU'">
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug - Launcher|netstandard2.1|AnyCPU'">
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug - Library|netstandard2.1|AnyCPU'">
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.1|AnyCPU'">
-    <DefineConstants>$(DefineConstants)TRACE BUILDSERVICEAPI_APP_WHITELIST</DefineConstants>
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug API|netstandard2.1|AnyCPU'">
-    <DefineConstants>$(DefineConstants)TRACE BUILDSERVICEAPI_APP_WHITELIST</DefineConstants>
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug Launcher|netstandard2.1|AnyCPU'">
-    <DefineConstants>$(DefineConstants)TRACE BUILDSERVICEAPI_APP_WHITELIST</DefineConstants>
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release API|netstandard2.1|AnyCPU'">
-    <DefineConstants>$(DefineConstants)TRACE BUILDSERVICEAPI_APP_WHITELIST</DefineConstants>
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release Launcher|netstandard2.1|AnyCPU'">
-    <DefineConstants>$(DefineConstants)TRACE BUILDSERVICEAPI_APP_WHITELIST</DefineConstants>
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug (ML2 Backend)|netstandard2.1|AnyCPU'">
-    <DefineConstants>$(DefineConstants)TRACE BUILDSERVICEAPI_APP_WHITELIST</DefineConstants>
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release (ML2 Backennd)|netstandard2.1|AnyCPU'">
-    <DefineConstants>$(DefineConstants)TRACE BUILDSERVICEAPI_APP_WHITELIST</DefineConstants>
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'">
     <DefineConstants>$(DefineConstants)TRACE BUILDSERVICEAPI_APP_WHITELIST</DefineConstants>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug - Server|net6.0|AnyCPU'">
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug - Launcher|net6.0|AnyCPU'">
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug - Library|net6.0|AnyCPU'">
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0|AnyCPU'">
-    <DefineConstants>$(DefineConstants)TRACE BUILDSERVICEAPI_APP_WHITELIST</DefineConstants>
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug API|net6.0|AnyCPU'">
-    <DefineConstants>$(DefineConstants)TRACE BUILDSERVICEAPI_APP_WHITELIST</DefineConstants>
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug Launcher|net6.0|AnyCPU'">
-    <DefineConstants>$(DefineConstants)TRACE BUILDSERVICEAPI_APP_WHITELIST</DefineConstants>
+    <DefineConstants>$(DefineConstants)TRACE </DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release API|net6.0|AnyCPU'">
-    <DefineConstants>$(DefineConstants)TRACE BUILDSERVICEAPI_APP_WHITELIST</DefineConstants>
+    <DefineConstants>$(DefineConstants)TRACE </DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release Launcher|net6.0|AnyCPU'">
-    <DefineConstants>$(DefineConstants)TRACE BUILDSERVICEAPI_APP_WHITELIST</DefineConstants>
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug (ML2 Backend)|net6.0|AnyCPU'">
-    <DefineConstants>$(DefineConstants)TRACE BUILDSERVICEAPI_APP_WHITELIST</DefineConstants>
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release (ML2 Backennd)|net6.0|AnyCPU'">
-    <DefineConstants>$(DefineConstants)TRACE BUILDSERVICEAPI_APP_WHITELIST</DefineConstants>
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net48|AnyCPU'">
-    <DefineConstants>$(DefineConstants)TRACE BUILDSERVICEAPI_APP_WHITELIST</DefineConstants>
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug - Server|net48|AnyCPU'">
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug - Launcher|net48|AnyCPU'">
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug - Library|net48|AnyCPU'">
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net48|AnyCPU'">
-    <DefineConstants>$(DefineConstants)TRACE BUILDSERVICEAPI_APP_WHITELIST</DefineConstants>
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug API|net48|AnyCPU'">
-    <DefineConstants>$(DefineConstants)TRACE BUILDSERVICEAPI_APP_WHITELIST</DefineConstants>
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug Launcher|net48|AnyCPU'">
-    <DefineConstants>$(DefineConstants)TRACE BUILDSERVICEAPI_APP_WHITELIST</DefineConstants>
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release API|net48|AnyCPU'">
-    <DefineConstants>$(DefineConstants)TRACE BUILDSERVICEAPI_APP_WHITELIST</DefineConstants>
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release Launcher|net48|AnyCPU'">
-    <DefineConstants>$(DefineConstants)TRACE BUILDSERVICEAPI_APP_WHITELIST</DefineConstants>
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug (ML2 Backend)|net48|AnyCPU'">
-    <DefineConstants>$(DefineConstants)TRACE BUILDSERVICEAPI_APP_WHITELIST</DefineConstants>
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release (ML2 Backennd)|net48|AnyCPU'">
-    <DefineConstants>$(DefineConstants)TRACE BUILDSERVICEAPI_APP_WHITELIST</DefineConstants>
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

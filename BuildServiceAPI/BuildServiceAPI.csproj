@@ -3,11 +3,23 @@
   <PropertyGroup>
 	  <TargetFramework>net6.0</TargetFramework>
 	<EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
-	<Configurations>Debug;Release;Debug API;Debug Launcher;Release API;Release Launcher;Debug (ML2 Backend);Release (ML2 Backennd)</Configurations>
+	<Configurations>Debug;Release;Debug API;Debug Launcher;Release API;Release Launcher;Debug (ML2 Backend);Release (ML2 Backennd);Debug - Library;Debug - Launcher;Debug - Server</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>$(DefineConstants)TRACE BUILDSERVICEAPI_APP_WHITELIST</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug - Server|AnyCPU'">
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug - Launcher|AnyCPU'">
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug - Library|AnyCPU'">
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
