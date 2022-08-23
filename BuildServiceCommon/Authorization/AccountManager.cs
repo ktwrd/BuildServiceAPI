@@ -76,7 +76,7 @@ namespace BuildServiceCommon.Authorization
             bool accountFound = false;
             foreach (var item in AccountList)
             {
-                if (item == account)
+                if (item == account && account != null)
                 {
                     accountFound = true;
                     if (item.Enabled)
@@ -89,7 +89,12 @@ namespace BuildServiceCommon.Authorization
                         {
                             if (!IsPendingWrite)
                                 OnPendingWrite();
-                            return new GrantTokenResponse("Granted token", true, success);
+                            if (account.Groups == null)
+                                account.Groups = new List<string>();
+                            if (account.Permissions == null)
+                                account.Permissions = new List<AccountPermission>();
+                            Console.WriteLine($"[AccountManager->CreateToken] Account with username {account.Username} has a new token. They're in the groups {JsonSerializer.Serialize(account.Groups.ToArray())}");
+                            return new GrantTokenResponse("Granted token", true, success, account.Groups.ToArray(), account.Permissions.ToArray());
                         }
                     }
                     return new GrantTokenResponse("Account Disabled", false);
