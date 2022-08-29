@@ -78,7 +78,7 @@ namespace BuildServiceAPI.Controllers.Admin
         [HttpGet("permission/grant")]
         public ActionResult GrantPermission(string token, string username, AccountPermission permission)
         {
-            if (MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions))
+            if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions))
             {
                 Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 return Json(new ObjectResponse<string>()
@@ -109,7 +109,7 @@ namespace BuildServiceAPI.Controllers.Admin
         [HttpGet("permission/revoke")]
         public ActionResult RevokePermission(string token, string username, AccountPermission permission)
         {
-            if (MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions))
+            if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions))
             {
                 Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 return Json(new ObjectResponse<string>()
