@@ -153,6 +153,13 @@ namespace BuildServiceCommon.Authorization
                     return true;
             return false;
         }
+
+        public bool RevokeGroup(string group)
+        {
+            var res = Groups.Remove(group.ToUpper().Trim());
+            PendingWrite = res;
+            return res;
+        }
         #endregion
 
         #region Token Management
