@@ -24,7 +24,7 @@ namespace BuildServiceAPI.Controllers.Admin
         [Route("list")]
         public ActionResult List(string token, string username=null, SearchMethod usernameSearchType = SearchMethod.Equals, long firstSeenTimestamp=0, long lastSeenTimestamp=long.MaxValue)
         {
-            if (MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions))
+            if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions))
             {
                 Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 return Json(new ObjectResponse<string>()
