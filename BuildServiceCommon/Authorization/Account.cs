@@ -351,9 +351,14 @@ namespace BuildServiceCommon.Authorization
         /// <returns>Generated Response</returns>
         public AccountDetailsResponse GetDetails()
         {
+            if (Groups == null)
+            {
+                Groups = new List<string>();
+                PendingWrite = true;
+            }
             return new AccountDetailsResponse()
             {
-                Username = this.Username,
+                Username = this.Username ?? "",
                 Enabled = this.Enabled,
                 Permissions = this.Permissions.ToArray(),
                 DisableReasons = this.DisableReasons.ToArray(),
