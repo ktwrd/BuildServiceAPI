@@ -137,6 +137,39 @@ namespace BuildServiceAPI.Controllers.Admin
             }, MainClass.serializerOptions);
         }
     
+        [HttpGet("token/purge")]
+        public ActionResult TokenPurge(string token, string username=null)
+        {
+            if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions))
+            {
+                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return Json(new ObjectResponse<string>()
+                {
+                    Success = false,
+                    Data = "Invalid Account"
+                }, MainClass.serializerOptions);
+            }
+
+            var userList = new List<string>();
+            foreach (var account in MainClass.contentManager.AccountManager.AccountList)
+            {
+                if (account.Tokens.Count > 0)
+                {
+                    if (username == null || account.Username == username)
+                    {
+                        account.RemoveTokens();
+                        userList.Add(account.Username);
+                    }
+                }
+            }
+
+            return Json(new ObjectResponse<string[]>()
+            {
+                Success = true,
+                Data = userList.ToArray()
+            }, MainClass.serializerOptions);
+        }
+
         [HttpGet("group/grant")]
         public ActionResult GrantGroup(string token, string username, string group)
         {
