@@ -40,7 +40,7 @@
             this.checkedListBoxPermissions.FormattingEnabled = true;
             this.checkedListBoxPermissions.Location = new System.Drawing.Point(3, 3);
             this.checkedListBoxPermissions.Name = "checkedListBoxPermissions";
-            this.checkedListBoxPermissions.Size = new System.Drawing.Size(258, 202);
+            this.checkedListBoxPermissions.Size = new System.Drawing.Size(258, 145);
             this.checkedListBoxPermissions.TabIndex = 1;
             // 
             // tableLayoutPanel1
@@ -55,12 +55,12 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(264, 258);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(264, 201);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // buttonPush
             // 
-            this.buttonPush.Location = new System.Drawing.Point(3, 211);
+            this.buttonPush.Location = new System.Drawing.Point(3, 154);
             this.buttonPush.Name = "buttonPush";
             this.buttonPush.Size = new System.Drawing.Size(75, 23);
             this.buttonPush.TabIndex = 2;
@@ -72,8 +72,9 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(264, 258);
+            this.ClientSize = new System.Drawing.Size(264, 201);
             this.Controls.Add(this.tableLayoutPanel1);
+            this.MinimumSize = new System.Drawing.Size(280, 200);
             this.Name = "AccountPermissionForm";
             this.Text = "Edit Account Permissions";
             this.tableLayoutPanel1.ResumeLayout(false);
