@@ -274,6 +274,16 @@ namespace BuildServiceAPI.DesktopClient
             }
             catch (Exception) { }
         }
+        public void SetAnnouncementContent(SystemAnnouncementEntry entry)
+        {
+            if (AnnouncementSummary.Entries.Contains(entry)) {
+                int index = AnnouncementSummary.Entries.IndexOf(entry);
+                AnnouncementSummary.Entries[index] = entry;
+            } else {
+                AnnouncementSummary.Entries.Add(entry);
+            }
+            RefreshAnnouncementList();
+        }
 
         private void toolStripButtonAnnouncementRefresh_Click(object sender, EventArgs e)
         {

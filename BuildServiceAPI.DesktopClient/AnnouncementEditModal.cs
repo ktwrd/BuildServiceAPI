@@ -23,5 +23,14 @@ namespace BuildServiceAPI.DesktopClient
             textBoxMessage.Lines = entry.Message.Split(new string[] { "\n" }, StringSplitOptions.None);
             checkBoxActive.Checked = entry.Active;
         }
+
+        private void buttonSave_Click(object sender, EventArgs e)
+        {
+            AnnouncementEntry.Active = checkBoxActive.Checked;
+            AnnouncementEntry.Message = string.Join("\n", textBoxMessage.Lines);
+
+            AdminForm.SetAnnouncementContent(AnnouncementEntry);
+            Close();
+        }
     }
 }
