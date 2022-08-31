@@ -82,6 +82,7 @@
             this.buttonConnectionTokenFetch = new System.Windows.Forms.Button();
             this.buttonPushAll = new System.Windows.Forms.Button();
             this.buttonRefresh = new System.Windows.Forms.Button();
+            this.columnHeaderPermissions = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabControl1.SuspendLayout();
             this.tabPageAccountMan.SuspendLayout();
             this.toolStripAccountMan.SuspendLayout();
@@ -129,7 +130,8 @@
             this.listViewAccount.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeaderUsername,
             this.columnHeaderEnabled,
-            this.columnHeaderGroups});
+            this.columnHeaderGroups,
+            this.columnHeaderPermissions});
             this.listViewAccount.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewAccount.HideSelection = false;
             this.listViewAccount.Location = new System.Drawing.Point(3, 28);
@@ -138,6 +140,7 @@
             this.listViewAccount.TabIndex = 1;
             this.listViewAccount.UseCompatibleStateImageBehavior = false;
             this.listViewAccount.View = System.Windows.Forms.View.Details;
+            this.listViewAccount.SelectedIndexChanged += new System.EventHandler(this.listViewAccount_SelectedIndexChanged);
             // 
             // columnHeaderUsername
             // 
@@ -176,6 +179,7 @@
             // toolStripButtonUserModify
             // 
             this.toolStripButtonUserModify.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonUserModify.Enabled = false;
             this.toolStripButtonUserModify.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonUserModify.Image")));
             this.toolStripButtonUserModify.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonUserModify.Name = "toolStripButtonUserModify";
@@ -190,6 +194,7 @@
             // toolStripButtonAccountBlockAdd
             // 
             this.toolStripButtonAccountBlockAdd.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonAccountBlockAdd.Enabled = false;
             this.toolStripButtonAccountBlockAdd.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonAccountBlockAdd.Image")));
             this.toolStripButtonAccountBlockAdd.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonAccountBlockAdd.Name = "toolStripButtonAccountBlockAdd";
@@ -199,6 +204,7 @@
             // toolStripButtonAccountBlockEdit
             // 
             this.toolStripButtonAccountBlockEdit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonAccountBlockEdit.Enabled = false;
             this.toolStripButtonAccountBlockEdit.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonAccountBlockEdit.Image")));
             this.toolStripButtonAccountBlockEdit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonAccountBlockEdit.Name = "toolStripButtonAccountBlockEdit";
@@ -208,6 +214,7 @@
             // toolStripButtonAccountBlockDel
             // 
             this.toolStripButtonAccountBlockDel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonAccountBlockDel.Enabled = false;
             this.toolStripButtonAccountBlockDel.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonAccountBlockDel.Image")));
             this.toolStripButtonAccountBlockDel.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonAccountBlockDel.Name = "toolStripButtonAccountBlockDel";
@@ -222,15 +229,18 @@
             // toolStripButtonAccountPermission
             // 
             this.toolStripButtonAccountPermission.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonAccountPermission.Enabled = false;
             this.toolStripButtonAccountPermission.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonAccountPermission.Image")));
             this.toolStripButtonAccountPermission.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonAccountPermission.Name = "toolStripButtonAccountPermission";
             this.toolStripButtonAccountPermission.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonAccountPermission.Text = "Permissions";
+            this.toolStripButtonAccountPermission.Click += new System.EventHandler(this.toolStripButtonAccountPermission_Click);
             // 
             // toolStripButtonAccountGroupMan
             // 
             this.toolStripButtonAccountGroupMan.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonAccountGroupMan.Enabled = false;
             this.toolStripButtonAccountGroupMan.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonAccountGroupMan.Image")));
             this.toolStripButtonAccountGroupMan.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonAccountGroupMan.Name = "toolStripButtonAccountGroupMan";
@@ -662,6 +672,12 @@
             this.buttonRefresh.UseVisualStyleBackColor = true;
             this.buttonRefresh.Click += new System.EventHandler(this.buttonRefresh_Click);
             // 
+            // columnHeaderPermissions
+            // 
+            this.columnHeaderPermissions.Text = "Permissions";
+            this.columnHeaderPermissions.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.columnHeaderPermissions.Width = 180;
+            // 
             // AdminForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -755,5 +771,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripButton toolStripButtonAnnouncementEnforce;
         private System.Windows.Forms.ToolStripButton toolStripButtonAnnouncementsDisable;
+        private System.Windows.Forms.ColumnHeader columnHeaderPermissions;
     }
 }

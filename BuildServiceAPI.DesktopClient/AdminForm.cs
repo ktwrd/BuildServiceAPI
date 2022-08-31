@@ -72,7 +72,7 @@ namespace BuildServiceAPI.DesktopClient
             Enabled = true;
         }
 
-        private static HttpClient httpClient;
+        public static HttpClient httpClient;
 
         public void UpdateToken()
         {
@@ -120,6 +120,85 @@ namespace BuildServiceAPI.DesktopClient
         public AccountToken Token;
 
         public AllDataResult ContentManagerAlias = null;
+
+        #region Account Management
+        public List<AccountDetailsResponse> AccountListing = new List<AccountDetailsResponse>();
+        /// <summary>
+        /// Nullable
+        /// </summary>
+        public AccountDetailsResponse SelectedAccountEntry = null;
+        public void RefreshAccounts()
+        {
+            AccountListing.Clear();
+            var targetURL = Endpoint.UserList(Token.Token);
+            var response = httpClient.GetAsync(targetURL).Result;
+            var stringContent = response.Content.ReadAsStringAsync().Result;
+            var dynamicContent = JsonSerializer.Deserialize<ObjectResponse<dynamic>>(stringContent, Program.serializerOptions);
+            var content = JsonSerializer.Deserialize<ObjectResponse<AccountDetailsResponse[]>>(stringContent, Program.serializerOptions);
+            if (!dynamicContent.Success || content == null)
+            {
+                MessageBox.Show($"{stringContent}", $"Failed to refresh accounts");
+                Trace.WriteLine($"[AdminForm->RefreshAccounts] Failed to fetch account listings\n--------\n{JsonSerializer.Serialize(dynamicContent, Program.serializerOptions)}\n--------\n");
+                return;
+            }
+            AccountListing = new List<AccountDetailsResponse>(content.Data);
+        }
+        public void RefreshAccountListView()
+        {
+            listViewAccount.Items.Clear();
+            foreach (var item in AccountListing)
+            {
+                var permissionString = new List<string>();
+                foreach (var p in item.Permissions)
+                    permissionString.Add(p.ToString());
+                var lvitem = new ListViewItem(new String[]
+                {
+                    item.Username,
+                    item.Enabled.ToString(),
+                    string.Join(", ", item.Groups),
+                    string.Join(", ", permissionString)
+                });
+                lvitem.Name = item.Username;
+                listViewAccount.Items.Add(lvitem);
+            }
+        }
+        public void UpdateSelectedAccountItem()
+        {
+            toolStripButtonAccountBlockAdd.Enabled = false;
+            toolStripButtonAccountBlockDel.Enabled = false;
+            toolStripButtonAccountBlockEdit.Enabled = false;
+            toolStripButtonAccountGroupMan.Enabled = false;
+            toolStripButtonAccountPermission.Enabled = false;
+            toolStripButtonUserModify.Enabled = false;
+            SelectedAccountEntry = null;
+            if (listViewAccount.SelectedItems.Count < 1) return;
+            if (listViewAccount.SelectedItems.Count > 1) return;
+            foreach (var item in AccountListing)
+            {
+                if (item.Username == listViewAccount.SelectedItems[0].Name)
+                {
+                    toolStripButtonAccountBlockAdd.Enabled = true;
+                    toolStripButtonAccountBlockDel.Enabled = true;
+                    toolStripButtonAccountBlockEdit.Enabled = true;
+                    toolStripButtonAccountGroupMan.Enabled = true;
+                    toolStripButtonAccountPermission.Enabled = true;
+                    toolStripButtonUserModify.Enabled = true;
+                    SelectedAccountEntry = item;
+                    break;
+                }
+            }
+        }
+        private void listViewAccount_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateSelectedAccountItem();
+        }
+        private void toolStripButtonAccountPermission_Click(object sender, EventArgs e)
+        {
+            if (SelectedAccountEntry == null) return;
+            var form = new AccountPermissionForm(SelectedAccountEntry, this);
+            form.Show();
+        }
+        #endregion
 
         #region Announcements
         public class SystemAnnouncementSummaryAsList : SystemAnnouncementSummary
@@ -294,7 +373,8 @@ namespace BuildServiceAPI.DesktopClient
         private void listViewAnnouncement_SelectedIndexChanged(object sender, EventArgs e) => UpdateSelectedAnnouncementItem();
 
         #endregion
-        
+
+        #region Content Manager
         public void RefreshContentManager()
         {
             var targetURL = Endpoint.DumpDataFetch(Token.Token, DataType.All);
@@ -348,7 +428,6 @@ namespace BuildServiceAPI.DesktopClient
             ContentManagerAlias = contentTyped.Data;
         }
 
-
         private void buttonPushAll_Click(object sender, EventArgs e)
         {
             toolStripAnnouncement.Enabled = false;
@@ -373,7 +452,8 @@ namespace BuildServiceAPI.DesktopClient
             var taskArray = new Task[]
             {
                 new Task(delegate { RefreshAnnouncements(); }),
-                new Task(delegate { RefreshContentManager(); })
+                new Task(delegate { RefreshContentManager(); }),
+                new Task(delegate { RefreshAccounts(); })
             };
             foreach (var i in taskArray)
                 i.Start();
@@ -384,7 +464,9 @@ namespace BuildServiceAPI.DesktopClient
             RefreshAnnouncementList();
             RefreshReleaseTree();
             RefreshReleaseListView();
+            RefreshAccountListView();
         }
+        #endregion
 
         #region Releases
         public List<ReleaseInfo> SelectedReleases = new List<ReleaseInfo>();
@@ -520,5 +602,6 @@ namespace BuildServiceAPI.DesktopClient
 
         private void listViewReleases_Click(object sender, EventArgs e) => listViewReleases_SelectedIndexChanged(null, null);
         #endregion
+
     }
 }
