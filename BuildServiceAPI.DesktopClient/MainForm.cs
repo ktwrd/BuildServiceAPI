@@ -21,6 +21,10 @@ namespace BuildServiceAPI.DesktopClient
             AdminForm.MdiParent = this;
             AdminForm.Show();
             AdminForm.FormClosing += AdminForm_FormClosing;
+
+            var componentZoo = new ComponentZoo();
+            componentZoo.MdiParent = this;
+            componentZoo.Show();
         }
 
         private void AdminForm_FormClosing(object sender, FormClosingEventArgs e)
