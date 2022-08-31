@@ -17,12 +17,10 @@ namespace BuildServiceAPI.DesktopClient
         public TextBoxList()
         {
             InitializeComponent();
-            if (MinimumItems < Items.Count)
-            {
-                AddItem(new TextBoxListItem());
-            }
+            AddItem(new TextBoxListItem());
         }
         public int MinimumItems = 1;
+        public int MaximumItems = int.MaxValue;
         public List<TextBoxListItem> Items = new List<TextBoxListItem>();
 
         public event TextBoxListItemDelegate ItemAdd;
@@ -32,23 +30,37 @@ namespace BuildServiceAPI.DesktopClient
         public void OnItemAdd(TextBoxListItem item)
         {
             ItemAdd?.Invoke(this, item);
+            UpdateButtonState();
         }
         public void OnItemRemove()
         {
             ItemRemove?.Invoke(this);
+            UpdateButtonState();
         }
 
         public void AddItem(TextBoxListItem item)
         {
-            Items.Add(item);
-            flowLayoutPanel.Controls.Add(item);
-            OnItemAdd(item);
-            item.TextChanged += Item_TextChanged;
-            item.AddButtonClick += Item_AddButtonClick;
-            item.RemoveButtonClick += Item_RemoveButtonClick;
             item.Dock = DockStyle.Top;
             item.AutoSize = true;
             item.AutoSizeMode = AutoSizeMode.GrowOnly;
+            item.Visible = true;
+            item.Width = flowLayoutPanel.Size.Width;
+            item.TextChanged += Item_TextChanged;
+            item.AddButtonClick += Item_AddButtonClick;
+            item.RemoveButtonClick += Item_RemoveButtonClick;
+            Items.Add(item);
+            flowLayoutPanel.Controls.Add(item);
+            OnItemAdd(item);
+        }
+
+        private void UpdateButtonState()
+        {
+            foreach (var item in Items)
+            {
+                item.ButtonAddEnable = Items.Count < MaximumItems;
+                item.ButtonRemoveEnable = Items.Count > MinimumItems;
+                item.Width = flowLayoutPanel.Size.Width;
+            }
         }
 
         private void Item_TextChanged(object sender, TextBoxListItem e) => TextChanged?.Invoke(sender, e);
