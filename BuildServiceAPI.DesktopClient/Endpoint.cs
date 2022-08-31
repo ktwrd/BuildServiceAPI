@@ -1,4 +1,5 @@
 ﻿using BuildServiceCommon;
+using BuildServiceCommon.Authorization;
 using kate.shared.Helpers;
 using System;
 using System.Collections.Generic;
@@ -72,6 +73,7 @@ namespace BuildServiceAPI.DesktopClient
             => $"{Base}/admin/data/setdata?token={encode(token)}&type={encode((int)type)}";
         internal static string DumpDataFetch(string token, DataType type)
             => $"{Base}/admin/data/dump?token={encode(token)}&type={encode((int)type)}";
+
         internal static string UserList(
             string token,
             string username = "",
@@ -79,5 +81,15 @@ namespace BuildServiceAPI.DesktopClient
             long firstSeenTimestamp = 0,
             long lastSeenTimestamp = long.MaxValue)
             => $"{Base}/admin/user/list?token={encode(token)}&username={encode(username)}&usernameSearchMethod={encode(usernameSearchMethod)}&firstSeenTimestamp={encode(firstSeenTimestamp)}&lastSeenTimestamp={lastSeenTimestamp}";
+        internal static string UserPermissionGrant(
+            string token,
+            string username,
+            AccountPermission permission)
+            => $"{Base}/admin/user/permission/grant?token={encode(token)}&username={encode(username)}&permission={encode((int)permission)}";
+        internal static string UserPermissionRevoke(
+            string token,
+            string username,
+            AccountPermission permission)
+            => $"{Base}/admin/user/permission/revoke?token={encode(token)}&username={encode(username)}&permission={encode((int)permission)}";
     }
 }
