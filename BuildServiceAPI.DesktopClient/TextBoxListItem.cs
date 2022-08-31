@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static BuildServiceAPI.DesktopClient.TextBoxList;
 
 namespace BuildServiceAPI.DesktopClient
 {
@@ -32,11 +33,11 @@ namespace BuildServiceAPI.DesktopClient
 
         private void RichTextBox1_Enter(object sender, EventArgs e) => TextBoxEnter?.Invoke(sender, e);
 
-        private void RichTextBox1_TextChanged(object sender, EventArgs e) => TextChanged?.Invoke(sender, e);
+        private void RichTextBox1_TextChanged(object sender, EventArgs e) => TextChanged?.Invoke(sender, this);
 
-        private void ButtonRemove_Click(object sender, EventArgs e) => RemoveButtonClick?.Invoke();
+        private void ButtonRemove_Click(object sender, EventArgs e) => RemoveButtonClick?.Invoke(sender, this);
 
-        private void ButtonAdd_Click(object sender, EventArgs e) => AddButtonClick?.Invoke();
+        private void ButtonAdd_Click(object sender, EventArgs e) => AddButtonClick?.Invoke(sender, this);
 
         private void RichTextBox1_KeyUp(object sender, KeyEventArgs e) => TextBoxKeyUp?.Invoke(sender, e);
 
@@ -94,10 +95,10 @@ namespace BuildServiceAPI.DesktopClient
         public event KeyPressEventHandler TextBoxKeyPress;
         public event KeyEventHandler TextBoxKeyUp;
 
-        public event VoidDelegate AddButtonClick;
-        public event VoidDelegate RemoveButtonClick;
+        public event TextBoxListItemChangedDelegate AddButtonClick;
+        public event TextBoxListItemChangedDelegate RemoveButtonClick;
 
-        public new event EventHandler TextChanged;
+        public new event TextBoxListItemChangedDelegate TextChanged;
         public event EventHandler TextBoxEnter;
         public event EventHandler TextBoxGotFocus;
     }

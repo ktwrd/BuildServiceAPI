@@ -27,7 +27,8 @@ namespace BuildServiceAPI.DesktopClient
 
         public event TextBoxListItemDelegate ItemAdd;
         public event TextBoxListDelegate ItemRemove;
-        public new event EventHandler TextChanged;
+        public delegate void TextBoxListItemChangedDelegate(object sender, TextBoxListItem textBoxListItem);
+        public new event TextBoxListItemChangedDelegate TextChanged;
         public void OnItemAdd(TextBoxListItem item)
         {
             ItemAdd?.Invoke(this, item);
@@ -43,22 +44,24 @@ namespace BuildServiceAPI.DesktopClient
             flowLayoutPanel.Controls.Add(item);
             OnItemAdd(item);
             item.TextChanged += Item_TextChanged;
-            item.AddButtonClick += delegate
-            {
-                AddItem(new TextBoxListItem());
-            };
-            item.RemoveButtonClick += delegate
-            {
-                int index = Items.IndexOf(item);
-                if (index >= 0)
-                    RemoveItem(item);
-            };
+            item.AddButtonClick += Item_AddButtonClick;
+            item.RemoveButtonClick += Item_RemoveButtonClick;
             item.Dock = DockStyle.Top;
             item.AutoSize = true;
             item.AutoSizeMode = AutoSizeMode.GrowOnly;
         }
 
-        private void Item_TextChanged(object sender, EventArgs e) => TextChanged?.Invoke(sender, e);
+        private void Item_TextChanged(object sender, TextBoxListItem e) => TextChanged?.Invoke(sender, e);
+        private void Item_AddButtonClick(object sender, TextBoxListItem e)
+        {
+            AddItem(new TextBoxListItem());
+        }
+        private void Item_RemoveButtonClick(object sender, TextBoxListItem e)
+        {
+            int index = Items.IndexOf(e);
+            if (index >= 0)
+                RemoveItem(e);
+        }
 
         public bool RemoveItem(TextBoxListItem item)
         {
@@ -66,6 +69,9 @@ namespace BuildServiceAPI.DesktopClient
             if (success)
             {
                 flowLayoutPanel.Controls.Remove(item);
+                item.TextChanged -= Item_TextChanged;
+                item.AddButtonClick -= Item_AddButtonClick;
+                item.RemoveButtonClick -= Item_RemoveButtonClick;
                 OnItemRemove();
             }
             return success;
