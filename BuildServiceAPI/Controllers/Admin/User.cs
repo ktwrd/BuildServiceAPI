@@ -231,5 +231,21 @@ namespace BuildServiceAPI.Controllers.Admin
                 Data = account.RevokeGroup(group)
             }, MainClass.serializerOptions);
         }
+    
+        [HttpPost("group/set")]
+        public ActionResult SetGroup(string token, string username)
+        {
+            if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions))
+            {
+                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return Json(new ObjectResponse<string>()
+                {
+                    Success = false,
+                    Data = "Invalid Account"
+                }, MainClass.serializerOptions);
+            }
+
+            return Json(null);
+        }
     }
 }
