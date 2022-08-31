@@ -175,18 +175,28 @@ namespace BuildServiceAPI.DesktopClient
             if (activeCount < 1)
                 AnnouncementSummary.Active = false;
 
-            var targetURL = Endpoint.AnnouncementSetData(Token.Token, AnnouncementSummary);
+            var arraySummary = new SystemAnnouncementSummary()
+            {
+                Active = AnnouncementSummary.Active,
+                Entries = AnnouncementSummary.Entries.ToArray()
+            };
+
+            var targetURL = Endpoint.AnnouncementSetData(Token.Token, arraySummary);
             var response = httpClient.GetAsync(targetURL).Result;
             var stringContent = response.Content.ReadAsStringAsync().Result;
             var dynamicContent = JsonSerializer.Deserialize<ObjectResponse<dynamic>>(stringContent, Program.serializerOptions);
-            var content = JsonSerializer.Deserialize<ObjectResponse<SystemAnnouncementSummaryAsList>>(stringContent, Program.serializerOptions);
+            var content = JsonSerializer.Deserialize<ObjectResponse<SystemAnnouncementSummary>>(stringContent, Program.serializerOptions);
             if (!dynamicContent.Success || content == null)
             {
                 MessageBox.Show($"{stringContent}", $"Failed to push announcements");
                 Trace.WriteLine($"[AdminForm->PushAnnouncements] Failed to push announcements\n--------\n{JsonSerializer.Serialize(dynamicContent, Program.serializerOptions)}\n--------\n");
                 return;
             }
-            AnnouncementSummary = content.Data;
+            AnnouncementSummary = new SystemAnnouncementSummaryAsList()
+            {
+                Active = content.Data.Active,
+                Entries = new List<SystemAnnouncementEntry>(content.Data.Entries)
+            };
         }
         public void RefreshContentManager()
         {
