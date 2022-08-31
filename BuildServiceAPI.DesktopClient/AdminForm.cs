@@ -119,6 +119,9 @@ namespace BuildServiceAPI.DesktopClient
 
         public AccountToken Token;
 
+        public AllDataResult ContentManagerAlias = null;
+
+        #region Announcements
         public class SystemAnnouncementSummaryAsList : SystemAnnouncementSummary
         {
             public new List<SystemAnnouncementEntry> Entries { get; set; }
@@ -131,8 +134,6 @@ namespace BuildServiceAPI.DesktopClient
 
         public SystemAnnouncementSummaryAsList AnnouncementSummary = new SystemAnnouncementSummaryAsList();
         public SystemAnnouncementEntry SelectedAnnouncementEntry = null;
-        public AllDataResult ContentManagerAlias = null;
-
         public void RefreshAnnouncements()
         {
             AnnouncementSummary = new SystemAnnouncementSummaryAsList();
@@ -198,6 +199,102 @@ namespace BuildServiceAPI.DesktopClient
                 Entries = new List<SystemAnnouncementEntry>(content.Data.Entries)
             };
         }
+
+        public void RefreshAnnouncementList()
+        {
+            UpdateSelectedAnnouncementItem();
+            listViewAnnouncement.Items.Clear();
+            foreach (var item in AnnouncementSummary.Entries)
+            {
+                var lvitem = new ListViewItem(new string[]
+                {
+                    item.Message,
+                    item.Active.ToString(),
+                    item.Timestamp.ToString()
+                });
+                lvitem.Name = AnnouncementSummary.Entries.IndexOf(item).ToString();
+                listViewAnnouncement.Items.Add(lvitem);
+            }
+            UpdateSelectedAnnouncementItem();
+        }
+        public void UpdateSelectedAnnouncementItem()
+        {
+            toolStripButtonAnnouncementDelete.Enabled = false;
+            toolStripButtonAnnouncementEdit.Enabled = false;
+            SelectedAnnouncementEntry = null;
+            if (listViewAnnouncement.SelectedItems.Count < 1) return;
+            try
+            {
+                int index = int.Parse(listViewAnnouncement.SelectedItems[0].Name);
+                if (index > AnnouncementSummary.Entries.Count || index < 0) return;
+                toolStripButtonAnnouncementDelete.Enabled = true;
+                toolStripButtonAnnouncementEdit.Enabled = true;
+                SelectedAnnouncementEntry = AnnouncementSummary.Entries[index];
+            }
+            catch (Exception) { }
+        }
+        public void SetAnnouncementContent(SystemAnnouncementEntry entry)
+        {
+            if (AnnouncementSummary.Entries.Contains(entry))
+            {
+                int index = AnnouncementSummary.Entries.IndexOf(entry);
+                AnnouncementSummary.Entries[index] = entry;
+            }
+            else
+            {
+                AnnouncementSummary.Entries.Add(entry);
+            }
+            RefreshAnnouncementList();
+        }
+
+        private void toolStripButtonAnnouncementRefresh_Click(object sender, EventArgs e)
+        {
+            RefreshAnnouncements();
+            RefreshAnnouncementList();
+            UpdateSelectedAnnouncementItem();
+        }
+
+        private void listViewAnnouncement_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e) => UpdateSelectedAnnouncementItem();
+
+        private void toolStripButtonAnnouncementDelete_Click(object sender, EventArgs e)
+        {
+            if (SelectedAnnouncementEntry == null) return;
+            var newEntries = new List<SystemAnnouncementEntry>();
+            foreach (var item in AnnouncementSummary.Entries)
+                if (item != SelectedAnnouncementEntry)
+                    newEntries.Add(item);
+            AnnouncementSummary.Entries = newEntries;
+            RefreshAnnouncementList();
+        }
+        private void toolStripButtonAnnouncementEnforce_Click(object sender, EventArgs e)
+        {
+            AnnouncementSummary.Active = true;
+        }
+
+        private void toolStripButtonAnnouncementsDisable_Click(object sender, EventArgs e)
+        {
+            AnnouncementSummary.Active = false;
+        }
+
+        private void toolStripButtonAnnouncementAdd_Click(object sender, EventArgs e)
+        {
+            var announcement = new SystemAnnouncementEntry();
+            AnnouncementSummary.Entries.Add(announcement);
+
+            var popup = new AnnouncementEditModal(announcement);
+            popup.Show();
+            popup.MdiParent = MdiParent;
+            popup.AdminForm = this;
+        }
+        private void toolStripButtonAnnouncementPushChanges_Click(object sender, EventArgs e)
+        {
+            PushAnnouncements();
+        }
+
+        private void listViewAnnouncement_SelectedIndexChanged(object sender, EventArgs e) => UpdateSelectedAnnouncementItem();
+
+        #endregion
+        
         public void RefreshContentManager()
         {
             var targetURL = Endpoint.DumpDataFetch(Token.Token, DataType.All);
@@ -251,69 +348,6 @@ namespace BuildServiceAPI.DesktopClient
             ContentManagerAlias = contentTyped.Data;
         }
 
-        public void RefreshAnnouncementList()
-        {
-            UpdateSelectedAnnouncementItem();
-            listViewAnnouncement.Items.Clear();
-            foreach (var item in AnnouncementSummary.Entries)
-            {
-                var lvitem = new ListViewItem(new string[]
-                {
-                    item.Message,
-                    item.Active.ToString(),
-                    item.Timestamp.ToString()
-                });
-                lvitem.Name = AnnouncementSummary.Entries.IndexOf(item).ToString();
-                listViewAnnouncement.Items.Add(lvitem);
-            }
-            UpdateSelectedAnnouncementItem();
-        }
-        public void UpdateSelectedAnnouncementItem()
-        {
-            toolStripButtonAnnouncementDelete.Enabled = false;
-            toolStripButtonAnnouncementEdit.Enabled = false;
-            SelectedAnnouncementEntry = null;
-            if (listViewAnnouncement.SelectedItems.Count < 1) return;
-            try
-            {
-                int index = int.Parse(listViewAnnouncement.SelectedItems[0].Name);
-                if (index > AnnouncementSummary.Entries.Count || index < 0) return;
-                toolStripButtonAnnouncementDelete.Enabled = true;
-                toolStripButtonAnnouncementEdit.Enabled = true;
-                SelectedAnnouncementEntry = AnnouncementSummary.Entries[index];
-            }
-            catch (Exception) { }
-        }
-        public void SetAnnouncementContent(SystemAnnouncementEntry entry)
-        {
-            if (AnnouncementSummary.Entries.Contains(entry)) {
-                int index = AnnouncementSummary.Entries.IndexOf(entry);
-                AnnouncementSummary.Entries[index] = entry;
-            } else {
-                AnnouncementSummary.Entries.Add(entry);
-            }
-            RefreshAnnouncementList();
-        }
-
-        private void toolStripButtonAnnouncementRefresh_Click(object sender, EventArgs e)
-        {
-            RefreshAnnouncements();
-            RefreshAnnouncementList();
-            UpdateSelectedAnnouncementItem();
-        }
-
-        private void listViewAnnouncement_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e) => UpdateSelectedAnnouncementItem();
-
-        private void toolStripButtonAnnouncementDelete_Click(object sender, EventArgs e)
-        {
-            if (SelectedAnnouncementEntry == null) return;
-            var newEntries = new List<SystemAnnouncementEntry>();
-            foreach (var item in AnnouncementSummary.Entries)
-                if (item != SelectedAnnouncementEntry)
-                    newEntries.Add(item);
-            AnnouncementSummary.Entries = newEntries;
-            RefreshAnnouncementList();
-        }
 
         private void buttonPushAll_Click(object sender, EventArgs e)
         {
@@ -352,13 +386,9 @@ namespace BuildServiceAPI.DesktopClient
             RefreshReleaseListView();
         }
 
-        private void toolStripButtonAnnouncementPushChanges_Click(object sender, EventArgs e)
-        {
-            PushAnnouncements();
-        }
-
-        private void listViewAnnouncement_SelectedIndexChanged(object sender, EventArgs e) => UpdateSelectedAnnouncementItem();
-    
+        #region Releases
+        public List<ReleaseInfo> SelectedReleases = new List<ReleaseInfo>();
+        public event VoidDelegate SelectedReleasesChange;
         public void RefreshReleaseTree()
         {
             treeViewReleaseProduct.Nodes.Clear();
@@ -431,8 +461,6 @@ namespace BuildServiceAPI.DesktopClient
             RefreshReleaseListView();
         }
 
-        public List<ReleaseInfo> SelectedReleases = new List<ReleaseInfo>();
-        public event VoidDelegate SelectedReleasesChange;
         private void listViewReleases_SelectedIndexChanged(object sender, EventArgs e)
         {
             SelectedReleases.Clear();
@@ -491,26 +519,6 @@ namespace BuildServiceAPI.DesktopClient
         private void listViewReleases_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e) => listViewReleases_SelectedIndexChanged(null, null);
 
         private void listViewReleases_Click(object sender, EventArgs e) => listViewReleases_SelectedIndexChanged(null, null);
-
-        private void toolStripButtonAnnouncementEnforce_Click(object sender, EventArgs e)
-        {
-            AnnouncementSummary.Active = true;
-        }
-
-        private void toolStripButtonAnnouncementsDisable_Click(object sender, EventArgs e)
-        {
-            AnnouncementSummary.Active = false;
-        }
-
-        private void toolStripButtonAnnouncementAdd_Click(object sender, EventArgs e)
-        {
-            var announcement = new SystemAnnouncementEntry();
-            AnnouncementSummary.Entries.Add(announcement);
-
-            var popup = new AnnouncementEditModal(announcement);
-            popup.Show();
-            popup.MdiParent = MdiParent;
-            popup.AdminForm = this;
-        }
+        #endregion
     }
 }
