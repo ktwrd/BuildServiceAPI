@@ -141,6 +141,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountGroupForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AccountGroupForm.Designer.cs">
+      <DependentUpon>AccountGroupForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="AccountPermissionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -205,6 +211,9 @@
     <Compile Include="TextBoxListItem.Designer.cs">
       <DependentUpon>TextBoxListItem.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="AccountGroupForm.resx">
+      <DependentUpon>AccountGroupForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AccountPermissionForm.resx">
       <DependentUpon>AccountPermissionForm.cs</DependentUpon>
     </EmbeddedResource>

@@ -36,7 +36,6 @@ namespace BuildServiceAPI.DesktopClient
 
         public void UpdatePermissionCheckboxList()
         {
-            //checkedListBoxPermissions
             checkedListBoxPermissions.Items.Clear();
             foreach (var item in GeneralHelper.GetEnumList<AccountPermission>())
             {
