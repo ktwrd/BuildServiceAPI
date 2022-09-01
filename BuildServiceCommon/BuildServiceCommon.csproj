@@ -2,10 +2,14 @@
 
   <PropertyGroup>
 	  <TargetFrameworks>netstandard2.1;net6.0;net48;</TargetFrameworks>
-	  <Configurations>Debug;Release;Debug API;Debug Launcher;Release API;Release Launcher;Debug (ML2 Backend);Release (ML2 Backennd);Debug - Library;Debug - Launcher;Debug - Server</Configurations>
+	  <Configurations>Debug;Release;Debug API;Debug Launcher;Release API;Release Launcher;Debug (ML2 Backend);Release (ML2 Backennd);Debug - Library;Debug - Launcher;Debug - Server;Debug - MLBackend</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.1|AnyCPU'">
+    <DefineConstants>$(DefineConstants)TRACE BUILDSERVICEAPI_APP_WHITELIST</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug - MLBackend|netstandard2.1|AnyCPU'">
     <DefineConstants>$(DefineConstants)TRACE BUILDSERVICEAPI_APP_WHITELIST</DefineConstants>
   </PropertyGroup>
 
@@ -53,6 +57,10 @@
     <DefineConstants>$(DefineConstants)TRACE BUILDSERVICEAPI_APP_WHITELIST</DefineConstants>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug - MLBackend|net6.0|AnyCPU'">
+    <DefineConstants>$(DefineConstants)TRACE BUILDSERVICEAPI_APP_WHITELIST</DefineConstants>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug - Server|net6.0|AnyCPU'">
     <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
   </PropertyGroup>
@@ -94,6 +102,10 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net48|AnyCPU'">
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug - MLBackend|net48|AnyCPU'">
     <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
   </PropertyGroup>
 

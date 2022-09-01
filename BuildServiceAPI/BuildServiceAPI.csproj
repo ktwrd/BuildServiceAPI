@@ -3,10 +3,14 @@
   <PropertyGroup>
 	  <TargetFramework>net6.0</TargetFramework>
 	<EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
-	<Configurations>Debug;Release;Debug API;Debug Launcher;Release API;Release Launcher;Debug (ML2 Backend);Release (ML2 Backennd);Debug - Library;Debug - Launcher;Debug - Server</Configurations>
+	<Configurations>Debug;Release;Debug API;Debug Launcher;Release API;Release Launcher;Debug (ML2 Backend);Release (ML2 Backennd);Debug - Library;Debug - Launcher;Debug - Server;Debug - MLBackend</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>$(DefineConstants)TRACE BUILDSERVICEAPI_APP_WHITELIST</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug - MLBackend|AnyCPU'">
     <DefineConstants>$(DefineConstants)TRACE BUILDSERVICEAPI_APP_WHITELIST</DefineConstants>
   </PropertyGroup>
 
