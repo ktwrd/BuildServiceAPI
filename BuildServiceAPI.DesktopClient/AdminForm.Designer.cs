@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AdminForm));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageAccountMan = new System.Windows.Forms.TabPage();
@@ -83,6 +84,7 @@
             this.buttonConnectionTokenFetch = new System.Windows.Forms.Button();
             this.buttonPushAll = new System.Windows.Forms.Button();
             this.buttonRefresh = new System.Windows.Forms.Button();
+            this.imageListTabs = new System.Windows.Forms.ImageList(this.components);
             this.tabControl1.SuspendLayout();
             this.tabPageAccountMan.SuspendLayout();
             this.toolStripAccountMan.SuspendLayout();
@@ -107,6 +109,7 @@
             this.tabControl1.Controls.Add(this.tabPageAnnouncementManagement);
             this.tabControl1.Controls.Add(this.tabPageReleaseDetails);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.ImageList = this.imageListTabs;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -117,10 +120,11 @@
             // 
             this.tabPageAccountMan.Controls.Add(this.listViewAccount);
             this.tabPageAccountMan.Controls.Add(this.toolStripAccountMan);
-            this.tabPageAccountMan.Location = new System.Drawing.Point(4, 22);
+            this.tabPageAccountMan.ImageIndex = 1;
+            this.tabPageAccountMan.Location = new System.Drawing.Point(4, 23);
             this.tabPageAccountMan.Name = "tabPageAccountMan";
             this.tabPageAccountMan.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageAccountMan.Size = new System.Drawing.Size(635, 415);
+            this.tabPageAccountMan.Size = new System.Drawing.Size(1062, 414);
             this.tabPageAccountMan.TabIndex = 0;
             this.tabPageAccountMan.Text = "Account Management";
             this.tabPageAccountMan.UseVisualStyleBackColor = true;
@@ -136,7 +140,7 @@
             this.listViewAccount.HideSelection = false;
             this.listViewAccount.Location = new System.Drawing.Point(3, 28);
             this.listViewAccount.Name = "listViewAccount";
-            this.listViewAccount.Size = new System.Drawing.Size(629, 384);
+            this.listViewAccount.Size = new System.Drawing.Size(1056, 383);
             this.listViewAccount.TabIndex = 1;
             this.listViewAccount.UseCompatibleStateImageBehavior = false;
             this.listViewAccount.View = System.Windows.Forms.View.Details;
@@ -178,7 +182,7 @@
             this.toolStripButtonAccountGroupMan});
             this.toolStripAccountMan.Location = new System.Drawing.Point(3, 3);
             this.toolStripAccountMan.Name = "toolStripAccountMan";
-            this.toolStripAccountMan.Size = new System.Drawing.Size(629, 25);
+            this.toolStripAccountMan.Size = new System.Drawing.Size(1056, 25);
             this.toolStripAccountMan.TabIndex = 0;
             this.toolStripAccountMan.Text = "Account Management";
             // 
@@ -257,10 +261,11 @@
             // 
             this.tabPageAnnouncementManagement.Controls.Add(this.listViewAnnouncement);
             this.tabPageAnnouncementManagement.Controls.Add(this.toolStripAnnouncement);
-            this.tabPageAnnouncementManagement.Location = new System.Drawing.Point(4, 22);
+            this.tabPageAnnouncementManagement.ImageIndex = 2;
+            this.tabPageAnnouncementManagement.Location = new System.Drawing.Point(4, 23);
             this.tabPageAnnouncementManagement.Name = "tabPageAnnouncementManagement";
             this.tabPageAnnouncementManagement.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageAnnouncementManagement.Size = new System.Drawing.Size(635, 415);
+            this.tabPageAnnouncementManagement.Size = new System.Drawing.Size(1062, 414);
             this.tabPageAnnouncementManagement.TabIndex = 1;
             this.tabPageAnnouncementManagement.Text = "Announcements";
             this.tabPageAnnouncementManagement.UseVisualStyleBackColor = true;
@@ -275,7 +280,7 @@
             this.listViewAnnouncement.HideSelection = false;
             this.listViewAnnouncement.Location = new System.Drawing.Point(3, 28);
             this.listViewAnnouncement.Name = "listViewAnnouncement";
-            this.listViewAnnouncement.Size = new System.Drawing.Size(629, 384);
+            this.listViewAnnouncement.Size = new System.Drawing.Size(1056, 383);
             this.listViewAnnouncement.TabIndex = 1;
             this.listViewAnnouncement.UseCompatibleStateImageBehavior = false;
             this.listViewAnnouncement.View = System.Windows.Forms.View.Details;
@@ -313,7 +318,7 @@
             this.toolStripButtonAnnouncementsDisable});
             this.toolStripAnnouncement.Location = new System.Drawing.Point(3, 3);
             this.toolStripAnnouncement.Name = "toolStripAnnouncement";
-            this.toolStripAnnouncement.Size = new System.Drawing.Size(629, 25);
+            this.toolStripAnnouncement.Size = new System.Drawing.Size(1056, 25);
             this.toolStripAnnouncement.TabIndex = 0;
             this.toolStripAnnouncement.Text = "Announcement Management";
             // 
@@ -402,10 +407,11 @@
             // 
             this.tabPageReleaseDetails.Controls.Add(this.toolStrip1);
             this.tabPageReleaseDetails.Controls.Add(this.splitContainer2);
-            this.tabPageReleaseDetails.Location = new System.Drawing.Point(4, 22);
+            this.tabPageReleaseDetails.ImageIndex = 0;
+            this.tabPageReleaseDetails.Location = new System.Drawing.Point(4, 23);
             this.tabPageReleaseDetails.Name = "tabPageReleaseDetails";
             this.tabPageReleaseDetails.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageReleaseDetails.Size = new System.Drawing.Size(1062, 415);
+            this.tabPageReleaseDetails.Size = new System.Drawing.Size(1062, 414);
             this.tabPageReleaseDetails.TabIndex = 2;
             this.tabPageReleaseDetails.Text = "Releases";
             this.tabPageReleaseDetails.UseVisualStyleBackColor = true;
@@ -505,7 +511,7 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.listViewReleases);
             this.splitContainer2.Panel2.Padding = new System.Windows.Forms.Padding(0, 25, 0, 0);
-            this.splitContainer2.Size = new System.Drawing.Size(1056, 409);
+            this.splitContainer2.Size = new System.Drawing.Size(1056, 408);
             this.splitContainer2.SplitterDistance = 229;
             this.splitContainer2.TabIndex = 0;
             // 
@@ -514,7 +520,7 @@
             this.treeViewReleaseProduct.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeViewReleaseProduct.Location = new System.Drawing.Point(0, 25);
             this.treeViewReleaseProduct.Name = "treeViewReleaseProduct";
-            this.treeViewReleaseProduct.Size = new System.Drawing.Size(229, 384);
+            this.treeViewReleaseProduct.Size = new System.Drawing.Size(229, 383);
             this.treeViewReleaseProduct.TabIndex = 0;
             this.treeViewReleaseProduct.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewReleaseProduct_AfterSelect);
             // 
@@ -531,7 +537,7 @@
             this.listViewReleases.HideSelection = false;
             this.listViewReleases.Location = new System.Drawing.Point(0, 25);
             this.listViewReleases.Name = "listViewReleases";
-            this.listViewReleases.Size = new System.Drawing.Size(823, 384);
+            this.listViewReleases.Size = new System.Drawing.Size(823, 383);
             this.listViewReleases.TabIndex = 0;
             this.listViewReleases.UseCompatibleStateImageBehavior = false;
             this.listViewReleases.View = System.Windows.Forms.View.Details;
@@ -678,6 +684,14 @@
             this.buttonRefresh.UseVisualStyleBackColor = true;
             this.buttonRefresh.Click += new System.EventHandler(this.buttonRefresh_Click);
             // 
+            // imageListTabs
+            // 
+            this.imageListTabs.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListTabs.ImageStream")));
+            this.imageListTabs.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageListTabs.Images.SetKeyName(0, "box.png");
+            this.imageListTabs.Images.SetKeyName(1, "user.png");
+            this.imageListTabs.Images.SetKeyName(2, "megaphone.png");
+            // 
             // AdminForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -772,5 +786,6 @@
         private System.Windows.Forms.ToolStripButton toolStripButtonAnnouncementEnforce;
         private System.Windows.Forms.ToolStripButton toolStripButtonAnnouncementsDisable;
         private System.Windows.Forms.ColumnHeader columnHeaderPermissions;
+        private System.Windows.Forms.ImageList imageListTabs;
     }
 }

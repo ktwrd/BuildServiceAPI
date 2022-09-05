@@ -561,7 +561,7 @@ namespace BuildServiceAPI.DesktopClient
 
         private void toolStripButtonReleaseEdit_Click(object sender, EventArgs e)
         {
-            var form = new ReleaseEditForm(SelectedReleases[0], ContentManagerAlias.ReleaseInfoContent.IndexOf(SelectedReleases[0]));
+            var form = new ReleaseEditForm(SelectedReleases[0], ContentManagerAlias.ReleaseInfoContent.IndexOf(SelectedReleases[0]), this);
             form.Show();
             form.MdiParent = MdiParent;
             form.AdminForm = this;
