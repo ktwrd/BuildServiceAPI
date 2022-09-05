@@ -126,7 +126,7 @@
             this.tabPageAccountMan.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageAccountMan.Size = new System.Drawing.Size(1062, 414);
             this.tabPageAccountMan.TabIndex = 0;
-            this.tabPageAccountMan.Text = "Account Management";
+            this.tabPageAccountMan.Text = "Account";
             this.tabPageAccountMan.UseVisualStyleBackColor = true;
             // 
             // listViewAccount
@@ -267,7 +267,7 @@
             this.tabPageAnnouncementManagement.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageAnnouncementManagement.Size = new System.Drawing.Size(1062, 414);
             this.tabPageAnnouncementManagement.TabIndex = 1;
-            this.tabPageAnnouncementManagement.Text = "Announcements";
+            this.tabPageAnnouncementManagement.Text = "Announcement";
             this.tabPageAnnouncementManagement.UseVisualStyleBackColor = true;
             // 
             // listViewAnnouncement
@@ -413,7 +413,7 @@
             this.tabPageReleaseDetails.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageReleaseDetails.Size = new System.Drawing.Size(1062, 414);
             this.tabPageReleaseDetails.TabIndex = 2;
-            this.tabPageReleaseDetails.Text = "Releases";
+            this.tabPageReleaseDetails.Text = "Release";
             this.tabPageReleaseDetails.UseVisualStyleBackColor = true;
             // 
             // toolStrip1
