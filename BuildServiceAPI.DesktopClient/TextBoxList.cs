@@ -88,5 +88,12 @@ namespace BuildServiceAPI.DesktopClient
             }
             return success;
         }
+        public void RemoveAllItems()
+        {
+            foreach (var item in Items.ToArray())
+            {
+                RemoveItem(item);
+            }
+        }
     }
 }
