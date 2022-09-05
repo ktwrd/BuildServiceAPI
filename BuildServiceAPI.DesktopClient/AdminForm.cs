@@ -505,7 +505,7 @@ namespace BuildServiceAPI.DesktopClient
             if (treeViewReleaseProduct.SelectedNode == null) return;
             var targetReleaseList = ContentManagerAlias.ReleaseInfoContent
                 .Where(v => v.appID == treeViewReleaseProduct.SelectedNode.Text)
-                .OrderBy(s => s.timestamp).ToList();
+                .OrderByDescending(s => s.timestamp).ToList();
             if ((bool)Properties.Settings.Default["ShowLatestRelease"])
             {
                 targetReleaseList = targetReleaseList.GroupBy(v => v.remoteLocation)
@@ -561,7 +561,7 @@ namespace BuildServiceAPI.DesktopClient
 
         private void toolStripButtonReleaseEdit_Click(object sender, EventArgs e)
         {
-            var form = new ReleaseEditForm(SelectedReleases[0]);
+            var form = new ReleaseEditForm(SelectedReleases[0], ContentManagerAlias.ReleaseInfoContent.IndexOf(SelectedReleases[0]));
             form.Show();
             form.MdiParent = MdiParent;
             form.AdminForm = this;

@@ -35,6 +35,7 @@
             this.columnHeaderUsername = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderEnabled = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderGroups = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeaderPermissions = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.toolStripAccountMan = new System.Windows.Forms.ToolStrip();
             this.toolStripButtonUserModify = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -77,12 +78,11 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.textBoxLabelUsername = new BuildServiceAPI.DesktopClient.TextBoxLabel();
-            this.textBoxLabelPassword = new BuildServiceAPI.DesktopClient.TextBoxLabel();
+            this.textBoxLabelPassword = new BuildServiceAPI.DesktopClient.MaskedTextBoxLabel();
             this.textBoxLabelEndpoint = new BuildServiceAPI.DesktopClient.TextBoxLabel();
             this.buttonConnectionTokenFetch = new System.Windows.Forms.Button();
             this.buttonPushAll = new System.Windows.Forms.Button();
             this.buttonRefresh = new System.Windows.Forms.Button();
-            this.columnHeaderPermissions = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabControl1.SuspendLayout();
             this.tabPageAccountMan.SuspendLayout();
             this.toolStripAccountMan.SuspendLayout();
@@ -110,7 +110,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(643, 441);
+            this.tabControl1.Size = new System.Drawing.Size(1070, 441);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPageAccountMan
@@ -158,6 +158,12 @@
             this.columnHeaderGroups.Text = "Groups";
             this.columnHeaderGroups.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.columnHeaderGroups.Width = 200;
+            // 
+            // columnHeaderPermissions
+            // 
+            this.columnHeaderPermissions.Text = "Permissions";
+            this.columnHeaderPermissions.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.columnHeaderPermissions.Width = 180;
             // 
             // toolStripAccountMan
             // 
@@ -399,7 +405,7 @@
             this.tabPageReleaseDetails.Location = new System.Drawing.Point(4, 22);
             this.tabPageReleaseDetails.Name = "tabPageReleaseDetails";
             this.tabPageReleaseDetails.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageReleaseDetails.Size = new System.Drawing.Size(635, 415);
+            this.tabPageReleaseDetails.Size = new System.Drawing.Size(1062, 415);
             this.tabPageReleaseDetails.TabIndex = 2;
             this.tabPageReleaseDetails.Text = "Releases";
             this.tabPageReleaseDetails.UseVisualStyleBackColor = true;
@@ -414,7 +420,7 @@
             this.toolStripButtonReleaseEdit});
             this.toolStrip1.Location = new System.Drawing.Point(3, 3);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(629, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(1056, 25);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -499,8 +505,8 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.listViewReleases);
             this.splitContainer2.Panel2.Padding = new System.Windows.Forms.Padding(0, 25, 0, 0);
-            this.splitContainer2.Size = new System.Drawing.Size(629, 409);
-            this.splitContainer2.SplitterDistance = 176;
+            this.splitContainer2.Size = new System.Drawing.Size(1056, 409);
+            this.splitContainer2.SplitterDistance = 229;
             this.splitContainer2.TabIndex = 0;
             // 
             // treeViewReleaseProduct
@@ -508,7 +514,7 @@
             this.treeViewReleaseProduct.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeViewReleaseProduct.Location = new System.Drawing.Point(0, 25);
             this.treeViewReleaseProduct.Name = "treeViewReleaseProduct";
-            this.treeViewReleaseProduct.Size = new System.Drawing.Size(176, 384);
+            this.treeViewReleaseProduct.Size = new System.Drawing.Size(229, 384);
             this.treeViewReleaseProduct.TabIndex = 0;
             this.treeViewReleaseProduct.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewReleaseProduct_AfterSelect);
             // 
@@ -525,7 +531,7 @@
             this.listViewReleases.HideSelection = false;
             this.listViewReleases.Location = new System.Drawing.Point(0, 25);
             this.listViewReleases.Name = "listViewReleases";
-            this.listViewReleases.Size = new System.Drawing.Size(449, 384);
+            this.listViewReleases.Size = new System.Drawing.Size(823, 384);
             this.listViewReleases.TabIndex = 0;
             this.listViewReleases.UseCompatibleStateImageBehavior = false;
             this.listViewReleases.View = System.Windows.Forms.View.Details;
@@ -562,8 +568,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
-            this.splitContainer1.Size = new System.Drawing.Size(802, 441);
-            this.splitContainer1.SplitterDistance = 155;
+            this.splitContainer1.Size = new System.Drawing.Size(1264, 441);
+            this.splitContainer1.SplitterDistance = 190;
             this.splitContainer1.TabIndex = 1;
             // 
             // flowLayoutPanel1
@@ -578,7 +584,7 @@
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(155, 441);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(190, 441);
             this.flowLayoutPanel1.TabIndex = 0;
             this.flowLayoutPanel1.WrapContents = false;
             // 
@@ -589,11 +595,11 @@
             this.textBoxLabelUsername.LabelFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxLabelUsername.LabelText = "Username";
             this.textBoxLabelUsername.Location = new System.Drawing.Point(3, 3);
-            this.textBoxLabelUsername.MinimumSize = new System.Drawing.Size(150, 39);
+            this.textBoxLabelUsername.MinimumSize = new System.Drawing.Size(180, 39);
             this.textBoxLabelUsername.MultiLine = true;
             this.textBoxLabelUsername.Name = "textBoxLabelUsername";
             this.textBoxLabelUsername.ReadOnly = false;
-            this.textBoxLabelUsername.Size = new System.Drawing.Size(150, 39);
+            this.textBoxLabelUsername.Size = new System.Drawing.Size(180, 39);
             this.textBoxLabelUsername.TabIndex = 0;
             this.textBoxLabelUsername.TextboxContent = "";
             this.textBoxLabelUsername.TextboxLines = new string[0];
@@ -605,11 +611,11 @@
             this.textBoxLabelPassword.LabelFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxLabelPassword.LabelText = "Password";
             this.textBoxLabelPassword.Location = new System.Drawing.Point(3, 48);
-            this.textBoxLabelPassword.MinimumSize = new System.Drawing.Size(150, 39);
-            this.textBoxLabelPassword.MultiLine = true;
+            this.textBoxLabelPassword.MinimumSize = new System.Drawing.Size(180, 39);
+            this.textBoxLabelPassword.MultiLine = false;
             this.textBoxLabelPassword.Name = "textBoxLabelPassword";
             this.textBoxLabelPassword.ReadOnly = false;
-            this.textBoxLabelPassword.Size = new System.Drawing.Size(150, 39);
+            this.textBoxLabelPassword.Size = new System.Drawing.Size(180, 39);
             this.textBoxLabelPassword.TabIndex = 1;
             this.textBoxLabelPassword.TextboxContent = "";
             this.textBoxLabelPassword.TextboxLines = new string[0];
@@ -621,11 +627,11 @@
             this.textBoxLabelEndpoint.LabelFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxLabelEndpoint.LabelText = "URL";
             this.textBoxLabelEndpoint.Location = new System.Drawing.Point(3, 93);
-            this.textBoxLabelEndpoint.MinimumSize = new System.Drawing.Size(150, 39);
+            this.textBoxLabelEndpoint.MinimumSize = new System.Drawing.Size(180, 39);
             this.textBoxLabelEndpoint.MultiLine = true;
             this.textBoxLabelEndpoint.Name = "textBoxLabelEndpoint";
             this.textBoxLabelEndpoint.ReadOnly = false;
-            this.textBoxLabelEndpoint.Size = new System.Drawing.Size(150, 39);
+            this.textBoxLabelEndpoint.Size = new System.Drawing.Size(180, 39);
             this.textBoxLabelEndpoint.TabIndex = 2;
             this.textBoxLabelEndpoint.TextboxContent = "";
             this.textBoxLabelEndpoint.TextboxLines = new string[0];
@@ -637,7 +643,7 @@
             this.buttonConnectionTokenFetch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buttonConnectionTokenFetch.Location = new System.Drawing.Point(3, 138);
             this.buttonConnectionTokenFetch.Name = "buttonConnectionTokenFetch";
-            this.buttonConnectionTokenFetch.Size = new System.Drawing.Size(150, 23);
+            this.buttonConnectionTokenFetch.Size = new System.Drawing.Size(180, 23);
             this.buttonConnectionTokenFetch.TabIndex = 3;
             this.buttonConnectionTokenFetch.Text = "Get Token";
             this.buttonConnectionTokenFetch.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -651,7 +657,7 @@
             this.buttonPushAll.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buttonPushAll.Location = new System.Drawing.Point(3, 167);
             this.buttonPushAll.Name = "buttonPushAll";
-            this.buttonPushAll.Size = new System.Drawing.Size(150, 23);
+            this.buttonPushAll.Size = new System.Drawing.Size(180, 23);
             this.buttonPushAll.TabIndex = 4;
             this.buttonPushAll.Text = "Push Changes";
             this.buttonPushAll.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -665,27 +671,21 @@
             this.buttonRefresh.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buttonRefresh.Location = new System.Drawing.Point(3, 196);
             this.buttonRefresh.Name = "buttonRefresh";
-            this.buttonRefresh.Size = new System.Drawing.Size(150, 23);
+            this.buttonRefresh.Size = new System.Drawing.Size(180, 23);
             this.buttonRefresh.TabIndex = 5;
             this.buttonRefresh.Text = "Refresh";
             this.buttonRefresh.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.buttonRefresh.UseVisualStyleBackColor = true;
             this.buttonRefresh.Click += new System.EventHandler(this.buttonRefresh_Click);
             // 
-            // columnHeaderPermissions
-            // 
-            this.columnHeaderPermissions.Text = "Permissions";
-            this.columnHeaderPermissions.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.columnHeaderPermissions.Width = 180;
-            // 
             // AdminForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(802, 441);
+            this.ClientSize = new System.Drawing.Size(1264, 441);
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(720, 480);
+            this.MinimumSize = new System.Drawing.Size(1280, 480);
             this.Name = "AdminForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Server";
@@ -746,7 +746,7 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private BuildServiceAPI.DesktopClient.TextBoxLabel textBoxLabelUsername;
-        private BuildServiceAPI.DesktopClient.TextBoxLabel textBoxLabelPassword;
+        private BuildServiceAPI.DesktopClient.MaskedTextBoxLabel textBoxLabelPassword;
         private BuildServiceAPI.DesktopClient.TextBoxLabel textBoxLabelEndpoint;
         private System.Windows.Forms.Button buttonConnectionTokenFetch;
         private System.Windows.Forms.ColumnHeader columnHeaderGroups;
