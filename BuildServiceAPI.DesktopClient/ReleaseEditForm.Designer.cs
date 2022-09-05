@@ -32,31 +32,31 @@
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.textBoxLabelName = new BuildServiceAPI.DesktopClient.TextBoxLabel();
-            this.textBoxLabelProductName = new BuildServiceAPI.DesktopClient.TextBoxLabel();
-            this.textBoxLabelAppID = new BuildServiceAPI.DesktopClient.TextBoxLabel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
-            this.textBoxLabelVersion = new BuildServiceAPI.DesktopClient.TextBoxLabel();
-            this.textBoxLabelCommitHash = new BuildServiceAPI.DesktopClient.TextBoxLabel();
-            this.comboBoxLabelReleaseType = new BuildServiceAPI.DesktopClient.ComboBoxLabel();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.buttonSave = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.textBoxListGroupWhitelist = new BuildServiceAPI.DesktopClient.TextBoxList();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.textBoxListGroupBlacklist = new BuildServiceAPI.DesktopClient.TextBoxList();
             this.buttonReset = new System.Windows.Forms.Button();
+            this.textBoxLabelName = new BuildServiceAPI.DesktopClient.TextBoxLabel();
+            this.textBoxLabelProductName = new BuildServiceAPI.DesktopClient.TextBoxLabel();
+            this.textBoxLabelAppID = new BuildServiceAPI.DesktopClient.TextBoxLabel();
+            this.textBoxLabelVersion = new BuildServiceAPI.DesktopClient.TextBoxLabel();
+            this.textBoxLabelCommitHash = new BuildServiceAPI.DesktopClient.TextBoxLabel();
+            this.comboBoxLabelReleaseType = new BuildServiceAPI.DesktopClient.ComboBoxLabel();
+            this.textBoxListGroupWhitelist = new BuildServiceAPI.DesktopClient.TextBoxList();
+            this.textBoxListGroupBlacklist = new BuildServiceAPI.DesktopClient.TextBoxList();
             this.flowLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.flowLayoutPanel4.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
-            this.flowLayoutPanel3.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.flowLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // flowLayoutPanel1
@@ -94,6 +94,101 @@
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(156, 135);
             this.flowLayoutPanel2.TabIndex = 0;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.AutoSize = true;
+            this.groupBox2.Controls.Add(this.flowLayoutPanel4);
+            this.groupBox2.Location = new System.Drawing.Point(171, 3);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(162, 154);
+            this.groupBox2.TabIndex = 2;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Version Details";
+            // 
+            // flowLayoutPanel4
+            // 
+            this.flowLayoutPanel4.AutoSize = true;
+            this.flowLayoutPanel4.Controls.Add(this.textBoxLabelVersion);
+            this.flowLayoutPanel4.Controls.Add(this.textBoxLabelCommitHash);
+            this.flowLayoutPanel4.Controls.Add(this.comboBoxLabelReleaseType);
+            this.flowLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel4.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel4.Location = new System.Drawing.Point(3, 16);
+            this.flowLayoutPanel4.Name = "flowLayoutPanel4";
+            this.flowLayoutPanel4.Size = new System.Drawing.Size(156, 135);
+            this.flowLayoutPanel4.TabIndex = 0;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.textBoxListGroupWhitelist);
+            this.groupBox3.Location = new System.Drawing.Point(339, 3);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(320, 148);
+            this.groupBox3.TabIndex = 3;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Group Whitelist";
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.textBoxListGroupBlacklist);
+            this.groupBox4.Location = new System.Drawing.Point(3, 163);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(330, 150);
+            this.groupBox4.TabIndex = 4;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Group Blacklist";
+            // 
+            // buttonSave
+            // 
+            this.buttonSave.Image = ((System.Drawing.Image)(resources.GetObject("buttonSave.Image")));
+            this.buttonSave.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonSave.Location = new System.Drawing.Point(3, 3);
+            this.buttonSave.Name = "buttonSave";
+            this.buttonSave.Size = new System.Drawing.Size(63, 23);
+            this.buttonSave.TabIndex = 1;
+            this.buttonSave.Text = "Save";
+            this.buttonSave.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.buttonSave.UseVisualStyleBackColor = true;
+            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel3, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 0, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(800, 450);
+            this.tableLayoutPanel1.TabIndex = 2;
+            // 
+            // flowLayoutPanel3
+            // 
+            this.flowLayoutPanel3.Controls.Add(this.buttonSave);
+            this.flowLayoutPanel3.Controls.Add(this.buttonReset);
+            this.flowLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(3, 413);
+            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(794, 34);
+            this.flowLayoutPanel3.TabIndex = 3;
+            // 
+            // buttonReset
+            // 
+            this.buttonReset.Image = ((System.Drawing.Image)(resources.GetObject("buttonReset.Image")));
+            this.buttonReset.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonReset.Location = new System.Drawing.Point(72, 3);
+            this.buttonReset.Name = "buttonReset";
+            this.buttonReset.Size = new System.Drawing.Size(62, 23);
+            this.buttonReset.TabIndex = 2;
+            this.buttonReset.Text = "Reset";
+            this.buttonReset.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.buttonReset.UseVisualStyleBackColor = true;
+            this.buttonReset.Click += new System.EventHandler(this.buttonReset_Click);
             // 
             // textBoxLabelName
             // 
@@ -142,30 +237,6 @@
             this.textBoxLabelAppID.TabIndex = 2;
             this.textBoxLabelAppID.TextboxContent = "";
             this.textBoxLabelAppID.TextboxLines = new string[0];
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.AutoSize = true;
-            this.groupBox2.Controls.Add(this.flowLayoutPanel4);
-            this.groupBox2.Location = new System.Drawing.Point(171, 3);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(162, 154);
-            this.groupBox2.TabIndex = 2;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Version Details";
-            // 
-            // flowLayoutPanel4
-            // 
-            this.flowLayoutPanel4.AutoSize = true;
-            this.flowLayoutPanel4.Controls.Add(this.textBoxLabelVersion);
-            this.flowLayoutPanel4.Controls.Add(this.textBoxLabelCommitHash);
-            this.flowLayoutPanel4.Controls.Add(this.comboBoxLabelReleaseType);
-            this.flowLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel4.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel4.Location = new System.Drawing.Point(3, 16);
-            this.flowLayoutPanel4.Name = "flowLayoutPanel4";
-            this.flowLayoutPanel4.Size = new System.Drawing.Size(156, 135);
-            this.flowLayoutPanel4.TabIndex = 0;
             // 
             // textBoxLabelVersion
             // 
@@ -218,54 +289,6 @@
             this.comboBoxLabelReleaseType.Size = new System.Drawing.Size(150, 39);
             this.comboBoxLabelReleaseType.TabIndex = 4;
             // 
-            // buttonSave
-            // 
-            this.buttonSave.Image = ((System.Drawing.Image)(resources.GetObject("buttonSave.Image")));
-            this.buttonSave.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonSave.Location = new System.Drawing.Point(3, 3);
-            this.buttonSave.Name = "buttonSave";
-            this.buttonSave.Size = new System.Drawing.Size(63, 23);
-            this.buttonSave.TabIndex = 1;
-            this.buttonSave.Text = "Save";
-            this.buttonSave.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.buttonSave.UseVisualStyleBackColor = true;
-            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel3, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 0, 0);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(800, 450);
-            this.tableLayoutPanel1.TabIndex = 2;
-            // 
-            // flowLayoutPanel3
-            // 
-            this.flowLayoutPanel3.Controls.Add(this.buttonSave);
-            this.flowLayoutPanel3.Controls.Add(this.buttonReset);
-            this.flowLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel3.Location = new System.Drawing.Point(3, 413);
-            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
-            this.flowLayoutPanel3.Size = new System.Drawing.Size(794, 34);
-            this.flowLayoutPanel3.TabIndex = 3;
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.textBoxListGroupWhitelist);
-            this.groupBox3.Location = new System.Drawing.Point(339, 3);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(320, 148);
-            this.groupBox3.TabIndex = 3;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Group Whitelist";
-            // 
             // textBoxListGroupWhitelist
             // 
             this.textBoxListGroupWhitelist.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -273,16 +296,6 @@
             this.textBoxListGroupWhitelist.Name = "textBoxListGroupWhitelist";
             this.textBoxListGroupWhitelist.Size = new System.Drawing.Size(314, 129);
             this.textBoxListGroupWhitelist.TabIndex = 0;
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.textBoxListGroupBlacklist);
-            this.groupBox4.Location = new System.Drawing.Point(3, 163);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(330, 150);
-            this.groupBox4.TabIndex = 4;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Group Blacklist";
             // 
             // textBoxListGroupBlacklist
             // 
@@ -292,27 +305,16 @@
             this.textBoxListGroupBlacklist.Size = new System.Drawing.Size(324, 131);
             this.textBoxListGroupBlacklist.TabIndex = 0;
             // 
-            // buttonReset
-            // 
-            this.buttonReset.Image = ((System.Drawing.Image)(resources.GetObject("buttonReset.Image")));
-            this.buttonReset.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonReset.Location = new System.Drawing.Point(72, 3);
-            this.buttonReset.Name = "buttonReset";
-            this.buttonReset.Size = new System.Drawing.Size(62, 23);
-            this.buttonReset.TabIndex = 2;
-            this.buttonReset.Text = "Reset";
-            this.buttonReset.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.buttonReset.UseVisualStyleBackColor = true;
-            this.buttonReset.Click += new System.EventHandler(this.buttonReset_Click);
-            // 
             // ReleaseEditForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.tableLayoutPanel1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ReleaseEditForm";
             this.Text = "Edit Release Info";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ReleaseEditForm_FormClosing);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -323,10 +325,10 @@
             this.groupBox2.PerformLayout();
             this.flowLayoutPanel4.ResumeLayout(false);
             this.flowLayoutPanel4.PerformLayout();
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.flowLayoutPanel3.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

@@ -16,9 +16,10 @@ namespace BuildServiceAPI.DesktopClient
         public AdminForm AdminForm;
         public ReleaseInfo ReleaseInfo;
         public int ReleaseIndex;
-        public ReleaseEditForm(ReleaseInfo releaseInfo, int index)
+        public ReleaseEditForm(ReleaseInfo releaseInfo, int index, AdminForm adminForm)
         {
             InitializeComponent();
+            this.AdminForm = adminForm;
             this.ReleaseInfo = releaseInfo;
             ReleaseIndex = index;
             comboBoxLabelReleaseType.Items.Add(ReleaseType.Stable);
@@ -28,6 +29,7 @@ namespace BuildServiceAPI.DesktopClient
 
             Text = $"Release Edit Form - {ReleaseInfo.commitHash}";
             LoadContent();
+            this.AdminForm.Enabled = false;
         }
 
         private void ResetChanges()
@@ -45,8 +47,6 @@ namespace BuildServiceAPI.DesktopClient
             textBoxLabelCommitHash.TextboxContent = ReleaseInfo.commitHash;
             comboBoxLabelReleaseType.SelectedIndex = (int)ReleaseInfo.releaseType;
 
-            textBoxListGroupWhitelist.MinimumItems = 0;
-            textBoxListGroupBlacklist.MinimumItems = 0;
             textBoxListGroupWhitelist.RemoveAllItems();
             textBoxListGroupBlacklist.RemoveAllItems();
             foreach (var item in ReleaseInfo.groupWhitelist)
@@ -90,6 +90,11 @@ namespace BuildServiceAPI.DesktopClient
         private void buttonReset_Click(object sender, EventArgs e)
         {
             ResetChanges();
+        }
+
+        private void ReleaseEditForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            this.AdminForm.Enabled = true;
         }
     }
 }
