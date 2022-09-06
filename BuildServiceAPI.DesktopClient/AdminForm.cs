@@ -2,6 +2,7 @@
 using BuildServiceCommon.Authorization;
 using BuildServiceCommon.AutoUpdater;
 using kate.shared.Helpers;
+using Nini.Config;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,10 +23,11 @@ namespace BuildServiceAPI.DesktopClient
         public AdminForm()
         {
             InitializeComponent();
-            textBoxLabelUsername.TextboxContent = (string)Properties.Settings.Default["Username"];
-            textBoxLabelPassword.TextboxContent = (string)Properties.Settings.Default["Password"];
-            textBoxLabelEndpoint.TextboxContent = (string)Properties.Settings.Default["ServerEndpoint"];
-            showLatestReleaseToolStripMenuItem.Checked = (bool)Properties.Settings.Default["ShowLatestRelease"];
+            
+            textBoxLabelUsername.TextboxContent = UserConfig.GetString("Authentication", "Username", "");
+            textBoxLabelPassword.TextboxContent = UserConfig.GetString("Authentication", "Password", "");
+            textBoxLabelEndpoint.TextboxContent = UserConfig.GetString("Authentication", "Endpoint", "");
+            showLatestReleaseToolStripMenuItem.Checked = UserConfig.GetBoolean("General", "ShowLatestRelease", true);
             httpClient = new HttpClient();
             Refresh += AdminForm_Refresh;
             PushChanges += AdminForm_PushChanges;
@@ -61,9 +63,9 @@ namespace BuildServiceAPI.DesktopClient
 
         private void buttonConnectionTokenFetch_Click(object sender, EventArgs e)
         {
-            Properties.Settings.Default["Username"] = textBoxLabelUsername.TextboxContent;
-            Properties.Settings.Default["Password"] = textBoxLabelPassword.TextboxContent;
-            Properties.Settings.Default["ServerEndpoint"] = textBoxLabelEndpoint.TextboxContent;
+            UserConfig.Set("Authentication", "Username", textBoxLabelUsername.TextboxContent);
+            UserConfig.Set("Authentication", "Password", textBoxLabelPassword.TextboxContent);
+            UserConfig.Set("Authentication", "Endpoint", textBoxLabelEndpoint.TextboxContent);
             Program.Save();
 
             // Fetch token
@@ -76,7 +78,9 @@ namespace BuildServiceAPI.DesktopClient
 
         public void UpdateToken()
         {
-            var targetURL = Endpoint.TokenGrant(Properties.Settings.Default["Username"].ToString(), Properties.Settings.Default["Password"].ToString());
+            var targetURL = Endpoint.TokenGrant(
+                UserConfig.GetString("Authentication", "Username", ""),
+                UserConfig.GetString("Authentication", "Password", ""));
             Trace.WriteLine($"[AdminForm->UpdateToken] Fetching Response of {targetURL}");
 
             var response = httpClient.GetAsync(targetURL).Result;
@@ -507,7 +511,7 @@ namespace BuildServiceAPI.DesktopClient
             var targetReleaseList = ContentManagerAlias.ReleaseInfoContent
                 .Where(v => v.appID == treeViewReleaseProduct.SelectedNode.Text)
                 .OrderByDescending(s => s.timestamp).ToList();
-            if ((bool)Properties.Settings.Default["ShowLatestRelease"])
+            if (UserConfig.GetBoolean("General", "ShowLatestRelease", true))
             {
                 targetReleaseList = targetReleaseList.GroupBy(v => v.remoteLocation)
                     .Select(v => v.First()).ToList();
@@ -539,7 +543,7 @@ namespace BuildServiceAPI.DesktopClient
 
         private void showLatestReleaseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Properties.Settings.Default["ShowLatestRelease"] = showLatestReleaseToolStripMenuItem.Checked;
+            UserConfig.Set("General", "ShowLatestRelease", showLatestReleaseToolStripMenuItem.Checked);
             Program.Save();
             RefreshReleaseListView();
         }

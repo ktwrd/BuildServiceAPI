@@ -17,11 +17,12 @@ namespace BuildServiceAPI.DesktopClient
         {
             get
             {
-                return (string)Properties.Settings.Default["ServerEndpoint"]; ;
+                return UserConfig.GetString("Authentication", "Endpoint");
             }
             set
             {
-                Properties.Settings.Default["APIEndpoint"] = value;
+                UserConfig.Set("Authentication", "Endpoint", value);
+                UserConfig.Save();
                 OnBaseAPIChanged(value);
             }
         }

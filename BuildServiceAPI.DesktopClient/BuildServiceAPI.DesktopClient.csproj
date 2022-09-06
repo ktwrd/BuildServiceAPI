@@ -75,6 +75,9 @@
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\..\Minalyze\MinalyzeMonorepo\packages\Microsoft.Bcl.AsyncInterfaces.6.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
+    <Reference Include="Nini, Version=1.1.0.0, Culture=neutral, PublicKeyToken=691faec150a7fa7b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Trove.Nini.1.1.0.0\lib\net20\Nini.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\..\Minalyze\MinalyzeMonorepo\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
@@ -224,6 +227,7 @@
     <Compile Include="TextBoxListItem.Designer.cs">
       <DependentUpon>TextBoxListItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserConfig.cs" />
     <EmbeddedResource Include="AccountGroupForm.resx">
       <DependentUpon>AccountGroupForm.cs</DependentUpon>
     </EmbeddedResource>
