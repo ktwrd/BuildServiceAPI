@@ -127,6 +127,7 @@
             this.tabPageAccountMan.Controls.Add(this.toolStripAccountMan);
             this.tabPageAccountMan.ImageIndex = 1;
             this.tabPageAccountMan.Location = new System.Drawing.Point(4, 23);
+            this.tabPageAccountMan.Margin = new System.Windows.Forms.Padding(0);
             this.tabPageAccountMan.Name = "tabPageAccountMan";
             this.tabPageAccountMan.Size = new System.Drawing.Size(1250, 383);
             this.tabPageAccountMan.TabIndex = 0;
@@ -153,7 +154,7 @@
             // columnHeaderUsername
             // 
             this.columnHeaderUsername.Text = "Username";
-            this.columnHeaderUsername.Width = 120;
+            this.columnHeaderUsername.Width = 219;
             // 
             // columnHeaderEnabled
             // 
@@ -171,10 +172,11 @@
             // 
             this.columnHeaderPermissions.Text = "Permissions";
             this.columnHeaderPermissions.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.columnHeaderPermissions.Width = 180;
+            this.columnHeaderPermissions.Width = 233;
             // 
             // toolStripAccountMan
             // 
+            this.toolStripAccountMan.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStripAccountMan.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButtonUserModify,
             this.toolStripSeparator2,
@@ -186,6 +188,8 @@
             this.toolStripButtonAccountGroupMan});
             this.toolStripAccountMan.Location = new System.Drawing.Point(0, 0);
             this.toolStripAccountMan.Name = "toolStripAccountMan";
+            this.toolStripAccountMan.Padding = new System.Windows.Forms.Padding(0);
+            this.toolStripAccountMan.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             this.toolStripAccountMan.Size = new System.Drawing.Size(1250, 25);
             this.toolStripAccountMan.TabIndex = 0;
             this.toolStripAccountMan.Text = "Account Management";
@@ -267,6 +271,7 @@
             this.tabPageAnnouncementManagement.Controls.Add(this.toolStripAnnouncement);
             this.tabPageAnnouncementManagement.ImageIndex = 2;
             this.tabPageAnnouncementManagement.Location = new System.Drawing.Point(4, 23);
+            this.tabPageAnnouncementManagement.Margin = new System.Windows.Forms.Padding(0);
             this.tabPageAnnouncementManagement.Name = "tabPageAnnouncementManagement";
             this.tabPageAnnouncementManagement.Size = new System.Drawing.Size(1250, 383);
             this.tabPageAnnouncementManagement.TabIndex = 1;
@@ -293,7 +298,7 @@
             // columnHeaderContent
             // 
             this.columnHeaderContent.Text = "Message";
-            this.columnHeaderContent.Width = 200;
+            this.columnHeaderContent.Width = 242;
             // 
             // columnHeaderEnable
             // 
@@ -309,6 +314,7 @@
             // 
             // toolStripAnnouncement
             // 
+            this.toolStripAnnouncement.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStripAnnouncement.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButtonAnnouncementAdd,
             this.toolStripButtonAnnouncementEdit,
@@ -321,6 +327,7 @@
             this.toolStripButtonAnnouncementsDisable});
             this.toolStripAnnouncement.Location = new System.Drawing.Point(0, 0);
             this.toolStripAnnouncement.Name = "toolStripAnnouncement";
+            this.toolStripAnnouncement.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             this.toolStripAnnouncement.Size = new System.Drawing.Size(1250, 25);
             this.toolStripAnnouncement.TabIndex = 0;
             this.toolStripAnnouncement.Text = "Announcement Management";
@@ -412,6 +419,7 @@
             this.tabPageReleaseDetails.Controls.Add(this.splitContainer2);
             this.tabPageReleaseDetails.ImageIndex = 0;
             this.tabPageReleaseDetails.Location = new System.Drawing.Point(4, 23);
+            this.tabPageReleaseDetails.Margin = new System.Windows.Forms.Padding(0);
             this.tabPageReleaseDetails.Name = "tabPageReleaseDetails";
             this.tabPageReleaseDetails.Size = new System.Drawing.Size(1250, 383);
             this.tabPageReleaseDetails.TabIndex = 2;
@@ -420,6 +428,7 @@
             // 
             // toolStrip1
             // 
+            this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButtonReleaseRefresh,
             this.toolStripDropDownButtonReleaseFilter,
@@ -428,6 +437,8 @@
             this.toolStripButtonReleaseEdit});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Padding = new System.Windows.Forms.Padding(0);
+            this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             this.toolStrip1.Size = new System.Drawing.Size(1250, 25);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
@@ -502,6 +513,7 @@
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Margin = new System.Windows.Forms.Padding(0);
             this.splitContainer2.Name = "splitContainer2";
             // 
             // splitContainer2.Panel1
@@ -590,9 +602,10 @@
             this.flowLayoutPanel2.Controls.Add(this.textBoxLabelUsername);
             this.flowLayoutPanel2.Controls.Add(this.textBoxLabelPassword);
             this.flowLayoutPanel2.Controls.Add(this.textBoxLabelEndpoint);
-            this.flowLayoutPanel2.Controls.Add(this.buttonConnectionTokenFetch);
             this.flowLayoutPanel2.Controls.Add(this.checkBoxAuthAutoLogin);
+            this.flowLayoutPanel2.Controls.Add(this.buttonConnectionTokenFetch);
             this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 16);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(314, 228);
@@ -602,7 +615,7 @@
             // 
             this.buttonConnectionTokenFetch.Image = ((System.Drawing.Image)(resources.GetObject("buttonConnectionTokenFetch.Image")));
             this.buttonConnectionTokenFetch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonConnectionTokenFetch.Location = new System.Drawing.Point(3, 138);
+            this.buttonConnectionTokenFetch.Location = new System.Drawing.Point(3, 161);
             this.buttonConnectionTokenFetch.Name = "buttonConnectionTokenFetch";
             this.buttonConnectionTokenFetch.Size = new System.Drawing.Size(105, 23);
             this.buttonConnectionTokenFetch.TabIndex = 3;
@@ -622,12 +635,16 @@
             // 
             // toolStrip2
             // 
+            this.toolStrip2.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButtonMainPushChanges,
             this.toolStripButtonMainPull});
-            this.toolStrip2.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip2.Location = new System.Drawing.Point(3, 0);
+            this.toolStrip2.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Size = new System.Drawing.Size(1264, 25);
+            this.toolStrip2.Padding = new System.Windows.Forms.Padding(3, 0, 3, 0);
+            this.toolStrip2.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            this.toolStrip2.Size = new System.Drawing.Size(1258, 25);
             this.toolStrip2.TabIndex = 1;
             this.toolStrip2.Text = "toolStrip2";
             // 
@@ -669,7 +686,7 @@
             // checkBoxAuthAutoLogin
             // 
             this.checkBoxAuthAutoLogin.AutoSize = true;
-            this.checkBoxAuthAutoLogin.Location = new System.Drawing.Point(114, 138);
+            this.checkBoxAuthAutoLogin.Location = new System.Drawing.Point(3, 138);
             this.checkBoxAuthAutoLogin.Name = "checkBoxAuthAutoLogin";
             this.checkBoxAuthAutoLogin.Size = new System.Drawing.Size(117, 17);
             this.checkBoxAuthAutoLogin.TabIndex = 4;
@@ -684,11 +701,11 @@
             this.textBoxLabelUsername.LabelFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxLabelUsername.LabelText = "Username";
             this.textBoxLabelUsername.Location = new System.Drawing.Point(3, 3);
-            this.textBoxLabelUsername.MinimumSize = new System.Drawing.Size(220, 39);
+            this.textBoxLabelUsername.MinimumSize = new System.Drawing.Size(308, 39);
             this.textBoxLabelUsername.MultiLine = true;
             this.textBoxLabelUsername.Name = "textBoxLabelUsername";
             this.textBoxLabelUsername.ReadOnly = false;
-            this.textBoxLabelUsername.Size = new System.Drawing.Size(220, 39);
+            this.textBoxLabelUsername.Size = new System.Drawing.Size(308, 39);
             this.textBoxLabelUsername.TabIndex = 0;
             this.textBoxLabelUsername.TextboxContent = "";
             this.textBoxLabelUsername.TextboxLines = new string[0];
@@ -700,11 +717,11 @@
             this.textBoxLabelPassword.LabelFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxLabelPassword.LabelText = "Password";
             this.textBoxLabelPassword.Location = new System.Drawing.Point(3, 48);
-            this.textBoxLabelPassword.MinimumSize = new System.Drawing.Size(220, 39);
+            this.textBoxLabelPassword.MinimumSize = new System.Drawing.Size(308, 39);
             this.textBoxLabelPassword.MultiLine = false;
             this.textBoxLabelPassword.Name = "textBoxLabelPassword";
             this.textBoxLabelPassword.ReadOnly = false;
-            this.textBoxLabelPassword.Size = new System.Drawing.Size(220, 39);
+            this.textBoxLabelPassword.Size = new System.Drawing.Size(308, 39);
             this.textBoxLabelPassword.TabIndex = 1;
             this.textBoxLabelPassword.TextboxContent = "";
             this.textBoxLabelPassword.TextboxLines = new string[0];
@@ -716,11 +733,11 @@
             this.textBoxLabelEndpoint.LabelFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxLabelEndpoint.LabelText = "URL";
             this.textBoxLabelEndpoint.Location = new System.Drawing.Point(3, 93);
-            this.textBoxLabelEndpoint.MinimumSize = new System.Drawing.Size(220, 39);
+            this.textBoxLabelEndpoint.MinimumSize = new System.Drawing.Size(308, 39);
             this.textBoxLabelEndpoint.MultiLine = true;
             this.textBoxLabelEndpoint.Name = "textBoxLabelEndpoint";
             this.textBoxLabelEndpoint.ReadOnly = false;
-            this.textBoxLabelEndpoint.Size = new System.Drawing.Size(220, 39);
+            this.textBoxLabelEndpoint.Size = new System.Drawing.Size(308, 39);
             this.textBoxLabelEndpoint.TabIndex = 2;
             this.textBoxLabelEndpoint.TextboxContent = "";
             this.textBoxLabelEndpoint.TextboxLines = new string[0];
