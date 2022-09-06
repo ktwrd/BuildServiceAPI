@@ -28,6 +28,7 @@ namespace BuildServiceAPI.DesktopClient
             textBoxLabelPassword.TextboxContent = UserConfig.GetString("Authentication", "Password", "");
             textBoxLabelEndpoint.TextboxContent = UserConfig.GetString("Authentication", "Endpoint", "");
             showLatestReleaseToolStripMenuItem.Checked = UserConfig.GetBoolean("General", "ShowLatestRelease", true);
+            checkBoxAuthAutoLogin.Checked = UserConfig.GetBoolean("Authentication", "AutoLogin", false);
             httpClient = new HttpClient();
             Refresh += AdminForm_Refresh;
             PushChanges += AdminForm_PushChanges;
@@ -53,15 +54,15 @@ namespace BuildServiceAPI.DesktopClient
 
         private void AdminForm_PushChanges()
         {
-            buttonPushAll_Click(null, null);
+            toolStripButtonMainPushChanges_Click(null, null);
         }
 
         private void AdminForm_Refresh()
         {
-            buttonRefresh_Click(null, null);
+            toolStripButtonMainPull_Click(null, null);
         }
 
-        private void buttonConnectionTokenFetch_Click(object sender, EventArgs e)
+        public void FetchToken()
         {
             UserConfig.Set("Authentication", "Username", textBoxLabelUsername.TextboxContent);
             UserConfig.Set("Authentication", "Password", textBoxLabelPassword.TextboxContent);
@@ -111,7 +112,10 @@ namespace BuildServiceAPI.DesktopClient
         public void OnPushChanges()
         {
             if (PushChanges != null)
+            {
                 PushChanges?.Invoke();
+                Trace.WriteLine($"[AdminForm->OnPushChanges] Invoked PushChanges");
+            }
         }
 
         public event VoidDelegate Refresh;
@@ -608,5 +612,60 @@ namespace BuildServiceAPI.DesktopClient
         private void listViewReleases_Click(object sender, EventArgs e) => listViewReleases_SelectedIndexChanged(null, null);
         #endregion
 
+        private void toolStripButtonMainPushChanges_Click(object sender, EventArgs e)
+        {
+            toolStripAnnouncement.Enabled = false;
+            listViewAnnouncement.Enabled = false;
+            var taskArray = new Task[]
+            {
+                new Task(delegate { PushAnnouncements(); }),
+                new Task(delegate { PushContentManager(); })
+            };
+            foreach (var i in taskArray)
+                i.Start();
+            Task.WhenAll(taskArray).Wait();
+            toolStripAnnouncement.Enabled = true;
+            listViewAnnouncement.Enabled = true;
+            RefreshAnnouncementList();
+        }
+
+        private void buttonConnectionTokenFetch_Click(object sender, EventArgs e)
+        {
+            FetchToken();
+        }
+
+        private void toolStripButtonMainPull_Click(object sender, EventArgs e)
+        {
+            toolStripAnnouncement.Enabled = false;
+            listViewAnnouncement.Enabled = false;
+            var taskArray = new Task[]
+            {
+                new Task(delegate { RefreshAnnouncements(); }),
+                new Task(delegate { RefreshContentManager(); }),
+                new Task(delegate { RefreshAccounts(); })
+            };
+            foreach (var i in taskArray)
+                i.Start();
+            Task.WhenAll(taskArray).Wait();
+            Enabled = true;
+            toolStripAnnouncement.Enabled = true;
+            listViewAnnouncement.Enabled = true;
+            RefreshAnnouncementList();
+            RefreshReleaseTree();
+            RefreshReleaseListView();
+            RefreshAccountListView();
+        }
+
+        private void checkBoxAuthAutoLogin_CheckedChanged(object sender, EventArgs e)
+        {
+            UserConfig.Set("Authentication", "AutoLogin", checkBoxAuthAutoLogin.Checked);
+            UserConfig.Save();
+        }
+
+        private void AdminForm_Shown(object sender, EventArgs e)
+        {
+            if (UserConfig.GetBoolean("Authentication", "AutoLogin", false))
+                FetchToken();
+        }
     }
 }

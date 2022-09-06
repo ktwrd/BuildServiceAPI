@@ -76,15 +76,19 @@
             this.columnHeaderCommitHashShort = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderReleaseSignature = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderReleaseTimestamp = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.tabPageSettings = new System.Windows.Forms.TabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.buttonConnectionTokenFetch = new System.Windows.Forms.Button();
+            this.imageListTabs = new System.Windows.Forms.ImageList(this.components);
+            this.toolStrip2 = new System.Windows.Forms.ToolStrip();
+            this.toolStripButtonMainPushChanges = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonMainPull = new System.Windows.Forms.ToolStripButton();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.checkBoxAuthAutoLogin = new System.Windows.Forms.CheckBox();
             this.textBoxLabelUsername = new BuildServiceAPI.DesktopClient.TextBoxLabel();
             this.textBoxLabelPassword = new BuildServiceAPI.DesktopClient.MaskedTextBoxLabel();
             this.textBoxLabelEndpoint = new BuildServiceAPI.DesktopClient.TextBoxLabel();
-            this.buttonConnectionTokenFetch = new System.Windows.Forms.Button();
-            this.buttonPushAll = new System.Windows.Forms.Button();
-            this.buttonRefresh = new System.Windows.Forms.Button();
-            this.imageListTabs = new System.Windows.Forms.ImageList(this.components);
             this.tabControl1.SuspendLayout();
             this.tabPageAccountMan.SuspendLayout();
             this.toolStripAccountMan.SuspendLayout();
@@ -96,11 +100,11 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
-            this.flowLayoutPanel1.SuspendLayout();
+            this.tabPageSettings.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.flowLayoutPanel2.SuspendLayout();
+            this.toolStrip2.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -108,12 +112,13 @@
             this.tabControl1.Controls.Add(this.tabPageAccountMan);
             this.tabControl1.Controls.Add(this.tabPageAnnouncementManagement);
             this.tabControl1.Controls.Add(this.tabPageReleaseDetails);
+            this.tabControl1.Controls.Add(this.tabPageSettings);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.ImageList = this.imageListTabs;
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Location = new System.Drawing.Point(3, 28);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1070, 441);
+            this.tabControl1.Size = new System.Drawing.Size(1258, 410);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPageAccountMan
@@ -123,8 +128,7 @@
             this.tabPageAccountMan.ImageIndex = 1;
             this.tabPageAccountMan.Location = new System.Drawing.Point(4, 23);
             this.tabPageAccountMan.Name = "tabPageAccountMan";
-            this.tabPageAccountMan.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageAccountMan.Size = new System.Drawing.Size(1062, 414);
+            this.tabPageAccountMan.Size = new System.Drawing.Size(1250, 383);
             this.tabPageAccountMan.TabIndex = 0;
             this.tabPageAccountMan.Text = "Account";
             this.tabPageAccountMan.UseVisualStyleBackColor = true;
@@ -138,9 +142,9 @@
             this.columnHeaderPermissions});
             this.listViewAccount.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewAccount.HideSelection = false;
-            this.listViewAccount.Location = new System.Drawing.Point(3, 28);
+            this.listViewAccount.Location = new System.Drawing.Point(0, 25);
             this.listViewAccount.Name = "listViewAccount";
-            this.listViewAccount.Size = new System.Drawing.Size(1056, 383);
+            this.listViewAccount.Size = new System.Drawing.Size(1250, 358);
             this.listViewAccount.TabIndex = 1;
             this.listViewAccount.UseCompatibleStateImageBehavior = false;
             this.listViewAccount.View = System.Windows.Forms.View.Details;
@@ -180,9 +184,9 @@
             this.toolStripSeparator3,
             this.toolStripButtonAccountPermission,
             this.toolStripButtonAccountGroupMan});
-            this.toolStripAccountMan.Location = new System.Drawing.Point(3, 3);
+            this.toolStripAccountMan.Location = new System.Drawing.Point(0, 0);
             this.toolStripAccountMan.Name = "toolStripAccountMan";
-            this.toolStripAccountMan.Size = new System.Drawing.Size(1056, 25);
+            this.toolStripAccountMan.Size = new System.Drawing.Size(1250, 25);
             this.toolStripAccountMan.TabIndex = 0;
             this.toolStripAccountMan.Text = "Account Management";
             // 
@@ -264,8 +268,7 @@
             this.tabPageAnnouncementManagement.ImageIndex = 2;
             this.tabPageAnnouncementManagement.Location = new System.Drawing.Point(4, 23);
             this.tabPageAnnouncementManagement.Name = "tabPageAnnouncementManagement";
-            this.tabPageAnnouncementManagement.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageAnnouncementManagement.Size = new System.Drawing.Size(1062, 414);
+            this.tabPageAnnouncementManagement.Size = new System.Drawing.Size(1250, 383);
             this.tabPageAnnouncementManagement.TabIndex = 1;
             this.tabPageAnnouncementManagement.Text = "Announcement";
             this.tabPageAnnouncementManagement.UseVisualStyleBackColor = true;
@@ -278,9 +281,9 @@
             this.columnHeaderTimestamp});
             this.listViewAnnouncement.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewAnnouncement.HideSelection = false;
-            this.listViewAnnouncement.Location = new System.Drawing.Point(3, 28);
+            this.listViewAnnouncement.Location = new System.Drawing.Point(0, 25);
             this.listViewAnnouncement.Name = "listViewAnnouncement";
-            this.listViewAnnouncement.Size = new System.Drawing.Size(1056, 383);
+            this.listViewAnnouncement.Size = new System.Drawing.Size(1250, 358);
             this.listViewAnnouncement.TabIndex = 1;
             this.listViewAnnouncement.UseCompatibleStateImageBehavior = false;
             this.listViewAnnouncement.View = System.Windows.Forms.View.Details;
@@ -316,9 +319,9 @@
             this.toolStripSeparator5,
             this.toolStripButtonAnnouncementEnforce,
             this.toolStripButtonAnnouncementsDisable});
-            this.toolStripAnnouncement.Location = new System.Drawing.Point(3, 3);
+            this.toolStripAnnouncement.Location = new System.Drawing.Point(0, 0);
             this.toolStripAnnouncement.Name = "toolStripAnnouncement";
-            this.toolStripAnnouncement.Size = new System.Drawing.Size(1056, 25);
+            this.toolStripAnnouncement.Size = new System.Drawing.Size(1250, 25);
             this.toolStripAnnouncement.TabIndex = 0;
             this.toolStripAnnouncement.Text = "Announcement Management";
             // 
@@ -410,8 +413,7 @@
             this.tabPageReleaseDetails.ImageIndex = 0;
             this.tabPageReleaseDetails.Location = new System.Drawing.Point(4, 23);
             this.tabPageReleaseDetails.Name = "tabPageReleaseDetails";
-            this.tabPageReleaseDetails.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageReleaseDetails.Size = new System.Drawing.Size(1062, 414);
+            this.tabPageReleaseDetails.Size = new System.Drawing.Size(1250, 383);
             this.tabPageReleaseDetails.TabIndex = 2;
             this.tabPageReleaseDetails.Text = "Release";
             this.tabPageReleaseDetails.UseVisualStyleBackColor = true;
@@ -424,9 +426,9 @@
             this.toolStripSeparator4,
             this.toolStripSplitButtonReleaseDelete,
             this.toolStripButtonReleaseEdit});
-            this.toolStrip1.Location = new System.Drawing.Point(3, 3);
+            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1056, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(1250, 25);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -499,7 +501,7 @@
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.Location = new System.Drawing.Point(3, 3);
+            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
             this.splitContainer2.Name = "splitContainer2";
             // 
             // splitContainer2.Panel1
@@ -511,8 +513,8 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.listViewReleases);
             this.splitContainer2.Panel2.Padding = new System.Windows.Forms.Padding(0, 25, 0, 0);
-            this.splitContainer2.Size = new System.Drawing.Size(1056, 408);
-            this.splitContainer2.SplitterDistance = 229;
+            this.splitContainer2.Size = new System.Drawing.Size(1250, 383);
+            this.splitContainer2.SplitterDistance = 271;
             this.splitContainer2.TabIndex = 0;
             // 
             // treeViewReleaseProduct
@@ -520,7 +522,7 @@
             this.treeViewReleaseProduct.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeViewReleaseProduct.Location = new System.Drawing.Point(0, 25);
             this.treeViewReleaseProduct.Name = "treeViewReleaseProduct";
-            this.treeViewReleaseProduct.Size = new System.Drawing.Size(229, 383);
+            this.treeViewReleaseProduct.Size = new System.Drawing.Size(271, 358);
             this.treeViewReleaseProduct.TabIndex = 0;
             this.treeViewReleaseProduct.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewReleaseProduct_AfterSelect);
             // 
@@ -537,7 +539,7 @@
             this.listViewReleases.HideSelection = false;
             this.listViewReleases.Location = new System.Drawing.Point(0, 25);
             this.listViewReleases.Name = "listViewReleases";
-            this.listViewReleases.Size = new System.Drawing.Size(823, 383);
+            this.listViewReleases.Size = new System.Drawing.Size(975, 358);
             this.listViewReleases.TabIndex = 0;
             this.listViewReleases.UseCompatibleStateImageBehavior = false;
             this.listViewReleases.View = System.Windows.Forms.View.Details;
@@ -560,39 +562,120 @@
             this.columnHeaderReleaseTimestamp.Text = "Timestamp";
             this.columnHeaderReleaseTimestamp.Width = 160;
             // 
-            // splitContainer1
+            // tabPageSettings
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Name = "splitContainer1";
+            this.tabPageSettings.Controls.Add(this.groupBox1);
+            this.tabPageSettings.ImageIndex = 3;
+            this.tabPageSettings.Location = new System.Drawing.Point(4, 23);
+            this.tabPageSettings.Name = "tabPageSettings";
+            this.tabPageSettings.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageSettings.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.tabPageSettings.Size = new System.Drawing.Size(1250, 383);
+            this.tabPageSettings.TabIndex = 3;
+            this.tabPageSettings.Text = "Settings";
+            this.tabPageSettings.UseVisualStyleBackColor = true;
             // 
-            // splitContainer1.Panel1
+            // groupBox1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.flowLayoutPanel1);
+            this.groupBox1.Controls.Add(this.flowLayoutPanel2);
+            this.groupBox1.Location = new System.Drawing.Point(6, 6);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(320, 247);
+            this.groupBox1.TabIndex = 1;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Authentication";
             // 
-            // splitContainer1.Panel2
+            // flowLayoutPanel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
-            this.splitContainer1.Size = new System.Drawing.Size(1264, 441);
-            this.splitContainer1.SplitterDistance = 190;
-            this.splitContainer1.TabIndex = 1;
+            this.flowLayoutPanel2.Controls.Add(this.textBoxLabelUsername);
+            this.flowLayoutPanel2.Controls.Add(this.textBoxLabelPassword);
+            this.flowLayoutPanel2.Controls.Add(this.textBoxLabelEndpoint);
+            this.flowLayoutPanel2.Controls.Add(this.buttonConnectionTokenFetch);
+            this.flowLayoutPanel2.Controls.Add(this.checkBoxAuthAutoLogin);
+            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 16);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(314, 228);
+            this.flowLayoutPanel2.TabIndex = 0;
             // 
-            // flowLayoutPanel1
+            // buttonConnectionTokenFetch
             // 
-            this.flowLayoutPanel1.Controls.Add(this.textBoxLabelUsername);
-            this.flowLayoutPanel1.Controls.Add(this.textBoxLabelPassword);
-            this.flowLayoutPanel1.Controls.Add(this.textBoxLabelEndpoint);
-            this.flowLayoutPanel1.Controls.Add(this.buttonConnectionTokenFetch);
-            this.flowLayoutPanel1.Controls.Add(this.buttonPushAll);
-            this.flowLayoutPanel1.Controls.Add(this.buttonRefresh);
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(190, 441);
-            this.flowLayoutPanel1.TabIndex = 0;
-            this.flowLayoutPanel1.WrapContents = false;
+            this.buttonConnectionTokenFetch.Image = ((System.Drawing.Image)(resources.GetObject("buttonConnectionTokenFetch.Image")));
+            this.buttonConnectionTokenFetch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonConnectionTokenFetch.Location = new System.Drawing.Point(3, 138);
+            this.buttonConnectionTokenFetch.Name = "buttonConnectionTokenFetch";
+            this.buttonConnectionTokenFetch.Size = new System.Drawing.Size(105, 23);
+            this.buttonConnectionTokenFetch.TabIndex = 3;
+            this.buttonConnectionTokenFetch.Text = "Reload Token";
+            this.buttonConnectionTokenFetch.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.buttonConnectionTokenFetch.UseVisualStyleBackColor = true;
+            this.buttonConnectionTokenFetch.Click += new System.EventHandler(this.buttonConnectionTokenFetch_Click);
+            // 
+            // imageListTabs
+            // 
+            this.imageListTabs.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListTabs.ImageStream")));
+            this.imageListTabs.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageListTabs.Images.SetKeyName(0, "box.png");
+            this.imageListTabs.Images.SetKeyName(1, "user.png");
+            this.imageListTabs.Images.SetKeyName(2, "megaphone.png");
+            this.imageListTabs.Images.SetKeyName(3, "gear.png");
+            // 
+            // toolStrip2
+            // 
+            this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButtonMainPushChanges,
+            this.toolStripButtonMainPull});
+            this.toolStrip2.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip2.Name = "toolStrip2";
+            this.toolStrip2.Size = new System.Drawing.Size(1264, 25);
+            this.toolStrip2.TabIndex = 1;
+            this.toolStrip2.Text = "toolStrip2";
+            // 
+            // toolStripButtonMainPushChanges
+            // 
+            this.toolStripButtonMainPushChanges.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonMainPushChanges.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonMainPushChanges.Image")));
+            this.toolStripButtonMainPushChanges.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonMainPushChanges.Name = "toolStripButtonMainPushChanges";
+            this.toolStripButtonMainPushChanges.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonMainPushChanges.Text = "Push Changes";
+            this.toolStripButtonMainPushChanges.Click += new System.EventHandler(this.toolStripButtonMainPushChanges_Click);
+            // 
+            // toolStripButtonMainPull
+            // 
+            this.toolStripButtonMainPull.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonMainPull.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonMainPull.Image")));
+            this.toolStripButtonMainPull.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonMainPull.Name = "toolStripButtonMainPull";
+            this.toolStripButtonMainPull.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonMainPull.Text = "Pull Changes";
+            this.toolStripButtonMainPull.Click += new System.EventHandler(this.toolStripButtonMainPull_Click);
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.toolStrip2, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.tabControl1, 0, 1);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1264, 441);
+            this.tableLayoutPanel1.TabIndex = 2;
+            // 
+            // checkBoxAuthAutoLogin
+            // 
+            this.checkBoxAuthAutoLogin.AutoSize = true;
+            this.checkBoxAuthAutoLogin.Location = new System.Drawing.Point(114, 138);
+            this.checkBoxAuthAutoLogin.Name = "checkBoxAuthAutoLogin";
+            this.checkBoxAuthAutoLogin.Size = new System.Drawing.Size(117, 17);
+            this.checkBoxAuthAutoLogin.TabIndex = 4;
+            this.checkBoxAuthAutoLogin.Text = "Automatically Login";
+            this.checkBoxAuthAutoLogin.UseVisualStyleBackColor = true;
+            this.checkBoxAuthAutoLogin.CheckedChanged += new System.EventHandler(this.checkBoxAuthAutoLogin_CheckedChanged);
             // 
             // textBoxLabelUsername
             // 
@@ -601,11 +684,11 @@
             this.textBoxLabelUsername.LabelFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxLabelUsername.LabelText = "Username";
             this.textBoxLabelUsername.Location = new System.Drawing.Point(3, 3);
-            this.textBoxLabelUsername.MinimumSize = new System.Drawing.Size(180, 39);
+            this.textBoxLabelUsername.MinimumSize = new System.Drawing.Size(220, 39);
             this.textBoxLabelUsername.MultiLine = true;
             this.textBoxLabelUsername.Name = "textBoxLabelUsername";
             this.textBoxLabelUsername.ReadOnly = false;
-            this.textBoxLabelUsername.Size = new System.Drawing.Size(180, 39);
+            this.textBoxLabelUsername.Size = new System.Drawing.Size(220, 39);
             this.textBoxLabelUsername.TabIndex = 0;
             this.textBoxLabelUsername.TextboxContent = "";
             this.textBoxLabelUsername.TextboxLines = new string[0];
@@ -617,11 +700,11 @@
             this.textBoxLabelPassword.LabelFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxLabelPassword.LabelText = "Password";
             this.textBoxLabelPassword.Location = new System.Drawing.Point(3, 48);
-            this.textBoxLabelPassword.MinimumSize = new System.Drawing.Size(180, 39);
+            this.textBoxLabelPassword.MinimumSize = new System.Drawing.Size(220, 39);
             this.textBoxLabelPassword.MultiLine = false;
             this.textBoxLabelPassword.Name = "textBoxLabelPassword";
             this.textBoxLabelPassword.ReadOnly = false;
-            this.textBoxLabelPassword.Size = new System.Drawing.Size(180, 39);
+            this.textBoxLabelPassword.Size = new System.Drawing.Size(220, 39);
             this.textBoxLabelPassword.TabIndex = 1;
             this.textBoxLabelPassword.TextboxContent = "";
             this.textBoxLabelPassword.TextboxLines = new string[0];
@@ -633,76 +716,27 @@
             this.textBoxLabelEndpoint.LabelFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxLabelEndpoint.LabelText = "URL";
             this.textBoxLabelEndpoint.Location = new System.Drawing.Point(3, 93);
-            this.textBoxLabelEndpoint.MinimumSize = new System.Drawing.Size(180, 39);
+            this.textBoxLabelEndpoint.MinimumSize = new System.Drawing.Size(220, 39);
             this.textBoxLabelEndpoint.MultiLine = true;
             this.textBoxLabelEndpoint.Name = "textBoxLabelEndpoint";
             this.textBoxLabelEndpoint.ReadOnly = false;
-            this.textBoxLabelEndpoint.Size = new System.Drawing.Size(180, 39);
+            this.textBoxLabelEndpoint.Size = new System.Drawing.Size(220, 39);
             this.textBoxLabelEndpoint.TabIndex = 2;
             this.textBoxLabelEndpoint.TextboxContent = "";
             this.textBoxLabelEndpoint.TextboxLines = new string[0];
-            // 
-            // buttonConnectionTokenFetch
-            // 
-            this.buttonConnectionTokenFetch.Dock = System.Windows.Forms.DockStyle.Top;
-            this.buttonConnectionTokenFetch.Image = ((System.Drawing.Image)(resources.GetObject("buttonConnectionTokenFetch.Image")));
-            this.buttonConnectionTokenFetch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonConnectionTokenFetch.Location = new System.Drawing.Point(3, 138);
-            this.buttonConnectionTokenFetch.Name = "buttonConnectionTokenFetch";
-            this.buttonConnectionTokenFetch.Size = new System.Drawing.Size(180, 23);
-            this.buttonConnectionTokenFetch.TabIndex = 3;
-            this.buttonConnectionTokenFetch.Text = "Get Token";
-            this.buttonConnectionTokenFetch.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.buttonConnectionTokenFetch.UseVisualStyleBackColor = true;
-            this.buttonConnectionTokenFetch.Click += new System.EventHandler(this.buttonConnectionTokenFetch_Click);
-            // 
-            // buttonPushAll
-            // 
-            this.buttonPushAll.Dock = System.Windows.Forms.DockStyle.Top;
-            this.buttonPushAll.Image = ((System.Drawing.Image)(resources.GetObject("buttonPushAll.Image")));
-            this.buttonPushAll.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonPushAll.Location = new System.Drawing.Point(3, 167);
-            this.buttonPushAll.Name = "buttonPushAll";
-            this.buttonPushAll.Size = new System.Drawing.Size(180, 23);
-            this.buttonPushAll.TabIndex = 4;
-            this.buttonPushAll.Text = "Push Changes";
-            this.buttonPushAll.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.buttonPushAll.UseVisualStyleBackColor = true;
-            this.buttonPushAll.Click += new System.EventHandler(this.buttonPushAll_Click);
-            // 
-            // buttonRefresh
-            // 
-            this.buttonRefresh.Dock = System.Windows.Forms.DockStyle.Top;
-            this.buttonRefresh.Image = ((System.Drawing.Image)(resources.GetObject("buttonRefresh.Image")));
-            this.buttonRefresh.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonRefresh.Location = new System.Drawing.Point(3, 196);
-            this.buttonRefresh.Name = "buttonRefresh";
-            this.buttonRefresh.Size = new System.Drawing.Size(180, 23);
-            this.buttonRefresh.TabIndex = 5;
-            this.buttonRefresh.Text = "Refresh";
-            this.buttonRefresh.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.buttonRefresh.UseVisualStyleBackColor = true;
-            this.buttonRefresh.Click += new System.EventHandler(this.buttonRefresh_Click);
-            // 
-            // imageListTabs
-            // 
-            this.imageListTabs.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListTabs.ImageStream")));
-            this.imageListTabs.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageListTabs.Images.SetKeyName(0, "box.png");
-            this.imageListTabs.Images.SetKeyName(1, "user.png");
-            this.imageListTabs.Images.SetKeyName(2, "megaphone.png");
             // 
             // AdminForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1264, 441);
-            this.Controls.Add(this.splitContainer1);
+            this.Controls.Add(this.tableLayoutPanel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(1280, 480);
             this.Name = "AdminForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Server";
+            this.Shown += new System.EventHandler(this.AdminForm_Shown);
             this.tabControl1.ResumeLayout(false);
             this.tabPageAccountMan.ResumeLayout(false);
             this.tabPageAccountMan.PerformLayout();
@@ -720,12 +754,14 @@
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
-            this.flowLayoutPanel1.ResumeLayout(false);
-            this.flowLayoutPanel1.PerformLayout();
+            this.tabPageSettings.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.flowLayoutPanel2.ResumeLayout(false);
+            this.flowLayoutPanel2.PerformLayout();
+            this.toolStrip2.ResumeLayout(false);
+            this.toolStrip2.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -757,15 +793,11 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripButton toolStripButtonAccountPermission;
         private System.Windows.Forms.ToolStripButton toolStripButtonAccountGroupMan;
-        private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private BuildServiceAPI.DesktopClient.TextBoxLabel textBoxLabelUsername;
         private BuildServiceAPI.DesktopClient.MaskedTextBoxLabel textBoxLabelPassword;
         private BuildServiceAPI.DesktopClient.TextBoxLabel textBoxLabelEndpoint;
         private System.Windows.Forms.Button buttonConnectionTokenFetch;
         private System.Windows.Forms.ColumnHeader columnHeaderGroups;
-        private System.Windows.Forms.Button buttonPushAll;
-        private System.Windows.Forms.Button buttonRefresh;
         private System.Windows.Forms.ToolStripButton toolStripButtonAnnouncementPushChanges;
         private System.Windows.Forms.TabPage tabPageReleaseDetails;
         private System.Windows.Forms.SplitContainer splitContainer2;
@@ -787,5 +819,13 @@
         private System.Windows.Forms.ToolStripButton toolStripButtonAnnouncementsDisable;
         private System.Windows.Forms.ColumnHeader columnHeaderPermissions;
         private System.Windows.Forms.ImageList imageListTabs;
+        private System.Windows.Forms.TabPage tabPageSettings;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
+        private System.Windows.Forms.ToolStrip toolStrip2;
+        private System.Windows.Forms.ToolStripButton toolStripButtonMainPushChanges;
+        private System.Windows.Forms.ToolStripButton toolStripButtonMainPull;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.CheckBox checkBoxAuthAutoLogin;
     }
 }
