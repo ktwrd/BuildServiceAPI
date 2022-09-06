@@ -68,6 +68,9 @@
   <PropertyGroup>
     <ApplicationIcon>hard-hat.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>BuildServiceAPI.DesktopClient.Program</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\..\Minalyze\MinalyzeMonorepo\packages\Microsoft.Bcl.AsyncInterfaces.6.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
