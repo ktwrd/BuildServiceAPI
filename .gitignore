@@ -360,4 +360,5 @@ tokens.json
 **tokens.json
 Report20220719-1507.diagsession
 
-BuildServiceAPI.DesktopClient\BuildScripts\release\
+BuildServiceAPI.DesktopClient/BuildScripts/release/
+BuildServiceAPI.DesktopClient/BuildScripts/**/.exe
