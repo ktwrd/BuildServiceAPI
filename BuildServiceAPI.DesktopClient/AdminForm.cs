@@ -197,6 +197,7 @@ namespace BuildServiceAPI.DesktopClient
             if (SelectedAccountEntry == null) return;
             var form = new AccountPermissionForm(SelectedAccountEntry, this);
             form.Show();
+            form.MdiParent = this.MdiParent;
         }
         #endregion
 

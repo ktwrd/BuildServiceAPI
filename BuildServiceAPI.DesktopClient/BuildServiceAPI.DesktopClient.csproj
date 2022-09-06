@@ -66,7 +66,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>hard-hat.ico</ApplicationIcon>
+    <ApplicationIcon>application-sidebar-list.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>BuildServiceAPI.DesktopClient.Program</StartupObject>
@@ -291,6 +291,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="application-sidebar-list.ico" />
     <Content Include="hard-hat.ico" />
   </ItemGroup>
   <Import Project="..\..\csharp-kate.shared\kate.shared\kate.shared.projitems" Label="Shared" />

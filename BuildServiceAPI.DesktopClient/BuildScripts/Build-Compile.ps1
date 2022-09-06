@@ -12,8 +12,9 @@ msbuild /p:Configuration=Release -maxcpucount:4
 
 Remove-Item -Recurse -Force BuildScripts\release\
 mkdir BuildScripts\release\
-Copy-Item bin\${ILMERGE_BUILD}\* BuildScripts\release\
+Copy-Item bin\Release\* BuildScripts\release\
 
 # . $PSScriptRoot\Build-ILMerge.ps1
 
 Set-Location $env:BuildScriptDirectory
+pause
