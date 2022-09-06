@@ -1,16 +1,17 @@
-﻿using System.Reflection;
+﻿using System.Resources;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("BuildServiceAPI.AdminPanel")]
+[assembly: AssemblyTitle("Build Service Panel")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Minalyze")]
-[assembly: AssemblyProduct("BuildServiceAPI.AdminPanel")]
-[assembly: AssemblyCopyright("Copyright © Minalyze 2022")]
+[assembly: AssemblyCompany("kate!")]
+[assembly: AssemblyProduct("kate's Build Service Admin Panel")]
+[assembly: AssemblyCopyright("Copyright © Kate Ward 2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -34,3 +35,4 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: NeutralResourcesLanguage("en")]

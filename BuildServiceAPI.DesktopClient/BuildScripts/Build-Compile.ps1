@@ -10,7 +10,7 @@ msbuild /t:Restore  /p:Configuration=Release -maxcpucount:4
 Write-Output "================================================================ Compiling"
 msbuild /p:Configuration=Release -maxcpucount:4
 
-Remove-Item -Recurse -Force BuildScripts\release\
+Remove-Item -Recurse -Force BuildScripts\release
 mkdir BuildScripts\release\
 Copy-Item bin\Release\* BuildScripts\release\
 
