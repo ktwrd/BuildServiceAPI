@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BuildServiceCommon;
+using BuildServiceCommon.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 namespace BuildServiceAPI.Controllers
@@ -18,19 +20,12 @@ namespace BuildServiceAPI.Controllers
                 foreach (var pair in contentManager.Published)
                 {
                     var allowAdd = true;
-#if BUILDSERVICEAPI_APP_WHITELIST
-                    if (pair.Value.Release.appID == "com.minalyze.minalogger")
-                    {
-                        if (!MainClass.UserByTokenHasService(token, "ml2"))
-                            allowAdd = false;
-                    }
-#endif
-                    if (allowAdd && !productIDList.Contains(pair.Value.Release.appID))
+                    if (allowAdd && !productIDList.Contains(pair.Value.Release.appID) && pair.Value.Release.appID.Length > 0)
                         productIDList.Add(pair.Value.Release.appID);
                 }
             }
 
-            return Json(productIDList, MainClass.serializerOptions);
+            return Json(productIDList.ToArray(), MainClass.serializerOptions);
         }
     }
 }

@@ -23,21 +23,10 @@ namespace BuildServiceAPI.Controllers
             return Json(MainClass.contentManager?.Releases ?? new object(), MainClass.serializerOptions);
         }
 
-        [HttpGet]
-        [Route("latest/{app}")]
-        public ActionResult LatestFromPath(string app, string token = "")
+        private List<ProductRelease> fetchReleasesByAppID(string app, string token)
         {
             var returnContent = new List<ProductRelease>();
             var allowFetch = true;
-/*#if BUILDSERVICEAPI_APP_WHITELIST
-            if (app == "com.minalyze.minalogger")
-            {
-                if (token.Length < 1 || !MainClass.UserByTokenHasService(token, "ml2"))
-                {
-                    allowFetch = false;
-                }
-            }
-#endif*/
             bool showExtraBuilds = MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.READ_RELEASE_BYPASS);
             if (allowFetch && (MainClass.contentManager?.Releases.ContainsKey(app) ?? false))
             {
@@ -86,11 +75,36 @@ namespace BuildServiceAPI.Controllers
                     returnContent.Add(rel);
                 }
             }
-            return Json(returnContent, MainClass.serializerOptions);
+            return returnContent;
+        }
+
+        [HttpGet]
+        [Route("latest/{app}")]
+        public ActionResult LatestFromPath(string app, string token = "")
+        {
+            return Json(fetchReleasesByAppID(app, token), MainClass.serializerOptions);
         }
 
         [HttpGet]
         [Route("latest")]
-        public ActionResult LatestFromParameter(string id) => LatestFromPath(id);
+        public ActionResult LatestFromParameter(string id="", string token = "")
+        {
+            // Get all latest available
+            if (id.Length < 1)
+            {
+                // Get list of all AppID's
+                var appIDlist = new List<string>();
+                foreach (var k in MainClass.contentManager.ReleaseInfoContent)
+                    appIDlist.Add(k.appID);
+                var resultList = new List<ProductRelease>();
+                foreach (var v in appIDlist)
+                    resultList = resultList.Concat(fetchReleasesByAppID(v, token)).ToList();
+                return Json(resultList.ToArray(), MainClass.serializerOptions);
+            }
+            else
+            {
+                return LatestFromPath(id, token);
+            }
+        }
     }
 }
