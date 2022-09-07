@@ -71,7 +71,14 @@ namespace BuildServiceAPI.DesktopClient
 
             // Fetch token
             Enabled = false;
-            UpdateToken();
+            try
+            {
+                UpdateToken();
+            }
+            catch (Exception except)
+            {
+                MessageBox.Show(except.ToString(), $"Failed to fetch token", MessageBoxButtons.OK);
+            }
             Enabled = true;
         }
 
