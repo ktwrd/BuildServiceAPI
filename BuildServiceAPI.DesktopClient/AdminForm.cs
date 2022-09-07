@@ -78,6 +78,7 @@ namespace BuildServiceAPI.DesktopClient
             catch (Exception except)
             {
                 MessageBox.Show(except.ToString(), $"Failed to fetch token", MessageBoxButtons.OK);
+                Trace.WriteLine(except);
             }
             Enabled = true;
         }
@@ -91,7 +92,26 @@ namespace BuildServiceAPI.DesktopClient
                 UserConfig.GetString("Authentication", "Password", ""));
             Trace.WriteLine($"[AdminForm->UpdateToken] Fetching Response of {targetURL}");
 
-            var response = httpClient.GetAsync(targetURL).Result;
+            HttpResponseMessage response = null;
+            try
+            {
+                response = httpClient.GetAsync(targetURL).Result;
+            }
+            catch (AggregateException except)
+            {
+                foreach (var e in except.InnerExceptions)
+                {
+                    MessageBox.Show(e.Message, $"Failed to fetch token", MessageBoxButtons.OK);
+                    Trace.WriteLine(except);
+                }
+                return;
+            }
+            catch (Exception except)
+            {
+                MessageBox.Show(except.Message, $"Failed to fetch token", MessageBoxButtons.OK);
+                Trace.WriteLine(except);
+                return;
+            }
             var stringContent = response.Content.ReadAsStringAsync().Result;
             var dynamicContent = JsonSerializer.Deserialize<ObjectResponse<dynamic>>(stringContent, Program.serializerOptions);
             var deserialized = JsonSerializer.Deserialize<ObjectResponse<GrantTokenResponse>>(stringContent, Program.serializerOptions);
