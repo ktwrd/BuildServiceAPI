@@ -33,6 +33,7 @@ namespace BuildServiceAPI.Controllers
                 var toMap = new Dictionary<string, List<ReleaseInfo>>();
                 foreach (var release in MainClass.contentManager.ReleaseInfoContent)
                 {
+                    if (app != release.appID) continue;
                     if (!toMap.ContainsKey(release.remoteLocation))
                         toMap.Add(release.remoteLocation, new List<ReleaseInfo>());
                     toMap[release.remoteLocation].Add(release);
