@@ -79,16 +79,16 @@
             this.tabPageSettings = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.textBoxLabelUsername = new BuildServiceAPI.DesktopClient.TextBoxLabel();
+            this.textBoxLabelPassword = new BuildServiceAPI.DesktopClient.MaskedTextBoxLabel();
+            this.textBoxLabelEndpoint = new BuildServiceAPI.DesktopClient.TextBoxLabel();
+            this.checkBoxAuthAutoLogin = new System.Windows.Forms.CheckBox();
             this.buttonConnectionTokenFetch = new System.Windows.Forms.Button();
             this.imageListTabs = new System.Windows.Forms.ImageList(this.components);
             this.toolStrip2 = new System.Windows.Forms.ToolStrip();
             this.toolStripButtonMainPushChanges = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonMainPull = new System.Windows.Forms.ToolStripButton();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.checkBoxAuthAutoLogin = new System.Windows.Forms.CheckBox();
-            this.textBoxLabelUsername = new BuildServiceAPI.DesktopClient.TextBoxLabel();
-            this.textBoxLabelPassword = new BuildServiceAPI.DesktopClient.MaskedTextBoxLabel();
-            this.textBoxLabelEndpoint = new BuildServiceAPI.DesktopClient.TextBoxLabel();
             this.tabControl1.SuspendLayout();
             this.tabPageAccountMan.SuspendLayout();
             this.toolStripAccountMan.SuspendLayout();
@@ -351,6 +351,7 @@
             this.toolStripButtonAnnouncementEdit.Name = "toolStripButtonAnnouncementEdit";
             this.toolStripButtonAnnouncementEdit.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonAnnouncementEdit.Text = "Edit";
+            this.toolStripButtonAnnouncementEdit.Click += new System.EventHandler(this.toolStripButtonAnnouncementEdit_Click);
             // 
             // toolStripButtonAnnouncementDelete
             // 
@@ -611,6 +612,65 @@
             this.flowLayoutPanel2.Size = new System.Drawing.Size(314, 228);
             this.flowLayoutPanel2.TabIndex = 0;
             // 
+            // textBoxLabelUsername
+            // 
+            this.textBoxLabelUsername.AutoSize = true;
+            this.textBoxLabelUsername.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.textBoxLabelUsername.LabelFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxLabelUsername.LabelText = "Username";
+            this.textBoxLabelUsername.Location = new System.Drawing.Point(3, 3);
+            this.textBoxLabelUsername.MinimumSize = new System.Drawing.Size(308, 39);
+            this.textBoxLabelUsername.MultiLine = true;
+            this.textBoxLabelUsername.Name = "textBoxLabelUsername";
+            this.textBoxLabelUsername.ReadOnly = false;
+            this.textBoxLabelUsername.Size = new System.Drawing.Size(308, 39);
+            this.textBoxLabelUsername.TabIndex = 0;
+            this.textBoxLabelUsername.TextboxContent = "";
+            this.textBoxLabelUsername.TextboxLines = new string[0];
+            // 
+            // textBoxLabelPassword
+            // 
+            this.textBoxLabelPassword.AutoSize = true;
+            this.textBoxLabelPassword.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.textBoxLabelPassword.LabelFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxLabelPassword.LabelText = "Password";
+            this.textBoxLabelPassword.Location = new System.Drawing.Point(3, 48);
+            this.textBoxLabelPassword.MinimumSize = new System.Drawing.Size(308, 39);
+            this.textBoxLabelPassword.MultiLine = false;
+            this.textBoxLabelPassword.Name = "textBoxLabelPassword";
+            this.textBoxLabelPassword.ReadOnly = false;
+            this.textBoxLabelPassword.Size = new System.Drawing.Size(308, 39);
+            this.textBoxLabelPassword.TabIndex = 1;
+            this.textBoxLabelPassword.TextboxContent = "";
+            this.textBoxLabelPassword.TextboxLines = new string[0];
+            // 
+            // textBoxLabelEndpoint
+            // 
+            this.textBoxLabelEndpoint.AutoSize = true;
+            this.textBoxLabelEndpoint.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.textBoxLabelEndpoint.LabelFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxLabelEndpoint.LabelText = "URL";
+            this.textBoxLabelEndpoint.Location = new System.Drawing.Point(3, 93);
+            this.textBoxLabelEndpoint.MinimumSize = new System.Drawing.Size(308, 39);
+            this.textBoxLabelEndpoint.MultiLine = true;
+            this.textBoxLabelEndpoint.Name = "textBoxLabelEndpoint";
+            this.textBoxLabelEndpoint.ReadOnly = false;
+            this.textBoxLabelEndpoint.Size = new System.Drawing.Size(308, 39);
+            this.textBoxLabelEndpoint.TabIndex = 2;
+            this.textBoxLabelEndpoint.TextboxContent = "";
+            this.textBoxLabelEndpoint.TextboxLines = new string[0];
+            // 
+            // checkBoxAuthAutoLogin
+            // 
+            this.checkBoxAuthAutoLogin.AutoSize = true;
+            this.checkBoxAuthAutoLogin.Location = new System.Drawing.Point(3, 138);
+            this.checkBoxAuthAutoLogin.Name = "checkBoxAuthAutoLogin";
+            this.checkBoxAuthAutoLogin.Size = new System.Drawing.Size(117, 17);
+            this.checkBoxAuthAutoLogin.TabIndex = 4;
+            this.checkBoxAuthAutoLogin.Text = "Automatically Login";
+            this.checkBoxAuthAutoLogin.UseVisualStyleBackColor = true;
+            this.checkBoxAuthAutoLogin.CheckedChanged += new System.EventHandler(this.checkBoxAuthAutoLogin_CheckedChanged);
+            // 
             // buttonConnectionTokenFetch
             // 
             this.buttonConnectionTokenFetch.Image = ((System.Drawing.Image)(resources.GetObject("buttonConnectionTokenFetch.Image")));
@@ -682,65 +742,6 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1264, 441);
             this.tableLayoutPanel1.TabIndex = 2;
-            // 
-            // checkBoxAuthAutoLogin
-            // 
-            this.checkBoxAuthAutoLogin.AutoSize = true;
-            this.checkBoxAuthAutoLogin.Location = new System.Drawing.Point(3, 138);
-            this.checkBoxAuthAutoLogin.Name = "checkBoxAuthAutoLogin";
-            this.checkBoxAuthAutoLogin.Size = new System.Drawing.Size(117, 17);
-            this.checkBoxAuthAutoLogin.TabIndex = 4;
-            this.checkBoxAuthAutoLogin.Text = "Automatically Login";
-            this.checkBoxAuthAutoLogin.UseVisualStyleBackColor = true;
-            this.checkBoxAuthAutoLogin.CheckedChanged += new System.EventHandler(this.checkBoxAuthAutoLogin_CheckedChanged);
-            // 
-            // textBoxLabelUsername
-            // 
-            this.textBoxLabelUsername.AutoSize = true;
-            this.textBoxLabelUsername.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.textBoxLabelUsername.LabelFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxLabelUsername.LabelText = "Username";
-            this.textBoxLabelUsername.Location = new System.Drawing.Point(3, 3);
-            this.textBoxLabelUsername.MinimumSize = new System.Drawing.Size(308, 39);
-            this.textBoxLabelUsername.MultiLine = true;
-            this.textBoxLabelUsername.Name = "textBoxLabelUsername";
-            this.textBoxLabelUsername.ReadOnly = false;
-            this.textBoxLabelUsername.Size = new System.Drawing.Size(308, 39);
-            this.textBoxLabelUsername.TabIndex = 0;
-            this.textBoxLabelUsername.TextboxContent = "";
-            this.textBoxLabelUsername.TextboxLines = new string[0];
-            // 
-            // textBoxLabelPassword
-            // 
-            this.textBoxLabelPassword.AutoSize = true;
-            this.textBoxLabelPassword.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.textBoxLabelPassword.LabelFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxLabelPassword.LabelText = "Password";
-            this.textBoxLabelPassword.Location = new System.Drawing.Point(3, 48);
-            this.textBoxLabelPassword.MinimumSize = new System.Drawing.Size(308, 39);
-            this.textBoxLabelPassword.MultiLine = false;
-            this.textBoxLabelPassword.Name = "textBoxLabelPassword";
-            this.textBoxLabelPassword.ReadOnly = false;
-            this.textBoxLabelPassword.Size = new System.Drawing.Size(308, 39);
-            this.textBoxLabelPassword.TabIndex = 1;
-            this.textBoxLabelPassword.TextboxContent = "";
-            this.textBoxLabelPassword.TextboxLines = new string[0];
-            // 
-            // textBoxLabelEndpoint
-            // 
-            this.textBoxLabelEndpoint.AutoSize = true;
-            this.textBoxLabelEndpoint.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.textBoxLabelEndpoint.LabelFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxLabelEndpoint.LabelText = "URL";
-            this.textBoxLabelEndpoint.Location = new System.Drawing.Point(3, 93);
-            this.textBoxLabelEndpoint.MinimumSize = new System.Drawing.Size(308, 39);
-            this.textBoxLabelEndpoint.MultiLine = true;
-            this.textBoxLabelEndpoint.Name = "textBoxLabelEndpoint";
-            this.textBoxLabelEndpoint.ReadOnly = false;
-            this.textBoxLabelEndpoint.Size = new System.Drawing.Size(308, 39);
-            this.textBoxLabelEndpoint.TabIndex = 2;
-            this.textBoxLabelEndpoint.TextboxContent = "";
-            this.textBoxLabelEndpoint.TextboxLines = new string[0];
             // 
             // AdminForm
             // 

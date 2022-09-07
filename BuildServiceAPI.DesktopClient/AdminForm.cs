@@ -388,6 +388,15 @@ namespace BuildServiceAPI.DesktopClient
 
         private void listViewAnnouncement_SelectedIndexChanged(object sender, EventArgs e) => UpdateSelectedAnnouncementItem();
 
+
+        private void toolStripButtonAnnouncementEdit_Click(object sender, EventArgs e)
+        {
+            if (SelectedAnnouncementEntry == null) return;
+            var popup = new AnnouncementEditModal(SelectedAnnouncementEntry);
+            popup.Show();
+            popup.MdiParent = MdiParent;
+            popup.AdminForm = this;
+        }
         #endregion
 
         #region Content Manager
