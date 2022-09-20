@@ -109,31 +109,65 @@ namespace BuildServiceAPI.Controllers
         [HttpGet("all")]
         public ActionResult All(string token)
         {
-            if (!MainClass.ValidTokens.ContainsKey(token) || MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.READ_RELEASE_BYPASS))
+            var account = MainClass.contentManager.AccountManager.GetAccount(token);
+            if (!MainClass.ValidTokens.ContainsKey(token))
             {
-                Response.StatusCode = 401;
-                return Json(new HttpException(401, @"Invalid token"), MainClass.serializerOptions);
+                if (account == null)
+                {
+                    Response.StatusCode = 401;
+                    return Json(new ObjectResponse<HttpException>()
+                    {
+                        Data = new HttpException(401, @"Invalid token"),
+                        Success = false
+                    }, MainClass.serializerOptions);
+                }
+                if (!account.HasPermission(AccountPermission.ADMINISTRATOR))
+                {
+                    Response.StatusCode = 401;
+                    return Json(new ObjectResponse<HttpException>()
+                    {
+                        Data = new HttpException(401, @"Missing permissions"),
+                        Success = false
+                    }, MainClass.serializerOptions);
+                }
             }
-            return Json(MainClass.contentManager?.Published ?? new Dictionary<string, PublishedRelease>(), MainClass.serializerOptions);
+            return Json(new ObjectResponse<Dictionary<string, PublishedRelease>>()
+            {
+                Data = MainClass.contentManager?.Published,
+                Success = true
+            }, MainClass.serializerOptions);
         }
 
         [HttpGet("hash")]
-        public ActionResult ByCommitHashFromParameter(string hash, string token = "")
+        public ActionResult ByCommitHashFromParameter(string hash, string token)
         {
-            #if BUILDSERVICEAPI_APP_WHITELIST
-            if (!MainClass.ValidTokens.ContainsKey(token))
+            var account = MainClass.contentManager.AccountManager.GetAccount(token);
+            if (account == null)
             {
                 Response.StatusCode = 401;
                 return Json(new HttpException(401, @"Invalid token"), MainClass.serializerOptions);
             }
-            #endif
+            if (!account.HasPermission(AccountPermission.ADMINISTRATOR))
+            {
+                Response.StatusCode = 401;
+                return Json(new HttpException(401, @"Missing permissions"), MainClass.serializerOptions);
+            }
+
             if (MainClass.contentManager?.Published.ContainsKey(hash) ?? false)
             {
-                return Json(MainClass.contentManager.Published[hash], MainClass.serializerOptions);
+                return Json(new ObjectResponse<PublishedRelease>()
+                {
+                    Data = MainClass.contentManager.Published[hash],
+                    Success = true
+                }, MainClass.serializerOptions);
             }
             else
             {
-                return Json(new object(), MainClass.serializerOptions);
+                return Json(new ObjectResponse<PublishedRelease>()
+                {
+                    Data = null,
+                    Success = false
+                }, MainClass.serializerOptions);
             }
         }
 
