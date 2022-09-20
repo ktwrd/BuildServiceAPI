@@ -10,7 +10,7 @@ namespace BuildServiceCommon.AutoUpdater
 {
     public interface IProductRelease
     {
-        string UID { get; }
+        string UID { get; set; }
         string ProductName { get; set; }
         string ProductID { get; set; }
         ProductReleaseStream[] Streams { get; set; }
@@ -19,7 +19,7 @@ namespace BuildServiceCommon.AutoUpdater
     [Serializable]
     public class ProductRelease : bSerializable, bFirebaseSerializable, IProductRelease
     {
-        public string UID { get; private set; }
+        public string UID { get; set; }
         public string ProductName { get; set; }
         public string ProductID { get; set; }
         public ProductReleaseStream[] Streams { get; set; }
