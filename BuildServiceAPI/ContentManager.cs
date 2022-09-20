@@ -8,6 +8,7 @@ using System.IO;
 using System;
 using System.Diagnostics;
 using BuildServiceCommon.Authorization;
+using BuildServiceAPI.BuildServiceAPI;
 
 namespace BuildServiceAPI
 {
@@ -36,6 +37,7 @@ namespace BuildServiceAPI
             string txt = $"[ContentManager->SystemAnnouncement_Update:{GeneralHelper.GetNanoseconds()}] Wrote SystemAnnouncements to to {Path.GetRelativePath(Directory.GetCurrentDirectory(), JSON_SYSANNOUNCE_FILENAME)}";
             Trace.WriteLine(txt);
             Console.WriteLine(txt);
+            ServerConfig.Save();
         }
 
         private void AccountManager_PendingWrite()
@@ -45,6 +47,7 @@ namespace BuildServiceAPI
             string txt = $"[ContentManager->AccountManager_PendingWrite:{GeneralHelper.GetNanoseconds()}] Wrote accounts to {Path.GetRelativePath(Directory.GetCurrentDirectory(), JSON_ACCOUNT_FILENAME)}";
             Trace.WriteLine(txt);
             Console.WriteLine(txt);
+            ServerConfig.Save();
         }
 
         private readonly string DATABASE_FILENAME = Path.Combine(
@@ -111,6 +114,7 @@ namespace BuildServiceAPI
                 if (File.Exists(JSONBACKUP_FILENAME))
                     RestoreFromJSON();
             });
+
         }
         private void RestoreFromJSON()
         {
@@ -157,6 +161,7 @@ namespace BuildServiceAPI
             {
                 Console.Error.WriteLine($"[ContentManager->DatabaseSerialize] Failed to save {Path.GetRelativePath(Directory.GetCurrentDirectory(), DATABASE_FILENAME)}");
             }
+            ServerConfig.Save();
         }
         private void CreateJSONBackup()
         {
