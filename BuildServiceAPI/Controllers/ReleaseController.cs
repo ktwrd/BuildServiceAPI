@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BuildServiceCommon;
 using BuildServiceCommon.Authorization;
+using BuildServiceAPI.BuildServiceAPI;
 
 namespace BuildServiceAPI.Controllers
 {
@@ -77,6 +78,67 @@ namespace BuildServiceAPI.Controllers
                     returnContent.Add(rel);
                 }
             }
+
+            var filteredReleases = new List<ProductRelease>();
+            var account = MainClass.contentManager.AccountManager.GetAccount(token);
+            if (account == null)
+            {
+                returnContent.Clear();
+            }
+            else
+            {
+                foreach (var product in returnContent)
+                {
+                    var newProduct = new ProductRelease()
+                    {
+                        ProductName = product.ProductName,
+                        ProductID = product.ProductID,
+                        UID = product.UID
+                    };
+                    var filteredStreams = new List<ProductReleaseStream>();
+                    foreach (var stream in product.Streams)
+                    {
+                        bool isOtherBranch = true;
+                        switch (stream.BranchName.ToLower())
+                        {
+                            case "nightly":
+                                isOtherBranch = false;
+                                break;
+                            case "beta":
+                                isOtherBranch = false;
+                                break;
+                            case "stable":
+                                isOtherBranch = false;
+                                break;
+                        }
+                        bool allowStream = false;
+                        if (!isOtherBranch)
+                        {
+                            allowStream = MainClass.CanUserGroupsAccessStream(stream.GroupBlacklist.ToArray(), stream.GroupWhitelist.ToArray(), account);
+                        }
+
+                        if (ServerConfig.GetBoolean("Security", "AllowAdminOverride", true))
+                        {
+                            if (account.HasPermission(AccountPermission.ADMINISTRATOR))
+                                allowStream = true;
+                        }
+
+                        if (isOtherBranch)
+                        {
+                            if (ServerConfig.GetBoolean("Security", "AllowPermission_ReadReleaseBypass", true))
+                                if (account.HasPermission(AccountPermission.READ_RELEASE_BYPASS))
+                                    allowStream = true;
+                        }
+
+                        if (allowStream)
+                            filteredStreams.Add(stream);
+                    }
+                    newProduct.Streams = filteredStreams.ToArray();
+                    filteredReleases.Add(newProduct);
+                }
+                returnContent = filteredReleases;
+            }
+
             return returnContent;
         }
 
