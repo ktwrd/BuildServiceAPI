@@ -119,7 +119,6 @@ namespace BuildServiceAPI
             contentManager?.DatabaseSerialize();
         }
         internal static List<AuthenticatedUser> Accounts = new List<AuthenticatedUser>();
-#nullable enable
         public static AuthenticatedUser? FetchUser(string username, string password)
         {
             SHA256 sha256Instance = SHA256.Create();
@@ -141,7 +140,6 @@ namespace BuildServiceAPI
             }
             return null;
         }
-#nullable restore
         public static bool UserHasService(AuthenticatedUser user, string service) => user.AvailableServices.Contains(service);
 
         public static void LoadTokens()
