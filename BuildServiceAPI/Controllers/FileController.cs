@@ -1,4 +1,5 @@
-﻿using BuildServiceCommon;
+﻿using BuildServiceAPI.BuildServiceAPI;
+using BuildServiceCommon;
 using BuildServiceCommon.AutoUpdater;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
@@ -77,39 +78,34 @@ namespace BuildServiceAPI.Controllers
 
         [HttpGet]
         [Route("{hash}")]
-        public ActionResult FetchFilesFromHash(string hash, string token = "")
+        public ActionResult FetchFilesFromHash(string hash, string token)
         {
             var returnContent = new List<PublishedReleaseFile>();
             var contentManager = MainClass.contentManager;
-            if (contentManager != null)
+            var account = MainClass.contentManager.AccountManager.GetAccount(token);
+            if (contentManager != null && account != null)
             {
                 if (contentManager.Published.ContainsKey(hash))
                 {
                     var allow = false;
                     var commit = contentManager.Published[hash];
+                    if (commit.Release.releaseType != ReleaseType.Other)
+                    {
+                        allow = MainClass.CanUserGroupsAccessStream(commit.Release.groupBlacklist.ToArray(), commit.Release.groupWhitelist.ToArray(), account);
+                    }
+                    if (ServerConfig.GetBoolean("Security", "AllowAdminOverride", true))
+                    {
+                        if (account.HasPermission(BuildServiceCommon.Authorization.AccountPermission.ADMINISTRATOR))
+                            allow = true;
+                    }
+
                     if (commit.Release.releaseType == ReleaseType.Other)
                     {
-                        allow = MainClass.contentManager.AccountManager.AccountHasPermission(token, BuildServiceCommon.Authorization.AccountPermission.READ_RELEASE_BYPASS);
+                        if (ServerConfig.GetBoolean("Security", "AllowPermission_ReadReleaseBypass", true))
+                            if (account.HasPermission(BuildServiceCommon.Authorization.AccountPermission.READ_RELEASE_BYPASS))
+                                allow = true;
                     }
-                    else
-                    {
-                        allow = true;
-                    }
-#if BUILDSERVICEAPI_APP_WHITELIST
-                    if (commit.Release.appID == "com.minalyze.minalogger")
-                    {
-                        if (MainClass.UserByTokenHasService(token, "ml2") && commit.Release.releaseType != ReleaseType.Other && commit.Release.releaseType != ReleaseType.Invalid)
-                            allow = true;
-                        else if (MainClass.UserByTokenIsAdmin(token))
-                        {
-                            allow = true;
-                        }
-                    }
-                    else
-                    {
-                        allow = true;
-                    }
-#endif
+
                     if (allow)
                         returnContent = new List<PublishedReleaseFile>(commit.Files);
                 }
