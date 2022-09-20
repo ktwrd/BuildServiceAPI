@@ -27,7 +27,8 @@ namespace BuildServiceAPI.Controllers
         {
             var returnContent = new List<ProductRelease>();
             var allowFetch = true;
-            bool showExtraBuilds = MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.READ_RELEASE_BYPASS);
+            bool showExtraBuilds = MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.READ_RELEASE_BYPASS)
+                && ServerConfig.GetBoolean("Security", "AllowPermission_ReadReleaseBypass", true);
             if (allowFetch && (MainClass.contentManager?.Releases.ContainsKey(app) ?? false))
             {
                 var toMap = new Dictionary<string, List<ReleaseInfo>>();
