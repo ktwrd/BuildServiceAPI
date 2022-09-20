@@ -118,23 +118,6 @@ namespace BuildServiceAPI
         {
             contentManager?.DatabaseSerialize();
         }
-        public static string RegisterToken(string validatorSignature, string username, string password)
-        {
-            SHA256 sha256Instance = SHA256.Create();
-            var computedHash = sha256Instance.ComputeHash(System.Text.Encoding.UTF8.GetBytes($"{username}{password}"));
-            var hash = GeneralHelper.Base62Encode(computedHash);
-            var targetUser = FetchUser(username, password);
-            if (targetUser != null && targetUser.Token.Length > 0)
-                return targetUser.Token;
-            else if (targetUser == null)
-            {
-                targetUser = new AuthenticatedUser(username, password);
-                Accounts.Add(targetUser);
-            }
-            var token = targetUser.Token;
-            ValidTokens.Add(token, hash);
-            return token;
-        }
         internal static List<AuthenticatedUser> Accounts = new List<AuthenticatedUser>();
 #nullable enable
         public static AuthenticatedUser? FetchUser(string username, string password)
