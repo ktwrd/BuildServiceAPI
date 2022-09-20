@@ -114,10 +114,6 @@ namespace BuildServiceAPI
             return allow;
         }
 
-        public static void Save()
-        {
-            contentManager?.DatabaseSerialize();
-        }
         internal static List<AuthenticatedUser> Accounts = new List<AuthenticatedUser>();
         public static AuthenticatedUser? FetchUser(string username, string password)
         {
