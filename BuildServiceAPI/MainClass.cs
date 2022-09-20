@@ -1,4 +1,6 @@
+using BuildServiceAPI.BuildServiceAPI;
 using BuildServiceCommon;
+using BuildServiceCommon.Authorization;
 using BuildServiceCommon.AutoUpdater;
 using kate.shared.Helpers;
 using Microsoft.AspNetCore.Builder;
@@ -69,6 +71,38 @@ namespace BuildServiceAPI
             App.UseAuthorization();
             App.MapControllers();
             App.Run();
+        }
+
+        public static bool CanUserGroupsAccessStream(string[] blacklist, string[] whitelist, Account account)
+        {
+            bool allow = false;
+            
+            if (ServerConfig.GetBoolean("Security", "EnableGroupRestriction", false))
+            {
+                bool userHasWhitelist = false;
+                bool userHasBlacklist = false;
+                foreach (var group in blacklist)
+                {
+                    if (account.Groups.Contains(group))
+                        userHasBlacklist = true;
+                }
+                foreach (var group in whitelist)
+                {
+                    if (account.Groups.Contains(group))
+                        userHasWhitelist = true;
+                }
+
+                if (userHasBlacklist)
+                    allow = false;
+                else if (userHasWhitelist)
+                    allow = true;
+            }
+            else
+            {
+                allow = true;
+            }
+
+            return allow;
         }
 
         public static void Save()
