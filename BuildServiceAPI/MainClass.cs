@@ -146,7 +146,12 @@ namespace BuildServiceAPI
         {
             if (!File.Exists(@"tokens.json"))
             {
-                File.WriteAllText(@"tokens.json", @"[]");
+                string superuserToken = GeneralHelper.GenerateToken(32);
+                File.WriteAllText(@"tokens.json", $"[\"{superuserToken}\"]");
+                Console.WriteLine($"======================================== NOTICE ========================================");
+                Console.WriteLine($"The superuser token has been generated. Keep it safe, it has the right to do everything");
+                Console.WriteLine($"Superuser Token: \"{superuserToken}\"");
+                Console.WriteLine($"====================================== END NOTICE ======================================");
                 return;
             }
             else
