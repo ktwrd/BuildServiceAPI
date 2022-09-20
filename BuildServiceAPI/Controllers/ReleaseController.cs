@@ -6,6 +6,7 @@ using System.Linq;
 using BuildServiceCommon;
 using BuildServiceCommon.Authorization;
 using BuildServiceAPI.BuildServiceAPI;
+using System.Net;
 
 namespace BuildServiceAPI.Controllers
 {
@@ -16,12 +17,20 @@ namespace BuildServiceAPI.Controllers
         [HttpGet]
         public ActionResult Index(string token)
         {
-            if (!MainClass.ValidTokens.ContainsKey(token) || MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.READ_RELEASE_BYPASS))
+            var account = MainClass.contentManager.AccountManager.GetAccount(token);
+            if (account != null)
             {
-                Response.StatusCode = 401;
-                return Json(new HttpException(401, @"Invalid token"), MainClass.serializerOptions);
+                if (ServerConfig.GetBoolean("Security", "AllowPermission_ReadReleaseBypass", true) && account.HasPermission(AccountPermission.READ_RELEASE_BYPASS))
+                {
+                    return Json(MainClass.contentManager?.Releases ?? new object(), MainClass.serializerOptions);
+                }
+                if (ServerConfig.GetBoolean("Security", "AllowAdminOverride", true) && account.HasPermission(AccountPermission.ADMINISTRATOR))
+                {
+                    return Json(MainClass.contentManager?.Releases ?? new object(), MainClass.serializerOptions);
+                }
             }
-            return Json(MainClass.contentManager?.Releases ?? new object(), MainClass.serializerOptions);
+            Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            return Json(new HttpException(401, @"Invalid token"), MainClass.serializerOptions);
         }
 
         private List<ProductRelease> fetchReleasesByAppID(string app, string token)
