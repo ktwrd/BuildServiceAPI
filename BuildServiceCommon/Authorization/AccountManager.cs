@@ -28,6 +28,12 @@ namespace BuildServiceCommon.Authorization
 
         public bool IsPendingWrite { get; private set; }
         public event VoidDelegate PendingWrite;
+        public void ForcePendingWrite()
+        {
+            IsPendingWrite = true;
+            if (PendingWrite != null)
+                PendingWrite?.Invoke();
+        }
         internal void OnPendingWrite()
         {
             IsPendingWrite = true;
