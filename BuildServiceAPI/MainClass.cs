@@ -36,6 +36,7 @@ namespace BuildServiceAPI
         
         public static void Main(string[] args)
         {
+            AppDomain.CurrentDomain.ProcessExit += BeforeExit;
             serializerOptions.Converters.Add(new kate.shared.DateTimeConverterUsingDateTimeOffsetParse());
             serializerOptions.Converters.Add(new kate.shared.DateTimeConverterUsingDateTimeParse());
             contentManager = new ContentManager();
@@ -71,6 +72,14 @@ namespace BuildServiceAPI
             App.UseAuthorization();
             App.MapControllers();
             App.Run();
+        }
+
+        public static void BeforeExit(object sender, EventArgs e)
+        {
+            contentManager.DatabaseSerialize();
+            contentManager.SystemAnnouncement.OnUpdate();
+            contentManager.AccountManager.ForcePendingWrite();
+            ServerConfig.Save();
         }
 
         public static bool CanUserGroupsAccessStream(string[] blacklist, string[] whitelist, Account account)
