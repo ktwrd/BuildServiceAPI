@@ -60,6 +60,5 @@ namespace BuildServiceAPI.DesktopClient
         public static string[] GetKeys(string group) => Get(group).GetKeys();
         public static string[] GetValues(string group) => Get(group).GetValues();
         public static void Remove(string group, string key) => Get(group).Remove(key);
-
     }
 }
