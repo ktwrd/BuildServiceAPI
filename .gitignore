@@ -365,3 +365,4 @@ BuildServiceAPI.DesktopClient/BuildScripts/**/.exe
 *.Update.exe
 BuildServiceAPI/account.json
 BuildServiceAPI/systemAnnouncement.json
+config.ini
