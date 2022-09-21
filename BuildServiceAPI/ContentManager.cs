@@ -114,6 +114,7 @@ namespace BuildServiceAPI
                 if (File.Exists(JSONBACKUP_FILENAME))
                     RestoreFromJSON();
             });
+            RestoreFromJSON();
 
         }
         private void RestoreFromJSON()
@@ -138,7 +139,7 @@ namespace BuildServiceAPI
             Console.WriteLine($"[ContentManager->RestoreFromJSON] Restored from JSON.");
 
             ReleaseInfoContent = deserialized.ReleaseInfoContent;
-            Releases = deserialized.Releases;
+            Releases = ReleaseHelper.TransformReleaseList(ReleaseInfoContent.ToArray());
             Published = deserialized.Published;
             System.Threading.Thread.Sleep(500);
             DatabaseSerialize();

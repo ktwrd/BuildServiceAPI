@@ -7,6 +7,7 @@ using BuildServiceCommon;
 using BuildServiceCommon.Authorization;
 using BuildServiceAPI.BuildServiceAPI;
 using System.Net;
+using System;
 
 namespace BuildServiceAPI.Controllers
 {
@@ -68,20 +69,14 @@ namespace BuildServiceAPI.Controllers
                     var rel = new ProductRelease()
                     {
                         ProductID = pair.Value.ProductID,
-                        ProductName = pair.Value.ProductName
+                        ProductName = pair.Value.ProductName,
+                        UID = pair.Value.UID
                     };
                     var tmpStreams = pair.Value.Streams;
                     var streams = new List<ProductReleaseStream>();
                     foreach (var s in tmpStreams)
                     {
-                        if (s.BranchName == "Other")
-                        {
-                            if (showExtraBuilds)
-                                streams.Add(s);
-                        }
-                        else
-                            streams.Add(s);
-
+                        streams.Add(s);
                     }
                     rel.Streams = streams.ToArray();
                     returnContent.Add(rel);
@@ -120,11 +115,7 @@ namespace BuildServiceAPI.Controllers
                                 isOtherBranch = false;
                                 break;
                         }
-                        bool allowStream = false;
-                        if (!isOtherBranch)
-                        {
-                            allowStream = MainClass.CanUserGroupsAccessStream(stream.GroupBlacklist.ToArray(), stream.GroupWhitelist.ToArray(), account);
-                        }
+                        bool allowStream = MainClass.CanUserGroupsAccessStream(stream.GroupBlacklist.ToArray(), stream.GroupWhitelist.ToArray(), account);
 
                         if (ServerConfig.GetBoolean("Security", "AllowAdminOverride", true))
                         {
@@ -137,7 +128,11 @@ namespace BuildServiceAPI.Controllers
                             if (ServerConfig.GetBoolean("Security", "AllowPermission_ReadReleaseBypass", true))
                                 if (account.HasPermission(AccountPermission.READ_RELEASE_BYPASS))
                                     allowStream = true;
+                                else
+                                    allowStream = false;
                         }
+
+                        Console.WriteLine($"{stream.RemoteSignature} {allowStream}");
 
                         if (allowStream)
                             filteredStreams.Add(stream);

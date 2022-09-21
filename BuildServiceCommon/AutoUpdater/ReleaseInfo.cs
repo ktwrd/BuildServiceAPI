@@ -30,8 +30,8 @@ namespace BuildServiceCommon.AutoUpdater
         ReleaseType releaseType { get; set; }
         Dictionary<string, string> files { get; set; }
         Dictionary<string, string> executable { get; set; }
-        List<string> groupWhitelist { get; set; }
-        List<string> groupBlacklist { get; set; }
+        string[] groupWhitelist { get; set; }
+        string[] groupBlacklist { get; set; }
     }
     [Serializable]
     public class ReleaseInfo : IReleaseInfo, bSerializable, bFirebaseSerializable
@@ -49,8 +49,8 @@ namespace BuildServiceCommon.AutoUpdater
         public ReleaseType releaseType { get; set; }
         public Dictionary<string, string> files { get; set; }
         public Dictionary<string, string> executable { get; set; }
-        public List<string> groupWhitelist { get; set; }
-        public List<string> groupBlacklist { get; set; }
+        public string[] groupWhitelist { get; set; }
+        public string[] groupBlacklist { get; set; }
 
         #region bFirebaseSerializable
         public Task FromFirebase(DocumentSnapshot document, VoidDelegate completeIncrement)
@@ -114,8 +114,8 @@ namespace BuildServiceCommon.AutoUpdater
             releaseType = ReleaseType.Other;
             files = new Dictionary<string, string>();
             executable = new Dictionary<string, string>();
-            groupWhitelist = new List<string>();
-            groupBlacklist = new List<string>();
+            groupWhitelist = Array.Empty<string>();
+            groupBlacklist = Array.Empty<string>();
         }
 
         #region bSerializable

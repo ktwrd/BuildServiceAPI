@@ -5,6 +5,7 @@ using BuildServiceCommon.AutoUpdater;
 using kate.shared.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -101,10 +102,13 @@ namespace BuildServiceAPI
                         userHasWhitelist = true;
                 }
 
-                if (userHasBlacklist)
-                    allow = false;
-                else if (userHasWhitelist)
-                    allow = true;
+                if (blacklist.Length > 0 && userHasBlacklist)
+                    return false;
+                if (whitelist.Length > 0 && userHasWhitelist)
+                    return true;
+                if (whitelist.Length > 0 && userHasWhitelist == false)
+                    return false;
+                return true;
             }
             else
             {
