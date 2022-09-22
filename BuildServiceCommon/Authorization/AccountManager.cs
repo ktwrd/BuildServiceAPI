@@ -58,6 +58,18 @@ namespace BuildServiceCommon.Authorization
             return false;
         }
 
+        public void SetUserGroups(Dictionary<string, string[]> dict)
+        {
+            foreach (var acc in this.AccountList)
+            {
+                if (dict.ContainsKey(acc.Username))
+                {
+                    acc.Groups = new List<string>(dict[acc.Username]);
+                }
+            }
+            OnPendingWrite();
+        }
+
         public Account GetAccount(string token)
         {
             foreach (var account in AccountList)
