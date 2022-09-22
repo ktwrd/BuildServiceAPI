@@ -179,10 +179,13 @@ namespace BuildServiceCommon.Authorization
         /// <summary>
         /// Remove all tokens from this user
         /// </summary>
-        public void RemoveTokens()
+        /// <returns>Amount of tokens that were removed.</returns>
+        public int RemoveTokens()
         {
+            int count = Tokens.Count;
             Tokens = new List<AccountToken>();
             PendingWrite = true;
+            return count;
         }
 
         /// <summary>
