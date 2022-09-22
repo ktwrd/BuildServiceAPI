@@ -8,16 +8,6 @@ using System.Text.Json;
 
 namespace BuildServiceCommon.Authorization
 {
-    public enum AccountPermission
-    {
-        ADMINISTRATOR,
-        CREATE_RELEASE,
-        READ_RELEASE_BYPASS,
-        DELETE_RELEASE,
-        DELETE_ACCOUNT,
-        CONFIG_READ,
-        CONFIG_WRITE
-    }
     public class AccountDisableReason
     {
         public string Message = "";
