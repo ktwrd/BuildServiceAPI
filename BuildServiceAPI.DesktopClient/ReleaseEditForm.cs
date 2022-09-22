@@ -26,6 +26,8 @@ namespace BuildServiceAPI.DesktopClient
             comboBoxLabelReleaseType.Items.Add(ReleaseType.Beta);
             comboBoxLabelReleaseType.Items.Add(ReleaseType.Nightly);
             comboBoxLabelReleaseType.Items.Add(ReleaseType.Other);
+            textBoxListGroupBlacklist.MinimumItems = 1;
+            textBoxListGroupWhitelist.MinimumItems = 1;
 
             Text = $"Release Edit Form - {ReleaseInfo.commitHash}";
             LoadContent();
@@ -67,18 +69,20 @@ namespace BuildServiceAPI.DesktopClient
 
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            ReleaseInfo.groupWhitelist.Clear();
-            ReleaseInfo.groupBlacklist.Clear();
+            var whitelist = new List<string>();
+            var blacklist = new List<string>();
             foreach (var item in textBoxListGroupWhitelist.Items)
             {
                 if (item.Text.Length < 1) continue;
-                ReleaseInfo.groupWhitelist.Add(item.Text);
+                whitelist.Add(item.Text);
             }
             foreach (var item in textBoxListGroupBlacklist.Items)
             {
                 if (item.Text.Length < 1) continue;
-                ReleaseInfo.groupBlacklist.Add(item.Text);
+                blacklist.Add(item.Text);
             }
+            ReleaseInfo.groupWhitelist = whitelist.ToArray();
+            ReleaseInfo.groupBlacklist = blacklist.ToArray();
             ReleaseInfo.releaseType = (ReleaseType)comboBoxLabelReleaseType.SelectedIndex;
             ReleaseInfo.name = textBoxLabelName.TextboxContent;
             ReleaseInfo.version = textBoxLabelVersion.TextboxContent;
