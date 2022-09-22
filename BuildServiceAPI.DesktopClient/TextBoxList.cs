@@ -52,6 +52,10 @@ namespace BuildServiceAPI.DesktopClient
             flowLayoutPanel.Controls.Add(item);
             OnItemAdd(item);
         }
+        public void AddItem(string content) => AddItem(new TextBoxListItem()
+        {
+            Text = content
+        });
 
         private void UpdateButtonState()
         {
