@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace BuildServiceCommon.Authorization
@@ -70,6 +71,7 @@ namespace BuildServiceCommon.Authorization
             OnPendingWrite();
         }
 
+        #region Get Account
         public Account GetAccount(string token)
         {
             foreach (var account in AccountList)
@@ -112,7 +114,9 @@ namespace BuildServiceCommon.Authorization
             }
             return list;
         }
+        #endregion
 
+        #region Token Management
         public GrantTokenResponse CreateToken(Account account)
         {
             bool accountFound = false;
@@ -198,7 +202,16 @@ namespace BuildServiceCommon.Authorization
                 AccountList.Remove(accountInstance);
             return response;
         }
+        #endregion
 
+        #region Account Permission
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="account">Account to check</param>
+        /// <param name="permissions">Array of permissions to check</param>
+        /// <param name="ignoreAdmin">When <see cref="Account"/> has the <see cref="AccountPermission.ADMINISTRATOR"/> permission, then <see cref="true"/> is always returned.</param>
+        /// <returns></returns>
         public bool AccountHasPermission(Account account, AccountPermission[] permissions, bool ignoreAdmin=false)
         {
             bool match = false;
@@ -243,7 +256,9 @@ namespace BuildServiceCommon.Authorization
                     token,
                     new AccountPermission[] { permission },
                     ignoreAdmin);
+        #endregion
 
+        #region JSON (Des|S)erialization
         public void Read(string jsonContent)
         {
             if (jsonContent.Length < 1)
@@ -292,5 +307,6 @@ namespace BuildServiceCommon.Authorization
                 throw;
             }
         }
+        #endregion
     }
 }
