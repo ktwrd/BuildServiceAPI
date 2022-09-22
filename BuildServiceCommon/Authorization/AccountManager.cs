@@ -88,6 +88,30 @@ namespace BuildServiceCommon.Authorization
             }
             return null;
         }
+        public enum AccountField
+        {
+            Username
+        }
+        public LinkedList<Account> GetAccountsByRegex(Regex expression, AccountField field=AccountField.Username)
+        {
+            var list = new LinkedList<Account>();
+            foreach (var account in AccountList)
+            {
+                switch (field)
+                {
+                    case AccountField.Username:
+                        if (!expression.Match(account.Username).Success)
+                            continue;
+                        break;
+                    default:
+                        continue;
+                        break;
+                }
+
+                list.AddLast(account);
+            }
+            return list;
+        }
 
         public GrantTokenResponse CreateToken(Account account)
         {
