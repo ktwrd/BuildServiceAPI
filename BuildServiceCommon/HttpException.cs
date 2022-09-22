@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BuildServiceAPI
+namespace BuildServiceCommon
 {
     public class HttpException
     {
