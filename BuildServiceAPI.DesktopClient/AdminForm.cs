@@ -703,5 +703,13 @@ namespace BuildServiceAPI.DesktopClient
             if (UserConfig.GetBoolean("Authentication", "AutoLogin", false))
                 FetchToken();
         }
+
+        public AccountGroupForm AccountGroupForm;
+        private void toolStripButtonAccountGroupMan_Click(object sender, EventArgs e)
+        {
+            if (AccountGroupForm == null || AccountGroupForm.IsDisposed)
+                AccountGroupForm = new AccountGroupForm(SelectedAccountEntry, this);
+            AccountGroupForm.Show();
+        }
     }
 }

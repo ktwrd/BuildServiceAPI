@@ -264,6 +264,7 @@
             this.toolStripButtonAccountGroupMan.Name = "toolStripButtonAccountGroupMan";
             this.toolStripButtonAccountGroupMan.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonAccountGroupMan.Text = "Group Management";
+            this.toolStripButtonAccountGroupMan.Click += new System.EventHandler(this.toolStripButtonAccountGroupMan_Click);
             // 
             // tabPageAnnouncementManagement
             // 

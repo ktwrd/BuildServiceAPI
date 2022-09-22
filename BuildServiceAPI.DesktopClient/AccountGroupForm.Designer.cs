@@ -76,6 +76,7 @@
             this.MinimumSize = new System.Drawing.Size(340, 300);
             this.Name = "AccountGroupForm";
             this.Text = "Edit Account Groups";
+            this.Shown += new System.EventHandler(this.AccountGroupForm_Shown);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
 

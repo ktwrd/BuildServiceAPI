@@ -24,14 +24,23 @@ namespace BuildServiceAPI.DesktopClient
 
             AdminForm = adminForm;
             Account = account;
-            textBoxList1.MinimumItems = 0;
-            foreach (var i in textBoxList1.Items)
-                textBoxList1.RemoveItem(i);
+        }
+
+        public void Reset()
+        {
+            textBoxList1.MinimumItems = 1;
+            foreach (var i in Account.Groups)
+                textBoxList1.AddItem(i);
         }
 
         private void buttonPush_Click(object sender, EventArgs e)
         {
             var groupList = new List<string>();
+            foreach (var item in textBoxList1.Items)
+            {
+                if (item.Text.Length > 0)
+                    groupList.Add(item.Text);
+            }
             var dict = new Dictionary<string, string[]>()
             {
                 { Account.Username, groupList.ToArray() }
@@ -43,9 +52,23 @@ namespace BuildServiceAPI.DesktopClient
                 Data = dict
             };
 
-            AdminForm.httpClient.PostAsync(targetURL, new StringContent(JsonSerializer.Serialize(sendContentObject, Program.serializerOptions))).Wait();
+            var response = AdminForm.httpClient.PostAsync(targetURL, new StringContent(JsonSerializer.Serialize(sendContentObject, Program.serializerOptions))).Result;
+            /*var stringContent = response.Content.ReadAsStringAsync().Result;
+            var dynamicContent = JsonSerializer.Deserialize<ObjectResponse<dynamic>>(stringContent, Program.serializerOptions);
+            if (!dynamicContent.Success)
+            {
+                var exceptionContent = JsonSerializer.Deserialize<ObjectResponse<HttpException>>(stringContent, Program.serializerOptions);
+                MessageBox.Show($"({exceptionContent.Data.Code}) {exceptionContent.Data.Message}\n{exceptionContent.Data.Exception}", $"Failed to push user group");
+            }*/
+
             AdminForm.RefreshAccounts();
             AdminForm.RefreshAccountListView();
+        }
+
+        private void AccountGroupForm_Shown(object sender, EventArgs e)
+        {
+            AdminForm.Enabled = false;
+            Reset();
         }
     }
 }
