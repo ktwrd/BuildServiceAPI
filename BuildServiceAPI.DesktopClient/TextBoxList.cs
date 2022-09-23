@@ -98,6 +98,10 @@ namespace BuildServiceAPI.DesktopClient
             {
                 RemoveItem(item);
             }
+            for (int i = 0; i < MinimumItems; i++)
+            {
+                AddItem(new TextBoxListItem());
+            }
         }
     }
 }
