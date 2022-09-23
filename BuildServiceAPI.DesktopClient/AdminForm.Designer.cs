@@ -89,6 +89,7 @@
             this.toolStripButtonMainPushChanges = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonMainPull = new System.Windows.Forms.ToolStripButton();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.toolStripButtonAccountGroupPowertool = new System.Windows.Forms.ToolStripButton();
             this.tabControl1.SuspendLayout();
             this.tabPageAccountMan.SuspendLayout();
             this.toolStripAccountMan.SuspendLayout();
@@ -185,7 +186,8 @@
             this.toolStripButtonAccountBlockDel,
             this.toolStripSeparator3,
             this.toolStripButtonAccountPermission,
-            this.toolStripButtonAccountGroupMan});
+            this.toolStripButtonAccountGroupMan,
+            this.toolStripButtonAccountGroupPowertool});
             this.toolStripAccountMan.Location = new System.Drawing.Point(0, 0);
             this.toolStripAccountMan.Name = "toolStripAccountMan";
             this.toolStripAccountMan.Padding = new System.Windows.Forms.Padding(0);
@@ -744,6 +746,16 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1264, 441);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
+            // toolStripButtonAccountGroupPowertool
+            // 
+            this.toolStripButtonAccountGroupPowertool.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonAccountGroupPowertool.Enabled = false;
+            this.toolStripButtonAccountGroupPowertool.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonAccountGroupPowertool.Name = "toolStripButtonAccountGroupPowertool";
+            this.toolStripButtonAccountGroupPowertool.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonAccountGroupPowertool.Text = "Group Powertool";
+            this.toolStripButtonAccountGroupPowertool.Click += new System.EventHandler(this.toolStripButtonAccountGroupPowertool_Click);
+            // 
             // AdminForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -846,5 +858,6 @@
         private System.Windows.Forms.ToolStripButton toolStripButtonMainPull;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.CheckBox checkBoxAuthAutoLogin;
+        private System.Windows.Forms.ToolStripButton toolStripButtonAccountGroupPowertool;
     }
 }

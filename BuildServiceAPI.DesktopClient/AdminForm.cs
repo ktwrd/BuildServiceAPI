@@ -162,6 +162,7 @@ namespace BuildServiceAPI.DesktopClient
         /// Nullable
         /// </summary>
         public AccountDetailsResponse SelectedAccountEntry = null;
+        public AccountDetailsResponse[] SelectedAcccountEntry_Arr = Array.Empty<AccountDetailsResponse>();
         public void RefreshAccounts()
         {
             AccountListing.Clear();
@@ -205,7 +206,21 @@ namespace BuildServiceAPI.DesktopClient
             toolStripButtonAccountGroupMan.Enabled = false;
             toolStripButtonAccountPermission.Enabled = false;
             toolStripButtonUserModify.Enabled = false;
+            toolStripButtonAccountGroupPowertool.Enabled = true;
             SelectedAccountEntry = null;
+            // toolStripButtonAccountGroupPowertool
+            var selectedList = new List<AccountDetailsResponse>();
+            foreach (var account in AccountListing)
+            {
+                foreach (ListViewItem selectedItem in listViewAccount.SelectedItems)
+                {
+                    if (account.Username == selectedItem.Name)
+                    {
+                        selectedList.Add(account);
+                    }
+                }
+            }
+            SelectedAcccountEntry_Arr = selectedList.ToArray();
             if (listViewAccount.SelectedItems.Count < 1) return;
             if (listViewAccount.SelectedItems.Count > 1) return;
             foreach (var item in AccountListing)
@@ -711,6 +726,11 @@ namespace BuildServiceAPI.DesktopClient
                 AccountGroupForm = new AccountGroupForm();
             AccountGroupForm.Init(SelectedAccountEntry, this);
             AccountGroupForm.Show();
+        }
+
+        private void toolStripButtonAccountGroupPowertool_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
