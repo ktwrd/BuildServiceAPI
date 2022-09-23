@@ -15,7 +15,7 @@ namespace BuildServiceAPI.Controllers.Admin
     {
         public static AccountPermission[] RequiredPermissions = new AccountPermission[]
         {
-            AccountPermission.ADMINISTRATOR
+            AccountPermission.USER_LIST
         };
 
         [HttpGet]
