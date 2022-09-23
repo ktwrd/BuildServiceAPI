@@ -708,7 +708,8 @@ namespace BuildServiceAPI.DesktopClient
         private void toolStripButtonAccountGroupMan_Click(object sender, EventArgs e)
         {
             if (AccountGroupForm == null || AccountGroupForm.IsDisposed)
-                AccountGroupForm = new AccountGroupForm(SelectedAccountEntry, this);
+                AccountGroupForm = new AccountGroupForm();
+            AccountGroupForm.Init(SelectedAccountEntry, this);
             AccountGroupForm.Show();
         }
     }

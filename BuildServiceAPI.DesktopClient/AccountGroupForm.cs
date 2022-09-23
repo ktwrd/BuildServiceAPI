@@ -22,14 +22,12 @@ namespace BuildServiceAPI.DesktopClient
         {
             InitializeComponent();
         }
-        public AccountGroupForm(AccountDetailsResponse account, AdminForm adminForm)
-        {
-            InitializeComponent();
 
+        public void Init(AccountDetailsResponse account, AdminForm adminForm)
+        {
             AdminForm = adminForm;
             Account = account;
         }
-
         public void Reset()
         {
             textBoxList1.MinimumItems = 1;
