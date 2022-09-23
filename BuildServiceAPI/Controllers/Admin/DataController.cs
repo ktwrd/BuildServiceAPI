@@ -161,7 +161,7 @@ namespace BuildServiceAPI.Controllers.Admin
                 return Json(new ObjectResponse<string>()
                 {
                     Success = false,
-                    Data = "Invalid Permissions"
+                    Data = ServerStringResponse.InvalidCredential
                 }, MainClass.serializerOptions);
             }
 
@@ -207,10 +207,11 @@ namespace BuildServiceAPI.Controllers.Admin
                 return Json(new ObjectResponse<string>()
                 {
                     Success = true,
-                    Data = "Invalid parameter \"type\""
-                }, MainClass.serializerOptions);
+                    Data = ServerStringResponse.InvalidParameter("type")
+                }, MainClass.serializerOptions); ;
             }
         }
+
         [HttpPost("setdata")]
         public ActionResult SetData(string token)
         {
@@ -220,7 +221,7 @@ namespace BuildServiceAPI.Controllers.Admin
                 return Json(new ObjectResponse<string>()
                 {
                     Success = false,
-                    Data = "Invalid Permissions"
+                    Data = ServerStringResponse.InvalidCredential
                 }, MainClass.serializerOptions);
             }
             HttpContext.Request.Body.Seek(0, SeekOrigin.Begin);
@@ -271,7 +272,7 @@ namespace BuildServiceAPI.Controllers.Admin
                 return Json(new ObjectResponse<string>()
                 {
                     Success = false,
-                    Data = "Invalid parameter \"type\""
+                    Data = ServerStringResponse.InvalidParameter("type")
                 }, MainClass.serializerOptions);
             }
 
