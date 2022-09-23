@@ -20,7 +20,7 @@ namespace BuildServiceAPI.Controllers.Admin
 
         [HttpGet]
         [Route("list")]
-        public ActionResult List(string token, string username=null, SearchMethod usernameSearchType = SearchMethod.Equals, long firstSeenTimestamp=0, long lastSeenTimestamp=long.MaxValue)
+        public ActionResult List(string token, string? username=null, SearchMethod usernameSearchType = SearchMethod.Equals, long firstSeenTimestamp=0, long lastSeenTimestamp=long.MaxValue)
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions))
             {
@@ -74,7 +74,7 @@ namespace BuildServiceAPI.Controllers.Admin
         }
     
         [HttpGet("token/purge")]
-        public ActionResult TokenPurge(string token, string username=null)
+        public ActionResult TokenPurge(string token, string? username=null)
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions))
             {

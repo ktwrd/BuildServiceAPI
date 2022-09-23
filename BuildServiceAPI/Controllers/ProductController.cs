@@ -11,7 +11,7 @@ namespace BuildServiceAPI.Controllers
     {
         [HttpGet]
         [Route("available")]
-        public ActionResult FetchAvailable(string token="")
+        public ActionResult FetchAvailable(string? token="")
         {
             var productIDList = new List<string>();
             var contentManager = MainClass.contentManager;

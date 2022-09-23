@@ -110,7 +110,7 @@ namespace BuildServiceAPI.Controllers
 
         [HttpGet]
         [Route("remove")]
-        public ActionResult Reset(string token, bool all = false)
+        public ActionResult Reset(string token, bool? all = false)
         {
             if (token == null || token.Length < 32 || token.Length > 32)
             {
@@ -133,7 +133,7 @@ namespace BuildServiceAPI.Controllers
                 }, MainClass.serializerOptions);
             }
 
-            if (all)
+            if (all ?? false)
             {
                 account.RemoveTokens();
                 return Json(new ObjectResponse<object>()

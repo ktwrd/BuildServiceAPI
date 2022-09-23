@@ -21,7 +21,7 @@ namespace BuildServiceAPI.Controllers.Admin.User
         };
 
         [HttpGet("purge")]
-        public ActionResult TokenPurge(string token, string username = null, bool isUsernameFieldRegexPattern = false)
+        public ActionResult TokenPurge(string token, string? username = null, bool? isUsernameFieldRegexPattern = false)
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions))
             {
@@ -35,7 +35,7 @@ namespace BuildServiceAPI.Controllers.Admin.User
 
             Account[] accountArray;
 
-            if (isUsernameFieldRegexPattern && username != null && username.Length > 0)
+            if ((isUsernameFieldRegexPattern ?? false) && username != null && username.Length > 0)
             {
                 if (username == null)
                 {

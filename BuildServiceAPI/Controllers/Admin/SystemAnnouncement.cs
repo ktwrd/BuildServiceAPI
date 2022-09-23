@@ -30,7 +30,7 @@ namespace BuildServiceAPI.Controllers.Admin
 
         [HttpGet]
         [Route("new")]
-        public ActionResult Set(string token, string content, bool active=true)
+        public ActionResult Set(string token, string content, bool? active=true)
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.ADMINISTRATOR))
             {
@@ -42,7 +42,7 @@ namespace BuildServiceAPI.Controllers.Admin
                 }, MainClass.serializerOptions);
             }
 
-            MainClass.contentManager.SystemAnnouncement.Set(content, active);
+            MainClass.contentManager.SystemAnnouncement.Set(content, active ?? true);
             return Json(new ObjectResponse<SystemAnnouncementSummary>()
             {
                 Success = true,

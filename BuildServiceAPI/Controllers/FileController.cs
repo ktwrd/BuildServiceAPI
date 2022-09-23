@@ -115,6 +115,6 @@ namespace BuildServiceAPI.Controllers
 
         [HttpGet]
         [Route("")]
-        public ActionResult FetchFilesFromHashByParameter(string hash, string token = "") => FetchFilesFromHash(hash, token);
+        public ActionResult FetchFilesFromHashByParameter(string hash, string? token = "") => FetchFilesFromHash(hash, token ?? "");
     }
 }

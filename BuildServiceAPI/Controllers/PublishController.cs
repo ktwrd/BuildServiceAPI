@@ -139,9 +139,9 @@ namespace BuildServiceAPI.Controllers
         }
 
         [HttpGet("hash")]
-        public ActionResult ByCommitHashFromParameter(string hash, string token)
+        public ActionResult ByCommitHashFromParameter(string hash, string? token)
         {
-            var account = MainClass.contentManager.AccountManager.GetAccount(token);
+            var account = MainClass.contentManager.AccountManager.GetAccount(token ?? "");
             if (account == null)
             {
                 Response.StatusCode = 401;
@@ -172,6 +172,6 @@ namespace BuildServiceAPI.Controllers
         }
 
         [HttpGet("hash/{hash}")]
-        public ActionResult ByCommitHashFromPath(string token, string hash) => ByCommitHashFromParameter(token, hash);
+        public ActionResult ByCommitHashFromPath(string? token, string hash) => ByCommitHashFromParameter(token ?? "", hash);
     }
 }
