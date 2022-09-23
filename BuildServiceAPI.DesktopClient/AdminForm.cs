@@ -728,9 +728,13 @@ namespace BuildServiceAPI.DesktopClient
             AccountGroupForm.Show();
         }
 
+        public AccountGroupPowertool AccountGroupPowertool;
         private void toolStripButtonAccountGroupPowertool_Click(object sender, EventArgs e)
         {
-
+            if (AccountGroupPowertool == null || AccountGroupPowertool.IsDisposed)
+                AccountGroupPowertool = new AccountGroupPowertool();
+            AccountGroupPowertool.Init(this);
+            AccountGroupPowertool.Show();
         }
     }
 }

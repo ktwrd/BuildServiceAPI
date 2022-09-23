@@ -46,6 +46,7 @@
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonAccountPermission = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonAccountGroupMan = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonAccountGroupPowertool = new System.Windows.Forms.ToolStripButton();
             this.tabPageAnnouncementManagement = new System.Windows.Forms.TabPage();
             this.listViewAnnouncement = new System.Windows.Forms.ListView();
             this.columnHeaderContent = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -89,7 +90,6 @@
             this.toolStripButtonMainPushChanges = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonMainPull = new System.Windows.Forms.ToolStripButton();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.toolStripButtonAccountGroupPowertool = new System.Windows.Forms.ToolStripButton();
             this.tabControl1.SuspendLayout();
             this.tabPageAccountMan.SuspendLayout();
             this.toolStripAccountMan.SuspendLayout();
@@ -267,6 +267,16 @@
             this.toolStripButtonAccountGroupMan.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonAccountGroupMan.Text = "Group Management";
             this.toolStripButtonAccountGroupMan.Click += new System.EventHandler(this.toolStripButtonAccountGroupMan_Click);
+            // 
+            // toolStripButtonAccountGroupPowertool
+            // 
+            this.toolStripButtonAccountGroupPowertool.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonAccountGroupPowertool.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonAccountGroupPowertool.Image")));
+            this.toolStripButtonAccountGroupPowertool.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonAccountGroupPowertool.Name = "toolStripButtonAccountGroupPowertool";
+            this.toolStripButtonAccountGroupPowertool.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonAccountGroupPowertool.Text = "Group Powertool";
+            this.toolStripButtonAccountGroupPowertool.Click += new System.EventHandler(this.toolStripButtonAccountGroupPowertool_Click);
             // 
             // tabPageAnnouncementManagement
             // 
@@ -745,16 +755,6 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1264, 441);
             this.tableLayoutPanel1.TabIndex = 2;
-            // 
-            // toolStripButtonAccountGroupPowertool
-            // 
-            this.toolStripButtonAccountGroupPowertool.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonAccountGroupPowertool.Enabled = false;
-            this.toolStripButtonAccountGroupPowertool.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonAccountGroupPowertool.Name = "toolStripButtonAccountGroupPowertool";
-            this.toolStripButtonAccountGroupPowertool.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButtonAccountGroupPowertool.Text = "Group Powertool";
-            this.toolStripButtonAccountGroupPowertool.Click += new System.EventHandler(this.toolStripButtonAccountGroupPowertool_Click);
             // 
             // AdminForm
             // 
