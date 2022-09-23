@@ -18,6 +18,10 @@ namespace BuildServiceAPI.DesktopClient
     {
         public AccountDetailsResponse Account;
         public AdminForm AdminForm;
+        public AccountGroupForm()
+        {
+            InitializeComponent();
+        }
         public AccountGroupForm(AccountDetailsResponse account, AdminForm adminForm)
         {
             InitializeComponent();
@@ -53,13 +57,13 @@ namespace BuildServiceAPI.DesktopClient
             };
 
             var response = AdminForm.httpClient.PostAsync(targetURL, new StringContent(JsonSerializer.Serialize(sendContentObject, Program.serializerOptions))).Result;
-            /*var stringContent = response.Content.ReadAsStringAsync().Result;
+            var stringContent = response.Content.ReadAsStringAsync().Result;
             var dynamicContent = JsonSerializer.Deserialize<ObjectResponse<dynamic>>(stringContent, Program.serializerOptions);
             if (!dynamicContent.Success)
             {
                 var exceptionContent = JsonSerializer.Deserialize<ObjectResponse<HttpException>>(stringContent, Program.serializerOptions);
                 MessageBox.Show($"({exceptionContent.Data.Code}) {exceptionContent.Data.Message}\n{exceptionContent.Data.Exception}", $"Failed to push user group");
-            }*/
+            }
 
             AdminForm.RefreshAccounts();
             AdminForm.RefreshAccountListView();
@@ -67,7 +71,6 @@ namespace BuildServiceAPI.DesktopClient
 
         private void AccountGroupForm_Shown(object sender, EventArgs e)
         {
-            AdminForm.Enabled = false;
             Reset();
         }
     }
