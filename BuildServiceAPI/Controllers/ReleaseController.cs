@@ -23,15 +23,27 @@ namespace BuildServiceAPI.Controllers
             {
                 if (ServerConfig.GetBoolean("Security", "AllowPermission_ReadReleaseBypass", true) && account.HasPermission(AccountPermission.READ_RELEASE_BYPASS))
                 {
-                    return Json(MainClass.contentManager?.Releases ?? new object(), MainClass.serializerOptions);
+                    return Json(new ObjectResponse<Dictionary<string, ProductRelease>>()
+                    {
+                        Success = true,
+                        Data = MainClass.contentManager?.Releases ?? new Dictionary<string, ProductRelease>()
+                    }, MainClass.serializerOptions);
                 }
                 if (ServerConfig.GetBoolean("Security", "AllowAdminOverride", true) && account.HasPermission(AccountPermission.ADMINISTRATOR))
                 {
-                    return Json(MainClass.contentManager?.Releases ?? new object(), MainClass.serializerOptions);
+                    return Json(new ObjectResponse<Dictionary<string, ProductRelease>>()
+                    {
+                        Success = true,
+                        Data = MainClass.contentManager?.Releases ?? new Dictionary<string, ProductRelease>()
+                    }, MainClass.serializerOptions);
                 }
             }
             Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-            return Json(new HttpException(401, @"Invalid token"), MainClass.serializerOptions);
+            return Json(new ObjectResponse<HttpException>()
+            {
+                Success = false,
+                Data = new HttpException(401, @"Invalid token")
+            }, MainClass.serializerOptions);
         }
 
         private List<ProductRelease> fetchReleasesByAppID(string app, string token)
