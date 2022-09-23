@@ -208,7 +208,6 @@ namespace BuildServiceAPI.DesktopClient
             toolStripButtonUserModify.Enabled = false;
             toolStripButtonAccountGroupPowertool.Enabled = true;
             SelectedAccountEntry = null;
-            // toolStripButtonAccountGroupPowertool
             var selectedList = new List<AccountDetailsResponse>();
             foreach (var account in AccountListing)
             {
@@ -227,12 +226,14 @@ namespace BuildServiceAPI.DesktopClient
             {
                 if (item.Username == listViewAccount.SelectedItems[0].Name)
                 {
+                    #if DEBUG
                     toolStripButtonAccountBlockAdd.Enabled = true;
                     toolStripButtonAccountBlockDel.Enabled = true;
                     toolStripButtonAccountBlockEdit.Enabled = true;
+                    toolStripButtonUserModify.Enabled = true;
+                    #endif
                     toolStripButtonAccountGroupMan.Enabled = true;
                     toolStripButtonAccountPermission.Enabled = true;
-                    toolStripButtonUserModify.Enabled = true;
                     SelectedAccountEntry = item;
                     break;
                 }
@@ -248,6 +249,32 @@ namespace BuildServiceAPI.DesktopClient
             var form = new AccountPermissionForm(SelectedAccountEntry, this);
             form.Show();
             form.MdiParent = this.MdiParent;
+        }
+        private void toolStripButtonAccountRefresh_Click(object sender, EventArgs e)
+        {
+            Enabled = false;
+            RefreshAccounts();
+            RefreshAccountListView();
+            Enabled = true;
+        }
+        public AccountGroupForm AccountGroupForm;
+        private void toolStripButtonAccountGroupMan_Click(object sender, EventArgs e)
+        {
+            if (AccountGroupForm == null || AccountGroupForm.IsDisposed)
+                AccountGroupForm = new AccountGroupForm();
+            AccountGroupForm.MdiParent = this.MdiParent;
+            AccountGroupForm.Init(SelectedAccountEntry, this);
+            AccountGroupForm.Show();
+        }
+
+        public AccountGroupPowertool AccountGroupPowertool;
+        private void toolStripButtonAccountGroupPowertool_Click(object sender, EventArgs e)
+        {
+            if (AccountGroupPowertool == null || AccountGroupPowertool.IsDisposed)
+                AccountGroupPowertool = new AccountGroupPowertool();
+            AccountGroupPowertool.MdiParent = this.MdiParent;
+            AccountGroupPowertool.Init(this);
+            AccountGroupPowertool.Show();
         }
         #endregion
 
@@ -399,11 +426,13 @@ namespace BuildServiceAPI.DesktopClient
         private void toolStripButtonAnnouncementEnforce_Click(object sender, EventArgs e)
         {
             AnnouncementSummary.Active = true;
+            toolStripButtonAnnouncementEnforce.Enabled = !AnnouncementSummary.Active;
         }
 
         private void toolStripButtonAnnouncementsDisable_Click(object sender, EventArgs e)
         {
             AnnouncementSummary.Active = false;
+            toolStripButtonAnnouncementEnforce.Enabled = AnnouncementSummary.Active;
         }
 
         private void toolStripButtonAnnouncementAdd_Click(object sender, EventArgs e)
@@ -585,6 +614,14 @@ namespace BuildServiceAPI.DesktopClient
             }
         }
 
+        private void toolStripButtonReleasePush_Click(object sender, EventArgs e)
+        {
+            Enabled = false;
+            PushContentManager();
+            RefreshReleaseListView();
+            RefreshReleaseTree();
+            Enabled = true;
+        }
         private void toolStripButtonReleaseRefresh_Click(object sender, EventArgs e)
         {
             RefreshReleaseTree();
@@ -719,24 +756,6 @@ namespace BuildServiceAPI.DesktopClient
                 FetchToken();
         }
 
-        public AccountGroupForm AccountGroupForm;
-        private void toolStripButtonAccountGroupMan_Click(object sender, EventArgs e)
-        {
-            if (AccountGroupForm == null || AccountGroupForm.IsDisposed)
-                AccountGroupForm = new AccountGroupForm();
-            AccountGroupForm.MdiParent = this.MdiParent;
-            AccountGroupForm.Init(SelectedAccountEntry, this);
-            AccountGroupForm.Show();
-        }
 
-        public AccountGroupPowertool AccountGroupPowertool;
-        private void toolStripButtonAccountGroupPowertool_Click(object sender, EventArgs e)
-        {
-            if (AccountGroupPowertool == null || AccountGroupPowertool.IsDisposed)
-                AccountGroupPowertool = new AccountGroupPowertool();
-            AccountGroupPowertool.MdiParent = this.MdiParent;
-            AccountGroupPowertool.Init(this);
-            AccountGroupPowertool.Show();
-        }
     }
 }

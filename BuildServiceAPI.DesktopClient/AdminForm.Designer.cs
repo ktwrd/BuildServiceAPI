@@ -39,6 +39,8 @@
             this.columnHeaderPermissions = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.toolStripAccountMan = new System.Windows.Forms.ToolStrip();
             this.toolStripButtonUserModify = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButtonAccountRefresh = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonAccountBlockAdd = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonAccountBlockEdit = new System.Windows.Forms.ToolStripButton();
@@ -64,13 +66,15 @@
             this.toolStripButtonAnnouncementsDisable = new System.Windows.Forms.ToolStripButton();
             this.tabPageReleaseDetails = new System.Windows.Forms.TabPage();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripButtonReleaseRefresh = new System.Windows.Forms.ToolStripButton();
-            this.toolStripDropDownButtonReleaseFilter = new System.Windows.Forms.ToolStripDropDownButton();
-            this.showLatestReleaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSplitButtonReleaseDelete = new System.Windows.Forms.ToolStripSplitButton();
             this.toolStripMenuItemDeleteRemoteSignature = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripButtonReleaseEdit = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButtonReleaseRefresh = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonReleasePush = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripDropDownButtonReleaseFilter = new System.Windows.Forms.ToolStripDropDownButton();
+            this.showLatestReleaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.treeViewReleaseProduct = new System.Windows.Forms.TreeView();
             this.listViewReleases = new System.Windows.Forms.ListView();
@@ -180,6 +184,8 @@
             this.toolStripAccountMan.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStripAccountMan.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButtonUserModify,
+            this.toolStripSeparator7,
+            this.toolStripButtonAccountRefresh,
             this.toolStripSeparator2,
             this.toolStripButtonAccountBlockAdd,
             this.toolStripButtonAccountBlockEdit,
@@ -205,6 +211,21 @@
             this.toolStripButtonUserModify.Name = "toolStripButtonUserModify";
             this.toolStripButtonUserModify.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonUserModify.Text = "Modify";
+            // 
+            // toolStripSeparator7
+            // 
+            this.toolStripSeparator7.Name = "toolStripSeparator7";
+            this.toolStripSeparator7.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripButtonAccountRefresh
+            // 
+            this.toolStripButtonAccountRefresh.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonAccountRefresh.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonAccountRefresh.Image")));
+            this.toolStripButtonAccountRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonAccountRefresh.Name = "toolStripButtonAccountRefresh";
+            this.toolStripButtonAccountRefresh.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonAccountRefresh.Text = "Refresh";
+            this.toolStripButtonAccountRefresh.Click += new System.EventHandler(this.toolStripButtonAccountRefresh_Click);
             // 
             // toolStripSeparator2
             // 
@@ -444,11 +465,13 @@
             // 
             this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButtonReleaseRefresh,
-            this.toolStripDropDownButtonReleaseFilter,
-            this.toolStripSeparator4,
             this.toolStripSplitButtonReleaseDelete,
-            this.toolStripButtonReleaseEdit});
+            this.toolStripButtonReleaseEdit,
+            this.toolStripSeparator4,
+            this.toolStripButtonReleaseRefresh,
+            this.toolStripButtonReleasePush,
+            this.toolStripSeparator6,
+            this.toolStripDropDownButtonReleaseFilter});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Padding = new System.Windows.Forms.Padding(0);
@@ -456,40 +479,6 @@
             this.toolStrip1.Size = new System.Drawing.Size(1250, 25);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
-            // 
-            // toolStripButtonReleaseRefresh
-            // 
-            this.toolStripButtonReleaseRefresh.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonReleaseRefresh.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonReleaseRefresh.Image")));
-            this.toolStripButtonReleaseRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonReleaseRefresh.Name = "toolStripButtonReleaseRefresh";
-            this.toolStripButtonReleaseRefresh.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButtonReleaseRefresh.Text = "Refresh";
-            this.toolStripButtonReleaseRefresh.Click += new System.EventHandler(this.toolStripButtonReleaseRefresh_Click);
-            // 
-            // toolStripDropDownButtonReleaseFilter
-            // 
-            this.toolStripDropDownButtonReleaseFilter.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripDropDownButtonReleaseFilter.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.showLatestReleaseToolStripMenuItem});
-            this.toolStripDropDownButtonReleaseFilter.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButtonReleaseFilter.Image")));
-            this.toolStripDropDownButtonReleaseFilter.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripDropDownButtonReleaseFilter.Name = "toolStripDropDownButtonReleaseFilter";
-            this.toolStripDropDownButtonReleaseFilter.Size = new System.Drawing.Size(29, 22);
-            this.toolStripDropDownButtonReleaseFilter.Text = "Filter";
-            // 
-            // showLatestReleaseToolStripMenuItem
-            // 
-            this.showLatestReleaseToolStripMenuItem.CheckOnClick = true;
-            this.showLatestReleaseToolStripMenuItem.Name = "showLatestReleaseToolStripMenuItem";
-            this.showLatestReleaseToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
-            this.showLatestReleaseToolStripMenuItem.Text = "Show Latest Release";
-            this.showLatestReleaseToolStripMenuItem.Click += new System.EventHandler(this.showLatestReleaseToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
             // 
             // toolStripSplitButtonReleaseDelete
             // 
@@ -522,6 +511,55 @@
             this.toolStripButtonReleaseEdit.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonReleaseEdit.Text = "Edit";
             this.toolStripButtonReleaseEdit.Click += new System.EventHandler(this.toolStripButtonReleaseEdit_Click);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripButtonReleaseRefresh
+            // 
+            this.toolStripButtonReleaseRefresh.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonReleaseRefresh.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonReleaseRefresh.Image")));
+            this.toolStripButtonReleaseRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonReleaseRefresh.Name = "toolStripButtonReleaseRefresh";
+            this.toolStripButtonReleaseRefresh.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonReleaseRefresh.Text = "Refresh";
+            this.toolStripButtonReleaseRefresh.Click += new System.EventHandler(this.toolStripButtonReleaseRefresh_Click);
+            // 
+            // toolStripButtonReleasePush
+            // 
+            this.toolStripButtonReleasePush.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonReleasePush.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonReleasePush.Image")));
+            this.toolStripButtonReleasePush.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonReleasePush.Name = "toolStripButtonReleasePush";
+            this.toolStripButtonReleasePush.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonReleasePush.Text = "Push";
+            this.toolStripButtonReleasePush.Click += new System.EventHandler(this.toolStripButtonReleasePush_Click);
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripDropDownButtonReleaseFilter
+            // 
+            this.toolStripDropDownButtonReleaseFilter.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripDropDownButtonReleaseFilter.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showLatestReleaseToolStripMenuItem});
+            this.toolStripDropDownButtonReleaseFilter.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButtonReleaseFilter.Image")));
+            this.toolStripDropDownButtonReleaseFilter.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripDropDownButtonReleaseFilter.Name = "toolStripDropDownButtonReleaseFilter";
+            this.toolStripDropDownButtonReleaseFilter.Size = new System.Drawing.Size(29, 22);
+            this.toolStripDropDownButtonReleaseFilter.Text = "Filter";
+            // 
+            // showLatestReleaseToolStripMenuItem
+            // 
+            this.showLatestReleaseToolStripMenuItem.CheckOnClick = true;
+            this.showLatestReleaseToolStripMenuItem.Name = "showLatestReleaseToolStripMenuItem";
+            this.showLatestReleaseToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.showLatestReleaseToolStripMenuItem.Text = "Show Latest Release";
+            this.showLatestReleaseToolStripMenuItem.Click += new System.EventHandler(this.showLatestReleaseToolStripMenuItem_Click);
             // 
             // splitContainer2
             // 
@@ -708,6 +746,7 @@
             // 
             // toolStrip2
             // 
+            this.toolStrip2.Enabled = false;
             this.toolStrip2.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButtonMainPushChanges,
@@ -724,6 +763,7 @@
             // toolStripButtonMainPushChanges
             // 
             this.toolStripButtonMainPushChanges.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonMainPushChanges.Enabled = false;
             this.toolStripButtonMainPushChanges.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonMainPushChanges.Image")));
             this.toolStripButtonMainPushChanges.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonMainPushChanges.Name = "toolStripButtonMainPushChanges";
@@ -734,6 +774,7 @@
             // toolStripButtonMainPull
             // 
             this.toolStripButtonMainPull.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonMainPull.Enabled = false;
             this.toolStripButtonMainPull.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonMainPull.Image")));
             this.toolStripButtonMainPull.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonMainPull.Name = "toolStripButtonMainPull";
@@ -766,7 +807,7 @@
             this.MinimumSize = new System.Drawing.Size(1280, 480);
             this.Name = "AdminForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Server";
+            this.Text = "Admin Form";
             this.Shown += new System.EventHandler(this.AdminForm_Shown);
             this.tabControl1.ResumeLayout(false);
             this.tabPageAccountMan.ResumeLayout(false);
@@ -859,5 +900,9 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.CheckBox checkBoxAuthAutoLogin;
         private System.Windows.Forms.ToolStripButton toolStripButtonAccountGroupPowertool;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
+        private System.Windows.Forms.ToolStripButton toolStripButtonReleasePush;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
+        private System.Windows.Forms.ToolStripButton toolStripButtonAccountRefresh;
     }
 }
