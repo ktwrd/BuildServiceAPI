@@ -83,6 +83,15 @@ namespace BuildServiceAPI.Controllers
             var returnContent = new List<PublishedReleaseFile>();
             var contentManager = MainClass.contentManager;
             var account = MainClass.contentManager.AccountManager.GetAccount(token);
+            if (!account.Enabled)
+            {
+                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return Json(new ObjectResponse<HttpException>()
+                {
+                    Success = false,
+                    Data = new HttpException((int)HttpStatusCode.Unauthorized, ServerStringResponse.AccountDisabled)
+                }, MainClass.serializerOptions);
+            }
             if (contentManager != null && account != null)
             {
                 if (contentManager.Published.ContainsKey(hash))

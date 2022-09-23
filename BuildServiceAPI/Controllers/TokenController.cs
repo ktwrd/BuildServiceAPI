@@ -89,6 +89,15 @@ namespace BuildServiceAPI.Controllers
                     Data = "Invalid Account"
                 }, MainClass.serializerOptions);
             }
+            if (!account.Enabled)
+            {
+                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return Json(new ObjectResponse<HttpException>()
+                {
+                    Success = false,
+                    Data = new HttpException((int)HttpStatusCode.Unauthorized, ServerStringResponse.AccountDisabled)
+                }, MainClass.serializerOptions);
+            }
 
             var details = account.GetTokenDetails(token);
             if (details == null)
@@ -130,6 +139,15 @@ namespace BuildServiceAPI.Controllers
                 {
                     Success = false,
                     Data = "Invalid Account"
+                }, MainClass.serializerOptions);
+            }
+            if (!account.Enabled)
+            {
+                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return Json(new ObjectResponse<HttpException>()
+                {
+                    Success = false,
+                    Data = new HttpException((int)HttpStatusCode.Unauthorized, ServerStringResponse.AccountDisabled)
                 }, MainClass.serializerOptions);
             }
 

@@ -73,7 +73,7 @@ namespace BuildServiceCommon.Authorization
 
         #region Get Account
         public Account GetAccount(string token)
-        {
+        { 
             foreach (var account in AccountList)
             {
                 if (account.HasToken(token))
@@ -242,7 +242,7 @@ namespace BuildServiceCommon.Authorization
         {
             if (token == null || token.Length < AccountToken.TokenLength || token.Length > AccountToken.TokenLength) return false;
             var account = GetAccount(token);
-            if (account == null) return false;
+            if (account == null || !account.Enabled) return false;
             return AccountHasPermission(account, permissions, ignoreAdmin);
         }
         /// <summary>

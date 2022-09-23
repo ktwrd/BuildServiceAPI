@@ -121,6 +121,15 @@ namespace BuildServiceAPI.Controllers
                         Success = false
                     }, MainClass.serializerOptions);
                 }
+                if (!account.Enabled)
+                {
+                    Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    return Json(new ObjectResponse<HttpException>()
+                    {
+                        Success = false,
+                        Data = new HttpException((int)HttpStatusCode.Unauthorized, ServerStringResponse.AccountDisabled)
+                    }, MainClass.serializerOptions);
+                }
                 if (!account.HasPermission(AccountPermission.ADMINISTRATOR))
                 {
                     Response.StatusCode = 401;

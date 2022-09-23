@@ -21,6 +21,15 @@ namespace BuildServiceAPI.Controllers
             var account = MainClass.contentManager.AccountManager.GetAccount(token);
             if (account != null)
             {
+                if (!account.Enabled)
+                {
+                    Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    return Json(new ObjectResponse<HttpException>()
+                    {
+                        Success = false,
+                        Data = new HttpException((int)HttpStatusCode.Unauthorized, ServerStringResponse.AccountDisabled)
+                    }, MainClass.serializerOptions);
+                }
                 if (ServerConfig.GetBoolean("Security", "AllowPermission_ReadReleaseBypass", true) && account.HasPermission(AccountPermission.READ_RELEASE_BYPASS))
                 {
                     return Json(new ObjectResponse<Dictionary<string, ProductRelease>>()
@@ -42,7 +51,7 @@ namespace BuildServiceAPI.Controllers
             return Json(new ObjectResponse<HttpException>()
             {
                 Success = false,
-                Data = new HttpException(401, @"Invalid token")
+                Data = new HttpException(401, ServerStringResponse.InvalidCredential)
             }, MainClass.serializerOptions);
         }
 
@@ -172,6 +181,16 @@ namespace BuildServiceAPI.Controllers
         [Route("latest/{app}")]
         public ActionResult LatestFromPath(string app, string? token = "")
         {
+            var account = MainClass.contentManager.AccountManager.GetAccount(token);
+            if (account != null && !account.Enabled)
+            {
+                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return Json(new ObjectResponse<HttpException>()
+                {
+                    Success = false,
+                    Data = new HttpException((int)HttpStatusCode.Unauthorized, ServerStringResponse.AccountDisabled)
+                }, MainClass.serializerOptions);
+            }
             return Json(fetchReleasesByAppID(app, token ?? ""), MainClass.serializerOptions);
         }
 
@@ -179,6 +198,16 @@ namespace BuildServiceAPI.Controllers
         [Route("latest")]
         public ActionResult LatestFromParameter(string id="", string? token = "")
         {
+            var account = MainClass.contentManager.AccountManager.GetAccount(token);
+            if (account != null && !account.Enabled)
+            {
+                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return Json(new ObjectResponse<HttpException>()
+                {
+                    Success = false,
+                    Data = new HttpException((int)HttpStatusCode.Unauthorized, ServerStringResponse.AccountDisabled)
+                }, MainClass.serializerOptions);
+            }
             // Get all latest available
             if (id.Length < 1)
             {
