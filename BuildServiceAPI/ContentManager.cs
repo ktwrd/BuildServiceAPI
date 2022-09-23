@@ -30,6 +30,7 @@ namespace BuildServiceAPI
             AccountManager.PendingWrite += AccountManager_PendingWrite;
             SystemAnnouncement.Update += SystemAnnouncement_Update;
         }
+        
 
         private void SystemAnnouncement_Update()
         {
@@ -93,12 +94,11 @@ namespace BuildServiceAPI
                 Trace.WriteLine(txt);
                 Console.Error.WriteLine(txt);
             }
-            if (!File.Exists(DATABASE_FILENAME) && File.Exists(JSONBACKUP_FILENAME))
+            if (File.Exists(JSONBACKUP_FILENAME))
             {
                 RestoreFromJSON();
-                return;
             }
-            DatabaseHelper.Read(DATABASE_FILENAME, sr =>
+            /*DatabaseHelper.Read(DATABASE_FILENAME, sr =>
             {
                 DatabaseVersion = sr.ReadInt32(); // ContainsKey
                 ReleaseInfoContent = (List<ReleaseInfo>)sr.ReadBList<ReleaseInfo>();
@@ -113,9 +113,7 @@ namespace BuildServiceAPI
                 File.Copy("content.db", $"content.{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}.bak.db");
                 if (File.Exists(JSONBACKUP_FILENAME))
                     RestoreFromJSON();
-            });
-            RestoreFromJSON();
-
+            });*/
         }
         private void RestoreFromJSON()
         {
@@ -146,7 +144,7 @@ namespace BuildServiceAPI
         }
         public void DatabaseSerialize()
         {
-            bool response = DatabaseHelper.Write(DATABASE_FILENAME, sw =>
+            /*bool response = DatabaseHelper.Write(DATABASE_FILENAME, sw =>
             {
                 sw.Write(DatabaseVersion);
                 sw.Write(ReleaseInfoContent);
@@ -161,7 +159,11 @@ namespace BuildServiceAPI
             else
             {
                 Console.Error.WriteLine($"[ContentManager->DatabaseSerialize] Failed to save {Path.GetRelativePath(Directory.GetCurrentDirectory(), DATABASE_FILENAME)}");
-            }
+            }*/
+            SystemAnnouncement.OnUpdate();
+            AccountManager.ForcePendingWrite();
+            Console.WriteLine($"[ContentManager->DatabaseSerialize] Saved {Path.GetRelativePath(Directory.GetCurrentDirectory(), DATABASE_FILENAME)}");
+            CreateJSONBackup();
             ServerConfig.Save();
         }
         private void CreateJSONBackup()
