@@ -94,9 +94,8 @@ namespace BuildServiceAPI.DesktopClient
             => $"{Base}/admin/user/permission/revoke?token={encode(token)}&username={encode(username)}&permission={encode((int)permission)}";
 
         internal static string UserGroupSet(
-            string token,
-            string username)
-            => $"{Base}/admin/user/group/set?token={encode(token)}&username={encode(username)}";
+            string token)
+            => $"{Base}/admin/user/group/set?token={encode(token)}";
 
     }
 }
