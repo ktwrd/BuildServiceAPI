@@ -314,6 +314,8 @@ namespace BuildServiceAPI.DesktopClient
             }
 
             AnnouncementSummary = content.Data;
+            toolStripButtonAnnouncementEnforce.Enabled = !AnnouncementSummary.Active;
+            toolStripButtonAnnouncementsDisable.Enabled = AnnouncementSummary.Active;
         }
         public void PushAnnouncements()
         {
@@ -355,6 +357,8 @@ namespace BuildServiceAPI.DesktopClient
                 Active = content.Data.Active,
                 Entries = new List<SystemAnnouncementEntry>(content.Data.Entries)
             };
+            toolStripButtonAnnouncementEnforce.Enabled = !AnnouncementSummary.Active;
+            toolStripButtonAnnouncementsDisable.Enabled = AnnouncementSummary.Active;
         }
 
         public void RefreshAnnouncementList()
@@ -373,6 +377,8 @@ namespace BuildServiceAPI.DesktopClient
                 listViewAnnouncement.Items.Add(lvitem);
             }
             UpdateSelectedAnnouncementItem();
+            toolStripButtonAnnouncementEnforce.Enabled = !AnnouncementSummary.Active;
+            toolStripButtonAnnouncementsDisable.Enabled = AnnouncementSummary.Active;
         }
         public void UpdateSelectedAnnouncementItem()
         {
@@ -427,12 +433,14 @@ namespace BuildServiceAPI.DesktopClient
         {
             AnnouncementSummary.Active = true;
             toolStripButtonAnnouncementEnforce.Enabled = !AnnouncementSummary.Active;
+            toolStripButtonAnnouncementsDisable.Enabled = AnnouncementSummary.Active;
         }
 
         private void toolStripButtonAnnouncementsDisable_Click(object sender, EventArgs e)
         {
             AnnouncementSummary.Active = false;
-            toolStripButtonAnnouncementEnforce.Enabled = AnnouncementSummary.Active;
+            toolStripButtonAnnouncementEnforce.Enabled = !AnnouncementSummary.Active;
+            toolStripButtonAnnouncementsDisable.Enabled = AnnouncementSummary.Active;
         }
 
         private void toolStripButtonAnnouncementAdd_Click(object sender, EventArgs e)
