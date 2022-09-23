@@ -15,6 +15,7 @@ namespace BuildServiceCommon.Authorization
         CONFIG_WRITE,
         USER_GROUP_MODIFY,
         USER_PERMISSION_MODIFY,
-        USER_TOKEN_PURGE
+        USER_TOKEN_PURGE,
+        USER_LIST
     }
 }
