@@ -2,10 +2,13 @@
 using BuildServiceCommon;
 using BuildServiceCommon.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
+using System.Text.Json;
 
 namespace BuildServiceAPI.Controllers.Admin
 {
@@ -77,6 +80,61 @@ namespace BuildServiceAPI.Controllers.Admin
             }
 
             ServerConfig.Set(group, key, decodedBody ?? "");
+
+            return Json(new ObjectResponse<Dictionary<string, Dictionary<string, object>>>()
+            {
+                Data = ServerConfig.Get(),
+                Success = true
+            }, MainClass.serializerOptions);
+        }
+
+        [HttpPost]
+        [Route("set")]
+        public ActionResult SetConfig(string token)
+        {
+            if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions))
+            {
+                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return Json(new ObjectResponse<string>()
+                {
+                    Success = false,
+                    Data = "Invalid Account"
+                }, MainClass.serializerOptions);
+            }
+
+
+            var syncIOFeature = HttpContext.Features.Get<IHttpBodyControlFeature>();
+            if (syncIOFeature != null)
+            {
+                syncIOFeature.AllowSynchronousIO = true;
+            }
+            Dictionary<string, Dictionary<string, object>>? decodedBody;
+            try
+            {
+                StreamReader reader = new StreamReader(Request.Body);
+                string decodedBodyText = reader.ReadToEnd();
+                decodedBody = JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, object>>>(decodedBodyText, MainClass.serializerOptions);
+            }
+            catch (Exception e)
+            {
+                Response.StatusCode = 401;
+                return Json(new ObjectResponse<HttpException>()
+                {
+                    Success = false,
+                    Data = new HttpException(401, "Invalid Body", e)
+                }, MainClass.serializerOptions);
+            }
+            if (decodedBody == null)
+            {
+                Response.StatusCode = 401;
+                return Json(new ObjectResponse<HttpException>()
+                {
+                    Success = false,
+                    Data = new HttpException(401, "Invalid Body")
+                }, MainClass.serializerOptions);
+            }
+
+            ServerConfig.Set(decodedBody);
 
             return Json(new ObjectResponse<Dictionary<string, Dictionary<string, object>>>()
             {
