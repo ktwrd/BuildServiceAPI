@@ -203,5 +203,37 @@ namespace BuildServiceAPI.DesktopClient
             AdminForm.RefreshAccounts();
             AdminForm.RefreshAccountListView();
         }
+
+        private void buttonAccountRemoveSelectAll_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < checkedListBoxAccountRemove.Items.Count; i++)
+            {
+                checkedListBoxAccountRemove.SetItemChecked(i, true);
+            }
+        }
+
+        private void buttonAccountAddSelectAll_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < checkedListBoxAccountJoin.Items.Count; i++)
+            {
+                checkedListBoxAccountJoin.SetItemChecked(i, true);
+            }
+        }
+
+        private void buttonAccountRemoveSelectInverse_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < checkedListBoxAccountRemove.Items.Count; i++)
+            {
+                checkedListBoxAccountRemove.SetItemChecked(i, !checkedListBoxAccountRemove.GetItemChecked(i));
+            }
+        }
+
+        private void buttonAccountAddSelectInverse_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < checkedListBoxAccountJoin.Items.Count; i++)
+            {
+                checkedListBoxAccountJoin.SetItemChecked(i, !checkedListBoxAccountJoin.GetItemChecked(i));
+            }
+        }
     }
 }
