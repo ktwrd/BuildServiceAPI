@@ -31,6 +31,7 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.buttonPush = new System.Windows.Forms.Button();
             this.textBoxList1 = new BuildServiceAPI.DesktopClient.TextBoxList();
+            this.labelUsername = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -38,12 +39,14 @@
             // 
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.buttonPush, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.textBoxList1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.buttonPush, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.textBoxList1, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.labelUsername, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowCount = 3;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(324, 261);
@@ -62,10 +65,19 @@
             // textBoxList1
             // 
             this.textBoxList1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxList1.Location = new System.Drawing.Point(3, 3);
+            this.textBoxList1.Location = new System.Drawing.Point(3, 23);
             this.textBoxList1.Name = "textBoxList1";
-            this.textBoxList1.Size = new System.Drawing.Size(318, 205);
+            this.textBoxList1.Size = new System.Drawing.Size(318, 185);
             this.textBoxList1.TabIndex = 1;
+            // 
+            // labelUsername
+            // 
+            this.labelUsername.AutoSize = true;
+            this.labelUsername.Location = new System.Drawing.Point(3, 0);
+            this.labelUsername.Name = "labelUsername";
+            this.labelUsername.Size = new System.Drawing.Size(67, 13);
+            this.labelUsername.TabIndex = 2;
+            this.labelUsername.Text = "<Username>";
             // 
             // AccountGroupForm
             // 
@@ -78,6 +90,7 @@
             this.Text = "Edit Account Groups";
             this.Shown += new System.EventHandler(this.AccountGroupForm_Shown);
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -87,5 +100,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Button buttonPush;
         private TextBoxList textBoxList1;
+        private System.Windows.Forms.Label labelUsername;
     }
 }

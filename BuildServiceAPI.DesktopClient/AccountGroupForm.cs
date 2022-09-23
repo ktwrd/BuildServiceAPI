@@ -27,6 +27,7 @@ namespace BuildServiceAPI.DesktopClient
         {
             AdminForm = adminForm;
             Account = account;
+            labelUsername.Text = Account.Username;
         }
         public void Reset()
         {
