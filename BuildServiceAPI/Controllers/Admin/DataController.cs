@@ -104,6 +104,54 @@ namespace BuildServiceAPI.Controllers.Admin
                 Data = expectedResponse.Data
             }, MainClass.serializerOptions);
         }
+
+        [HttpGet("fetch")]
+        public ActionResult Fetch(string token)
+        {
+            if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.ADMINISTRATOR))
+            {
+                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return Json(new ObjectResponse<string>()
+                {
+                    Success = false,
+                    Data = ServerStringResponse.InvalidCredential
+                }, MainClass.serializerOptions);
+            }
+
+            DataJSON content;
+
+            try
+            {
+                content = new DataJSON()
+                {
+                    Account = MainClass.contentManager.AccountManager.AccountList,
+                    SystemAnnouncement = MainClass.contentManager.SystemAnnouncement.GetSummary(),
+                    Content = new ContentJSON()
+                    {
+                        ReleaseInfoContent = MainClass.contentManager.ReleaseInfoContent,
+                        Releases = MainClass.contentManager.Releases,
+                        Published = MainClass.contentManager.Published
+                    }
+                };
+            }
+            catch (Exception except)
+            {
+                Response.StatusCode = 500;
+                return Json(new ObjectResponse<HttpException>()
+                {
+                    Success = false,
+                    Data = new HttpException(500, $"Failed to generate content", except)
+                }, MainClass.serializerOptions);
+            }
+
+
+            return Json(new ObjectResponse<DataJSON>()
+            {
+                Success = true,
+                Data = content
+            }, MainClass.serializerOptions);
+        }
+
         [HttpGet("dump")]
         public ActionResult Dump(string token, DataType type)
         {
