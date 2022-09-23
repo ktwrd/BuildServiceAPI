@@ -18,6 +18,92 @@ namespace BuildServiceAPI.Controllers.Admin
     [ApiController]
     public class DataController : Controller
     {
+        [HttpPost("restore")]
+        public ActionResult Restore(string token)
+        {
+            if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.ADMINISTRATOR))
+            {
+                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return Json(new ObjectResponse<string>()
+                {
+                    Success = false,
+                    Data = ServerStringResponse.InvalidCredential
+                }, MainClass.serializerOptions);
+            }
+
+            HttpContext.Request.Body.Seek(0, SeekOrigin.Begin);
+            string content = new StreamReader(HttpContext.Request.Body).ReadToEndAsync().Result.ReplaceLineEndings("");
+
+            ObjectResponse<dynamic> dynamicBody;
+            try
+            {
+                dynamicBody = JsonSerializer.Deserialize<ObjectResponse<dynamic>>(content, MainClass.serializerOptions);
+            }
+            catch (Exception except)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new ObjectResponse<HttpException>()
+                {
+                    Success = false,
+                    Data = new HttpException(400, ServerStringResponse.InvalidBody, except)
+                }, MainClass.serializerOptions);
+            }
+            if (dynamicBody == null)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new ObjectResponse<HttpException>()
+                {
+                    Success = false,
+                    Data = new HttpException(400, ServerStringResponse.InvalidBody)
+                }, MainClass.serializerOptions);
+            }
+            if (dynamicBody.Success == false)
+            {
+
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new ObjectResponse<HttpException>()
+                {
+                    Success = false,
+                    Data = new HttpException(400, ServerStringResponse.ExpectedValueOnProperty("Success", true, false))
+                }, MainClass.serializerOptions);
+            }
+
+            ObjectResponse<DataJSON>? expectedResponse = JsonSerializer.Deserialize<ObjectResponse<DataJSON>>(content, MainClass.serializerOptions);
+            if (expectedResponse == null)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new ObjectResponse<HttpException>()
+                {
+                    Success = false,
+                    Data = new HttpException(400, ServerStringResponse.InvalidBody)
+                }, MainClass.serializerOptions);
+            }
+
+            try
+            {
+                MainClass.contentManager.AccountManager.Read(JsonSerializer.Serialize(expectedResponse.Data.Account, MainClass.serializerOptions));
+                MainClass.contentManager.SystemAnnouncement.Read(JsonSerializer.Serialize(expectedResponse.Data.SystemAnnouncement, MainClass.serializerOptions));
+                MainClass.contentManager.ReleaseInfoContent = expectedResponse.Data.Content.ReleaseInfoContent;
+                MainClass.contentManager.Releases = expectedResponse.Data.Content.Releases;
+                MainClass.contentManager.Published = expectedResponse.Data.Content.Published;
+                MainClass.contentManager.DatabaseSerialize();
+            }
+            catch (Exception except)
+            {
+                Response.StatusCode = 500;
+                return Json(new ObjectResponse<HttpException>()
+                {
+                    Success = false,
+                    Data = new HttpException(500, $"Failed to serialize data", except)
+                }, MainClass.serializerOptions);
+            }
+
+            return Json(new ObjectResponse<DataJSON>()
+            {
+                Success = true,
+                Data = expectedResponse.Data
+            }, MainClass.serializerOptions);
+        }
         [HttpGet("dump")]
         public ActionResult Dump(string token, DataType type)
         {
