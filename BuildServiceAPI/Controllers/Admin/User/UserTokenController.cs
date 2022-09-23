@@ -8,6 +8,8 @@ using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using static BuildServiceCommon.Authorization.AccountManager;
+using Account = BuildServiceCommon.Authorization.Account;
+
 
 namespace BuildServiceAPI.Controllers.Admin.User
 {
@@ -33,7 +35,7 @@ namespace BuildServiceAPI.Controllers.Admin.User
                 }, MainClass.serializerOptions);
             }
 
-            Account[] accountArray;
+            BuildServiceCommon.Authorization.Account[] accountArray;
 
             if ((isUsernameFieldRegexPattern ?? false) && username != null && username.Length > 0)
             {
@@ -65,14 +67,14 @@ namespace BuildServiceAPI.Controllers.Admin.User
             // When username is null, that means we want to purge our own tokens.
             else if (username == null)
             {
-                accountArray = new Account[]
+                accountArray = new BuildServiceCommon.Authorization.Account[]
                 {
                     MainClass.contentManager.AccountManager.GetAccount(token)
                 };
             }
             else
             {
-                accountArray = new Account[]
+                accountArray = new BuildServiceCommon.Authorization.Account[]
                 {
                     MainClass.contentManager.AccountManager.GetAccountByUsername(username)
                 };
