@@ -47,7 +47,7 @@ namespace BuildServiceAPI.DesktopClient
             {
                 { Account.Username, groupList.ToArray() }
             };
-            var targetURL = Endpoint.UserGroupSet(AdminForm.Token.Token, Account.Username);
+            var targetURL = Endpoint.UserGroupSet(AdminForm.Token.Token);
             var sendContentObject = new ObjectResponse<Dictionary<string, string[]>>()
             {
                 Success = true,
