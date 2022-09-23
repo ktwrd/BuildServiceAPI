@@ -14,5 +14,8 @@ namespace BuildServiceAPI
 
         public static string ExpectedValueOnProperty(string propertyName, object expectedValue, object recievedValue)
             => $"Expected {propertyName} to be \"{JsonSerializer.Serialize(expectedValue)}\" but got \"{JsonSerializer.Serialize(recievedValue)}\" instead";
+
+        public static string AccountDisabled => $"Your account is disabled. Please contact licensing@minalyze.com";
+        public static string SerializationFailure => $"Failed to serialize data";
     }
 }
