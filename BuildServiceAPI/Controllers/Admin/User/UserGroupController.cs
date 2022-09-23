@@ -52,7 +52,7 @@ namespace BuildServiceAPI.Controllers.Admin.User
         }
 
         [HttpPost("set")]
-        public ActionResult SetContent(string token, string username)
+        public ActionResult SetContent(string token)
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions))
             {
