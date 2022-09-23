@@ -137,12 +137,28 @@ SectionEnd
   ;Language strings
   LangString DESC_SecInstallLauncher ${LANG_ENGLISH} "Build Service Desktop Client"
   LangString DESC_SecMenuShortcut ${LANG_ENGLISH} "Create Start Menu Shortcuts"
+  LangString MUI_BUTTONTEXT_FINISH ${LANG_ENGLISH} "Close"
+  LangString MUI_TEXT_FINISH_INFO_TITLE ${LANG_ENGLISH} "Build Service Desktop Client"
+  LangString MUI_TEXT_FINISH_REBOOTNOW ${LANG_ENGLISH} "MUI_TEXT_FINISH_REBOOTNOW"
+  LangString MUI_TEXT_FINISH_INFO_TEXT ${LANG_ENGLISH} "Build Service Desktop Client has finished installing. Enjoy!"
 
   ;Assign language strings to sections
   !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
     !insertmacro MUI_DESCRIPTION_TEXT ${SecInstallLauncher} $(DESC_SecInstallLauncher)
     !insertmacro MUI_DESCRIPTION_TEXT ${SecMenuShortcut} $(DESC_SecMenuShortcut)
   !insertmacro MUI_FUNCTION_DESCRIPTION_END
+  
+;--------------------------------
+;Start after Install
+  Function LaunchLink
+    ExecShell "" "$SMPROGRAMS\Build Service\Desktop Client\Build Service Desktop Client.lnk"
+  FunctionEnd
+  # These indented statements modify settings for MUI_PAGE_FINISH
+    !define MUI_FINISHPAGE_NOAUTOCLOSE
+    !define MUI_FINISHPAGE_RUN
+    !define MUI_FINISHPAGE_RUN_TEXT "Start Build Service Desktop Client"
+    !define MUI_FINISHPAGE_RUN_FUNCTION "LaunchLink"
+  !insertmacro MUI_PAGE_FINISH
 
 ;--------------------------------
 ;Uninstaller Section
