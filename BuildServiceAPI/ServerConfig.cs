@@ -38,11 +38,27 @@ namespace BuildServiceAPI
                     fresh = true;
                 }
                 Source = new IniConfigSource(ConfigLocation);
-                if (fresh)
+                /*if (fresh)
                 {
                     Set(DefaultData);
-                }
+                }*/
+                MergeDefaultData();
                 resetEvent.WaitOne(1);
+            }
+
+            private static void MergeDefaultData()
+            {
+                foreach (var groupPair in DefaultData)
+                {
+                    foreach (var pair in groupPair.Value)
+                    {
+                        if (!Get(groupPair.Key).Contains(pair.Key))
+                        {
+                            Set(groupPair.Key, pair.Key, pair.Value);
+                        }
+                    }
+                }
+                Save();
             }
 
             public static Dictionary<string, Dictionary<string, object>> DefaultData = new Dictionary<string, Dictionary<string, object>>()
