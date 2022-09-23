@@ -192,6 +192,7 @@
             // 
             // buttonImportFromFile
             // 
+            this.buttonImportFromFile.Enabled = false;
             this.buttonImportFromFile.Location = new System.Drawing.Point(3, 3);
             this.buttonImportFromFile.Name = "buttonImportFromFile";
             this.buttonImportFromFile.Size = new System.Drawing.Size(75, 23);
@@ -201,6 +202,7 @@
             // 
             // buttonExportToFile
             // 
+            this.buttonExportToFile.Enabled = false;
             this.buttonExportToFile.Location = new System.Drawing.Point(84, 3);
             this.buttonExportToFile.Name = "buttonExportToFile";
             this.buttonExportToFile.Size = new System.Drawing.Size(75, 23);
