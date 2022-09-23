@@ -97,7 +97,7 @@ namespace BuildServiceAPI.Controllers
 
             var filteredReleases = new List<ProductRelease>();
             var account = MainClass.contentManager.AccountManager.GetAccount(token);
-            if (account == null)
+            if (account == null && token.Length > 0)
             {
                 returnContent.Clear();
             }
@@ -127,18 +127,29 @@ namespace BuildServiceAPI.Controllers
                                 isOtherBranch = false;
                                 break;
                         }
-                        bool allowStream = MainClass.CanUserGroupsAccessStream(stream.GroupBlacklist.ToArray(), stream.GroupWhitelist.ToArray(), account);
+                        bool allowStream = false;
+                        if (ServerConfig.GetBoolean("Security", "AllowGroupRestriction", false))
+                        {
+                            if (account == null)
+                                allowStream = false;
+                            else
+                                allowStream = MainClass.CanUserGroupsAccessStream(stream.GroupBlacklist.ToArray(), stream.GroupWhitelist.ToArray(), account);
+                        }
+                        else
+                        {
+                            allowStream = true;
+                        }
 
                         if (ServerConfig.GetBoolean("Security", "AllowAdminOverride", true))
                         {
-                            if (account.HasPermission(AccountPermission.ADMINISTRATOR))
+                            if (account != null && account.HasPermission(AccountPermission.ADMINISTRATOR))
                                 allowStream = true;
                         }
 
                         if (isOtherBranch)
                         {
                             if (ServerConfig.GetBoolean("Security", "AllowPermission_ReadReleaseBypass", true))
-                                if (account.HasPermission(AccountPermission.READ_RELEASE_BYPASS))
+                                if (account != null && account.HasPermission(AccountPermission.READ_RELEASE_BYPASS))
                                     allowStream = true;
                                 else
                                     allowStream = false;
