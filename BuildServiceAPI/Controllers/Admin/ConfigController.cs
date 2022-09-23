@@ -85,6 +85,33 @@ namespace BuildServiceAPI.Controllers.Admin
             }, MainClass.serializerOptions);
         }
 
+        [HttpPost]
+        [Route("reset")]
+        public ActionResult ResetConfig(string token)
+        {
+            if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions))
+            {
+                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return Json(new ObjectResponse<string>()
+                {
+                    Success = false,
+                    Data = "Invalid Account"
+                }, MainClass.serializerOptions);
+            }
+
+            try
+            {
+                ServerConfig.Set(ServerConfig.DefaultData);
+            }
+            catch (Exception e)
+            {
+                Response.StatusCode = 500;
+                return Json(new ObjectResponse<HttpException>()
+                {
+                    Success = false,
+                    Data = new HttpException(500, $"Failed to set config", e)
+                }, MainClass.serializerOptions);
+            }
 
             return Json(new ObjectResponse<Dictionary<string, Dictionary<string, object>>>()
             {
