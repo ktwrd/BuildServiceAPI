@@ -160,16 +160,16 @@ namespace BuildServiceAPI.Controllers
 
         [HttpGet]
         [Route("latest/{app}")]
-        public ActionResult LatestFromPath(string app, string token = "")
+        public ActionResult LatestFromPath(string app, string? token = "")
         {
-            return Json(fetchReleasesByAppID(app, token), MainClass.serializerOptions);
+            return Json(fetchReleasesByAppID(app, token ?? ""), MainClass.serializerOptions);
         }
 
         [HttpGet]
         [Route("latest")]
-        public ActionResult LatestFromParameter(string id="", string token = "")
+        public ActionResult LatestFromParameter(string id="", string? token = "")
         {
-            // Get all latest available
+            /*// Get all latest available
             if (id.Length < 1)
             {
                 // Get list of all AppID's
@@ -183,8 +183,8 @@ namespace BuildServiceAPI.Controllers
             }
             else
             {
-                return LatestFromPath(id, token);
-            }
+            }*/
+            return LatestFromPath(id, token ?? "");
         }
     }
 }
