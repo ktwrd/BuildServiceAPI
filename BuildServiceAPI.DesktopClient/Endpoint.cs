@@ -96,7 +96,7 @@ namespace BuildServiceAPI.DesktopClient
         internal static string UserGroupSet(
             string token,
             string username)
-            => $"{Base}/admin/user/group/set?token={encode(token)}&usernname={encode(username)}";
+            => $"{Base}/admin/user/group/set?token={encode(token)}&username={encode(username)}";
 
     }
 }
