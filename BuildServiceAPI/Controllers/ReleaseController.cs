@@ -179,22 +179,23 @@ namespace BuildServiceAPI.Controllers
         [Route("latest")]
         public ActionResult LatestFromParameter(string id="", string? token = "")
         {
-            /*// Get all latest available
+            // Get all latest available
             if (id.Length < 1)
             {
-                // Get list of all AppID's
                 var appIDlist = new List<string>();
                 foreach (var k in MainClass.contentManager.ReleaseInfoContent)
                     appIDlist.Add(k.appID);
+                appIDlist = appIDlist.Where(v => v.Length > 0).Distinct().ToList();
+
                 var resultList = new List<ProductRelease>();
                 foreach (var v in appIDlist)
-                    resultList = resultList.Concat(fetchReleasesByAppID(v, token)).ToList();
-                return Json(resultList.ToArray(), MainClass.serializerOptions);
+                    resultList = resultList.Concat(fetchReleasesByAppID(v, token ?? "")).ToList();
+                return Json(resultList, MainClass.serializerOptions);
             }
             else
             {
-            }*/
-            return LatestFromPath(id, token ?? "");
+                return LatestFromPath(id, token ?? "");
+            }
         }
     }
 }
