@@ -37,6 +37,7 @@ namespace BuildServiceAPI
         
         public static void Main(string[] args)
         {
+            ServerConfig.Get();
             AppDomain.CurrentDomain.ProcessExit += BeforeExit;
             serializerOptions.Converters.Add(new kate.shared.DateTimeConverterUsingDateTimeOffsetParse());
             serializerOptions.Converters.Add(new kate.shared.DateTimeConverterUsingDateTimeParse());
