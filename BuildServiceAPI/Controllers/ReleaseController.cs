@@ -155,7 +155,7 @@ namespace BuildServiceAPI.Controllers
                 returnContent = filteredReleases;
             }
 
-            return returnContent;
+            return returnContent.Where(v => v.Streams.Length > 0).ToList();
         }
 
         [HttpGet]
