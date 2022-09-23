@@ -31,17 +31,11 @@ namespace BuildServiceAPI
                     }
                     resetEvent.Set();
                 }, resetEvent, 0, 1000);
-                bool fresh = false;
                 if (!File.Exists(ConfigLocation))
                 {
                     File.WriteAllText(ConfigLocation, "");
-                    fresh = true;
                 }
                 Source = new IniConfigSource(ConfigLocation);
-                /*if (fresh)
-                {
-                    Set(DefaultData);
-                }*/
                 MergeDefaultData();
                 resetEvent.WaitOne(1);
             }
