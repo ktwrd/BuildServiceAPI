@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoUpdaterDotNET;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -27,6 +28,8 @@ namespace BuildServiceAPI.DesktopClient
             componentZoo.MdiParent = this;
             componentZoo.Show();
 #endif
+            AutoUpdater.Start("https://raw.githubusercontent.com/ktwrd/BuildServiceAPI/main/AutoUpdate.DesktopClient.xml");
+            AutoUpdater.Mandatory = true;
         }
 
         private void AdminForm_FormClosing(object sender, FormClosingEventArgs e)

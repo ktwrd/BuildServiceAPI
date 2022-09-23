@@ -33,6 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autoupdater.NET.Official" Version="1.7.5" />
     <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.7.3.56" />
     <PackageReference Include="BinaryFormatter" Version="3.0.0" />
     <PackageReference Include="Google.Cloud.Firestore" Version="3.0.0" />
