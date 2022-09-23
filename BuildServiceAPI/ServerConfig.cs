@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BuildServiceAPI
@@ -17,12 +18,43 @@ namespace BuildServiceAPI
             public static string ConfigFilename => "config.ini";
             public static string ConfigLocation => Path.Combine(Path.GetDirectoryName(Directory.GetCurrentDirectory()), ConfigFilename);
             public static IniConfigSource Source;
+            private static Timer BusStationTimer;
             static ServerConfig()
             {
+                var resetEvent = new AutoResetEvent(false);
+                BusStationTimer = new Timer(delegate
+                {
+                    if (HasChanges)
+                    {
+                        Save();
+                        HasChanges = false;
+                    }
+                    resetEvent.Set();
+                }, resetEvent, 0, 1000);
+                bool fresh = false;
                 if (!File.Exists(ConfigLocation))
+                {
                     File.WriteAllText(ConfigLocation, "");
+                    fresh = true;
+                }
                 Source = new IniConfigSource(ConfigLocation);
+                if (fresh)
+                {
+                    Set(DefaultData);
+                }
+                resetEvent.WaitOne(1);
             }
+
+            public static Dictionary<string, Dictionary<string, object>> DefaultData = new Dictionary<string, Dictionary<string, object>>()
+            {
+                {"Security", new Dictionary<string, object>()
+                    {
+                        {"AllowAdminOverride", true },
+                        {"AllowPermission_ReadReleaseBypass", true },
+                        {"AllowGroupRestriction", false }
+                    }
+                }
+            };
 
             public static void Save()
             {
@@ -31,6 +63,7 @@ namespace BuildServiceAPI
                     File.WriteAllText(ConfigLocation, "");
                 Source.Save();
                 Console.WriteLine($"[ServerConfig] Saved {DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - startTimestamp}");
+                HasChanges = false;
             }
 
             public static Dictionary<string, Dictionary<string, object>> Get()
@@ -57,6 +90,7 @@ namespace BuildServiceAPI
                         Set(group.Key, item.Key, item.Value);
                     }
                 }
+                HasChanges = true;
                 Save();
             }
 
@@ -71,7 +105,10 @@ namespace BuildServiceAPI
             {
                 var cfg = Get(group);
                 cfg.Set(key, value);
+                HasChanges = true;
             }
+
+            private static bool HasChanges = false;
 
             public static string Get(string group, string key) => Get(group).Get(key);
             public static string Get(string group, string key, string fallback) => Get(group).Get(key, fallback);
