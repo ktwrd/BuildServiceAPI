@@ -155,8 +155,7 @@ namespace BuildServiceAPI.Controllers
                                     allowStream = false;
                         }
 
-                        Console.WriteLine($"{stream.RemoteSignature} {allowStream}");
-
+                        
                         if (allowStream)
                             filteredStreams.Add(stream);
                     }
