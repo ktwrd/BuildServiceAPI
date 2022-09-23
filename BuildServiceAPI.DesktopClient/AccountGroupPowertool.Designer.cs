@@ -80,13 +80,13 @@
             this.tableLayoutPanel1.Controls.Add(this.checkedListBoxAccountRemove, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(4, 4);
             this.tableLayoutPanel1.MinimumSize = new System.Drawing.Size(196, 100);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(196, 265);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(196, 261);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // checkedListBoxAccountRemove
@@ -96,7 +96,7 @@
             this.checkedListBoxAccountRemove.Location = new System.Drawing.Point(3, 16);
             this.checkedListBoxAccountRemove.MinimumSize = new System.Drawing.Size(190, 80);
             this.checkedListBoxAccountRemove.Name = "checkedListBoxAccountRemove";
-            this.checkedListBoxAccountRemove.Size = new System.Drawing.Size(190, 246);
+            this.checkedListBoxAccountRemove.Size = new System.Drawing.Size(190, 242);
             this.checkedListBoxAccountRemove.TabIndex = 2;
             // 
             // label1
@@ -110,6 +110,7 @@
             // 
             // tableLayoutPanel2
             // 
+            this.tableLayoutPanel2.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tableLayoutPanel2.ColumnCount = 2;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 337F));
@@ -121,7 +122,7 @@
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(539, 271);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(537, 269);
             this.tableLayoutPanel2.TabIndex = 2;
             // 
             // tableLayoutPanel3
@@ -132,20 +133,20 @@
             this.tableLayoutPanel3.Controls.Add(this.textBoxListAccountRemove, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.label2, 0, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(205, 3);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(207, 4);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 3;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(331, 265);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(331, 261);
             this.tableLayoutPanel3.TabIndex = 3;
             // 
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.Controls.Add(this.buttonAccountRemove_GroupsFromTextfile);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 222);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 218);
             this.flowLayoutPanel1.MinimumSize = new System.Drawing.Size(0, 40);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(325, 40);
@@ -166,7 +167,7 @@
             this.textBoxListAccountRemove.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textBoxListAccountRemove.Location = new System.Drawing.Point(3, 16);
             this.textBoxListAccountRemove.Name = "textBoxListAccountRemove";
-            this.textBoxListAccountRemove.Size = new System.Drawing.Size(325, 200);
+            this.textBoxListAccountRemove.Size = new System.Drawing.Size(325, 196);
             this.textBoxListAccountRemove.TabIndex = 2;
             // 
             // label2
@@ -182,10 +183,10 @@
             // 
             this.groupBox1.Controls.Add(this.tableLayoutPanel2);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox1.Location = new System.Drawing.Point(3, 3);
+            this.groupBox1.Location = new System.Drawing.Point(4, 4);
             this.groupBox1.MinimumSize = new System.Drawing.Size(542, 218);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(545, 290);
+            this.groupBox1.Size = new System.Drawing.Size(543, 288);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Remove from";
@@ -230,6 +231,7 @@
             this.buttonPush.TabIndex = 8;
             this.buttonPush.Text = "Push";
             this.buttonPush.UseVisualStyleBackColor = true;
+            this.buttonPush.Click += new System.EventHandler(this.buttonPush_Click);
             // 
             // flowLayoutPanel3
             // 
@@ -275,6 +277,7 @@
             // 
             // tableLayoutPanel6
             // 
+            this.tableLayoutPanel6.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tableLayoutPanel6.ColumnCount = 2;
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -292,16 +295,17 @@
             // 
             this.groupBox2.Controls.Add(this.tableLayoutPanel7);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox2.Location = new System.Drawing.Point(554, 3);
+            this.groupBox2.Location = new System.Drawing.Point(554, 4);
             this.groupBox2.MinimumSize = new System.Drawing.Size(542, 218);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(545, 290);
+            this.groupBox2.Size = new System.Drawing.Size(544, 288);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Add to";
             // 
             // tableLayoutPanel7
             // 
+            this.tableLayoutPanel7.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tableLayoutPanel7.ColumnCount = 2;
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 328F));
@@ -313,7 +317,7 @@
             this.tableLayoutPanel7.Name = "tableLayoutPanel7";
             this.tableLayoutPanel7.RowCount = 1;
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(539, 271);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(538, 269);
             this.tableLayoutPanel7.TabIndex = 2;
             // 
             // tableLayoutPanel8
@@ -324,23 +328,23 @@
             this.tableLayoutPanel8.Controls.Add(this.textBoxListAccountJoin, 0, 1);
             this.tableLayoutPanel8.Controls.Add(this.label3, 0, 0);
             this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel8.Location = new System.Drawing.Point(205, 3);
+            this.tableLayoutPanel8.Location = new System.Drawing.Point(207, 4);
             this.tableLayoutPanel8.Name = "tableLayoutPanel8";
             this.tableLayoutPanel8.RowCount = 3;
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(331, 265);
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(327, 261);
             this.tableLayoutPanel8.TabIndex = 3;
             // 
             // flowLayoutPanel4
             // 
             this.flowLayoutPanel4.Controls.Add(this.buttonAccountJoin_GroupsFromTextfile);
             this.flowLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel4.Location = new System.Drawing.Point(3, 222);
+            this.flowLayoutPanel4.Location = new System.Drawing.Point(3, 218);
             this.flowLayoutPanel4.MinimumSize = new System.Drawing.Size(0, 40);
             this.flowLayoutPanel4.Name = "flowLayoutPanel4";
-            this.flowLayoutPanel4.Size = new System.Drawing.Size(325, 40);
+            this.flowLayoutPanel4.Size = new System.Drawing.Size(321, 40);
             this.flowLayoutPanel4.TabIndex = 4;
             // 
             // buttonAccountJoin_GroupsFromTextfile
@@ -358,7 +362,7 @@
             this.textBoxListAccountJoin.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textBoxListAccountJoin.Location = new System.Drawing.Point(3, 16);
             this.textBoxListAccountJoin.Name = "textBoxListAccountJoin";
-            this.textBoxListAccountJoin.Size = new System.Drawing.Size(325, 200);
+            this.textBoxListAccountJoin.Size = new System.Drawing.Size(321, 196);
             this.textBoxListAccountJoin.TabIndex = 2;
             // 
             // label3
@@ -377,13 +381,13 @@
             this.tableLayoutPanel9.Controls.Add(this.checkedListBoxAccountJoin, 0, 1);
             this.tableLayoutPanel9.Controls.Add(this.label4, 0, 0);
             this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel9.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel9.Location = new System.Drawing.Point(4, 4);
             this.tableLayoutPanel9.MinimumSize = new System.Drawing.Size(196, 100);
             this.tableLayoutPanel9.Name = "tableLayoutPanel9";
             this.tableLayoutPanel9.RowCount = 2;
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel9.Size = new System.Drawing.Size(196, 265);
+            this.tableLayoutPanel9.Size = new System.Drawing.Size(196, 261);
             this.tableLayoutPanel9.TabIndex = 1;
             // 
             // checkedListBoxAccountJoin
@@ -393,7 +397,7 @@
             this.checkedListBoxAccountJoin.Location = new System.Drawing.Point(3, 16);
             this.checkedListBoxAccountJoin.MinimumSize = new System.Drawing.Size(190, 80);
             this.checkedListBoxAccountJoin.Name = "checkedListBoxAccountJoin";
-            this.checkedListBoxAccountJoin.Size = new System.Drawing.Size(190, 246);
+            this.checkedListBoxAccountJoin.Size = new System.Drawing.Size(190, 242);
             this.checkedListBoxAccountJoin.TabIndex = 2;
             // 
             // label4

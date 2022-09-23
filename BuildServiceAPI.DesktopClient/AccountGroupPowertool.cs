@@ -1,4 +1,5 @@
-﻿using BuildServiceCommon.Authorization;
+﻿using BuildServiceCommon;
+using BuildServiceCommon.Authorization;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,7 +8,10 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -158,6 +162,46 @@ namespace BuildServiceAPI.DesktopClient
                 lines.Add($"{item.Username},{string.Join(" ", item.GroupJoin)},{string.Join(" ", item.GroupRemove)}");
             }
             return lines.ToArray();
+        }
+
+        private void buttonPush_Click(object sender, EventArgs e)
+        {
+            SelectedUsernamesToRemove = checkedListBoxAccountRemove.Items.Cast<string>().ToArray();
+            SelectedUsernamesToJoin = checkedListBoxAccountJoin.Items.Cast<string>().ToArray();
+
+            var requestDictionary = new Dictionary<string, string[]>();
+            foreach (var account in AdminForm.AccountListing)
+            {
+                var newGroups = new List<string>(account.Groups);
+                if (SelectedUsernamesToRemove.Contains(account.Username))
+                {
+                    newGroups = newGroups.Where(v => !SelectedGroupsToRemove.Contains(v)).ToList();
+                }
+                if (SelectedUsernamesToJoin.Contains(account.Username))
+                {
+                    newGroups = newGroups.Concat(SelectedGroupsToJoin).Distinct().ToList();
+                }
+                requestDictionary.Add(account.Username, newGroups.ToArray());
+            }
+
+            var objectContent = new ObjectResponse<Dictionary<string, string[]>>()
+            {
+                Success = true,
+                Data = requestDictionary
+            };
+
+            var request = AdminForm.httpClient.PostAsync(Endpoint.UserGroupSet(AdminForm.Token.Token), new StringContent(JsonSerializer.Serialize(objectContent, Program.serializerOptions))).Result;
+            var stringResponse = request.Content.ReadAsStringAsync().Result;
+            var dynamicResponse = JsonSerializer.Deserialize<ObjectResponse<dynamic>>(stringResponse, Program.serializerOptions);
+            if (!dynamicResponse.Success)
+            {
+                var exceptionContent = JsonSerializer.Deserialize<ObjectResponse<HttpException>>(stringResponse, Program.serializerOptions);
+                MessageBox.Show($"({exceptionContent.Data.Code}) {exceptionContent.Data.Message}\n{exceptionContent.Data.Exception}", $"Failed to set groups");
+            }
+
+            Close();
+            AdminForm.RefreshAccounts();
+            AdminForm.RefreshAccountListView();
         }
     }
 }
