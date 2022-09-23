@@ -94,7 +94,7 @@ namespace BuildServiceAPI.Controllers.Admin
                 return Json(new ObjectResponse<HttpException>()
                 {
                     Success = false,
-                    Data = new HttpException(500, $"Failed to serialize data", except)
+                    Data = new HttpException(500, ServerStringResponse.SerializationFailure, except)
                 }, MainClass.serializerOptions);
             }
 
