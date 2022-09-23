@@ -25,6 +25,8 @@ namespace BuildServiceAPI.DesktopClient
         {
             AdminForm = adminForm;
 
+            checkedListBoxAccountRemove.Items.Clear();
+            checkedListBoxAccountJoin.Items.Clear();
             foreach (var account in AdminForm.AccountListing)
             {
                 checkedListBoxAccountRemove.Items.Add(account.Username);
@@ -55,10 +57,18 @@ namespace BuildServiceAPI.DesktopClient
             if (type_remove)
             {
                 SelectedUsernamesToRemove = usernames;
+                for (int i = 0; i < checkedListBoxAccountRemove.Items.Count; i++)
+                {
+                    checkedListBoxAccountRemove.SetItemChecked(i, SelectedUsernamesToRemove.Contains(checkedListBoxAccountRemove.Items[i].ToString()));
+                }
             }
             if (type_join)
             {
                 SelectedUsernamesToJoin = usernames;
+                for (int i = 0; i < checkedListBoxAccountJoin.Items.Count; i++)
+                {
+                    checkedListBoxAccountJoin.SetItemChecked(i, SelectedUsernamesToJoin.Contains(checkedListBoxAccountJoin.Items[i].ToString()));
+                }
             }
         }
 
