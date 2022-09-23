@@ -33,13 +33,13 @@ namespace BuildServiceAPI
                 Console.WriteLine($"[ServerConfig] Saved {DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - startTimestamp}");
             }
 
-            public static Dictionary<string, Dictionary<string, string>> Get()
+            public static Dictionary<string, Dictionary<string, object>> Get()
             {
-                var dict = new Dictionary<string, Dictionary<string, string>>();
+                var dict = new Dictionary<string, Dictionary<string, object>>();
                 foreach (IConfig cfg in Source.Configs)
                 {
                     if (cfg == null) continue;
-                    dict.Add(cfg.Name, new Dictionary<string, string>());
+                    dict.Add(cfg.Name, new Dictionary<string, object>());
                     foreach (var key in cfg.GetKeys())
                     {
                         var value = cfg.Get(key);
@@ -48,7 +48,7 @@ namespace BuildServiceAPI
                 }
                 return dict;
             }
-            public static void Set(Dictionary<string, Dictionary<string, string>> dict)
+            public static void Set(Dictionary<string, Dictionary<string, object>> dict)
             {
                 foreach (var group in dict)
                 {
