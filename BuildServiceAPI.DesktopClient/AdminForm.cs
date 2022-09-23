@@ -724,7 +724,7 @@ namespace BuildServiceAPI.DesktopClient
         {
             if (AccountGroupForm == null || AccountGroupForm.IsDisposed)
                 AccountGroupForm = new AccountGroupForm();
-            AccountGroupPowertool.MdiParent = this.MdiParent;
+            AccountGroupForm.MdiParent = this.MdiParent;
             AccountGroupForm.Init(SelectedAccountEntry, this);
             AccountGroupForm.Show();
         }
