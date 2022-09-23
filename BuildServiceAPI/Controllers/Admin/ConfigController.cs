@@ -32,7 +32,7 @@ namespace BuildServiceAPI.Controllers.Admin
                 }, MainClass.serializerOptions);
             }
 
-            return Json(new ObjectResponse<Dictionary<string, Dictionary<string, string>>>()
+            return Json(new ObjectResponse<Dictionary<string, Dictionary<string, object>>>()
             {
                 Data = ServerConfig.Get(),
                 Success = true
@@ -55,7 +55,7 @@ namespace BuildServiceAPI.Controllers.Admin
 
             ServerConfig.Set(group, key, value);
 
-            return Json(new ObjectResponse<Dictionary<string, Dictionary<string, string>>>()
+            return Json(new ObjectResponse<Dictionary<string, Dictionary<string, object>>>()
             {
                 Data = ServerConfig.Get(),
                 Success = true
@@ -78,7 +78,7 @@ namespace BuildServiceAPI.Controllers.Admin
 
             ServerConfig.Save();
 
-            return Json(new ObjectResponse<Dictionary<string, Dictionary<string, string>>>()
+            return Json(new ObjectResponse<Dictionary<string, Dictionary<string, object>>>()
             {
                 Data = ServerConfig.Get(),
                 Success = true
