@@ -4,32 +4,28 @@
 	  <TargetFramework>net6.0</TargetFramework>
 	  <ImplicitUsings>disable</ImplicitUsings>
 	  <Nullable>enable</Nullable>
+	  <OverwriteReadOnlyOutputFiles>true</OverwriteReadOnlyOutputFiles>
+	  <TransformOutOfDateOnly>false</TransformOutOfDateOnly>
+	  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	<EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
-	<Configurations>Debug;Release;Debug API;Debug Launcher;Release API;Release Launcher;Debug (ML2 Backend);Release (ML2 Backennd);Debug - Library;Debug - Launcher;Debug - Server;Debug - MLBackend</Configurations>
+	<Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>$(DefineConstants)TRACE BUILDSERVICEAPI_APP_WHITELIST</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug - MLBackend|AnyCPU'">
-    <DefineConstants>$(DefineConstants)TRACE BUILDSERVICEAPI_APP_WHITELIST</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug - Server|AnyCPU'">
-    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug - Launcher|AnyCPU'">
-    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug - Library|AnyCPU'">
-    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DefineConstants>$(DefineConstants)TRACE BUILDSERVICEAPI_APP_WHITELIST</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DefineConstants>$(DefineConstants)TRACE</DefineConstants>
+		<TransformOnBuild>true</TransformOnBuild>
+	</PropertyGroup>
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
+    <None Include="Properties\VersionAutoIncrement.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>VersionAutoIncrement.tt</DependentUpon>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -46,6 +42,25 @@
   <ItemGroup>
     <ProjectReference Include="..\..\csharp-kate.shared\kate.shared.Firebase\kate.shared.Firebase.csproj" />
     <ProjectReference Include="..\BuildServiceCommon\BuildServiceCommon.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Properties\VersionAutoIncrement.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>VersionAutoIncrement.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\VersionAutoIncrement.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>VersionAutoIncrement.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>
