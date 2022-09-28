@@ -22,6 +22,8 @@ namespace BuildServiceAPI.Controllers
         /// <param name="token"></param>
         /// <returns></returns>
         [HttpPost]
+        [ProducesResponseType(401, Type = typeof(HttpException))]
+        [ProducesResponseType(200, Type = typeof(Dictionary<string, bool>))]
         public ActionResult Index(string token)
         {
             if (!MainClass.ValidTokens.ContainsKey(token))
@@ -107,6 +109,8 @@ namespace BuildServiceAPI.Controllers
         }
 
         [HttpGet("all")]
+        [ProducesResponseType(401, Type = typeof(ObjectResponse<HttpException>))]
+        [ProducesResponseType(200, Type = typeof(ObjectResponse<Dictionary<string, PublishedRelease>>))]
         public ActionResult All(string token)
         {
             var account = MainClass.contentManager.AccountManager.GetAccount(token);

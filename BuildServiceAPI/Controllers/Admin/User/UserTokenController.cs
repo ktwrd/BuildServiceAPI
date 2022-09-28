@@ -23,6 +23,8 @@ namespace BuildServiceAPI.Controllers.Admin.User
         };
 
         [HttpGet("purge")]
+        [ProducesResponseType(200, Type = typeof(ObjectResponse<Dictionary<string, int>>))]
+        [ProducesResponseType(401, Type = typeof(ObjectResponse<HttpException>))]
         public ActionResult TokenPurge(string token, string? username = null, bool? isUsernameFieldRegexPattern = false)
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions))

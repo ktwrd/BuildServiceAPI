@@ -14,6 +14,7 @@ namespace BuildServiceAPI.Controllers.Admin
     public class SystemAnnouncementController : Controller
     {
         [HttpGet("latest")]
+        [ProducesResponseType(200, Type = typeof(ObjectResponse<SystemAnnouncementEntry[]>))]
         public ActionResult Fetch()
         {
             var item = MainClass.contentManager.SystemAnnouncement.GetLatest();
@@ -28,6 +29,8 @@ namespace BuildServiceAPI.Controllers.Admin
         }
 
         [HttpGet("new")]
+        [ProducesResponseType(200, Type = typeof(ObjectResponse<SystemAnnouncementSummary>))]
+        [ProducesResponseType(401, Type = typeof(ObjectResponse<string>))]
         public ActionResult Set(string token, string content, bool? active=true)
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.ANNOUNCEMENT_MANAGE))
@@ -49,6 +52,8 @@ namespace BuildServiceAPI.Controllers.Admin
         }
 
         [HttpGet("update")]
+        [ProducesResponseType(200, Type = typeof(ObjectResponse<object?>))]
+        [ProducesResponseType(401, Type = typeof(ObjectResponse<string>))]
         public ActionResult UpdateActiveStatus(string token, bool active)
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.ANNOUNCEMENT_MANAGE))
@@ -71,6 +76,8 @@ namespace BuildServiceAPI.Controllers.Admin
         }
 
         [HttpGet("all")]
+        [ProducesResponseType(200, Type = typeof(ObjectResponse<SystemAnnouncementEntry[]>))]
+        [ProducesResponseType(401, Type = typeof(ObjectResponse<string>))]
         public ActionResult FetchAll(string token)
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.ANNOUNCEMENT_MANAGE))
@@ -90,6 +97,8 @@ namespace BuildServiceAPI.Controllers.Admin
         }
 
         [HttpGet("summary")]
+        [ProducesResponseType(200, Type = typeof(ObjectResponse<SystemAnnouncementSummary>))]
+        [ProducesResponseType(401, Type = typeof(ObjectResponse<string>))]
         public ActionResult GetSummary(string token)
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.ANNOUNCEMENT_MANAGE))
@@ -110,6 +119,8 @@ namespace BuildServiceAPI.Controllers.Admin
 
     
         [HttpGet("setData")]
+        [ProducesResponseType(200, Type = typeof(ObjectResponse<SystemAnnouncementSummary>))]
+        [ProducesResponseType(401, Type = typeof(ObjectResponse<string>))]
         public ActionResult SetData(string token, string content)
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.ADMINISTRATOR))

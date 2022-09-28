@@ -16,6 +16,9 @@ namespace BuildServiceAPI.Controllers.Admin.User
         };
 
         [HttpGet("list")]
+        [ProducesResponseType(200, Type = typeof(ObjectResponse<AccountPermission[]>))]
+        [ProducesResponseType(401, Type = typeof(ObjectResponse<HttpException>))]
+        [ProducesResponseType(404, Type = typeof(ObjectResponse<HttpException>))]
         public ActionResult List(string token, string username)
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions))
@@ -47,6 +50,9 @@ namespace BuildServiceAPI.Controllers.Admin.User
         }
 
         [HttpGet("grant")]
+        [ProducesResponseType(200, Type = typeof(ObjectResponse<bool>))]
+        [ProducesResponseType(401, Type = typeof(ObjectResponse<HttpException>))]
+        [ProducesResponseType(404, Type = typeof(ObjectResponse<HttpException>))]
         public ActionResult Grant(string token, string username, AccountPermission permission)
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions))
@@ -78,6 +84,9 @@ namespace BuildServiceAPI.Controllers.Admin.User
         }
 
         [HttpGet("revoke")]
+        [ProducesResponseType(200, Type = typeof(ObjectResponse<bool>))]
+        [ProducesResponseType(401, Type = typeof(ObjectResponse<HttpException>))]
+        [ProducesResponseType(404, Type = typeof(ObjectResponse<HttpException>))]
         public ActionResult Revoke(string token, string username, AccountPermission permission)
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions))

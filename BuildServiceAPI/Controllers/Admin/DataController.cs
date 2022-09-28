@@ -19,6 +19,10 @@ namespace BuildServiceAPI.Controllers.Admin
     public class DataController : Controller
     {
         [HttpPost("restore")]
+        [ProducesResponseType(200, Type = typeof(ObjectResponse<DataJSON>))]
+        [ProducesResponseType(400, Type = typeof(ObjectResponse<HttpException>))]
+        [ProducesResponseType(401, Type = typeof(ObjectResponse<HttpException>))]
+        [ProducesResponseType(500, Type = typeof(ObjectResponse<HttpException>))]
         public ActionResult Restore(string token)
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.ADMINISTRATOR))
@@ -106,6 +110,9 @@ namespace BuildServiceAPI.Controllers.Admin
         }
 
         [HttpGet("fetch")]
+        [ProducesResponseType(200, Type = typeof(ObjectResponse<DataJSON>))]
+        [ProducesResponseType(401, Type = typeof(ObjectResponse<HttpException>))]
+        [ProducesResponseType(500, Type = typeof(ObjectResponse<HttpException>))]
         public ActionResult Fetch(string token)
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.ADMINISTRATOR))
@@ -153,6 +160,9 @@ namespace BuildServiceAPI.Controllers.Admin
         }
 
         [HttpGet("dump")]
+        [ProducesResponseType(200, Type = typeof(ObjectResponse<DataJSON>))]
+        [ProducesResponseType(400, Type = typeof(ObjectResponse<HttpException>))]
+        [ProducesResponseType(401, Type = typeof(ObjectResponse<HttpException>))]
         public ActionResult Dump(string token, DataType type)
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.ADMINISTRATOR))
@@ -213,6 +223,9 @@ namespace BuildServiceAPI.Controllers.Admin
         }
 
         [HttpPost("setdata")]
+        [ProducesResponseType(200, Type = typeof(ObjectResponse<DataJSON>))]
+        [ProducesResponseType(400, Type = typeof(ObjectResponse<HttpException>))]
+        [ProducesResponseType(401, Type = typeof(ObjectResponse<HttpException>))]
         public ActionResult SetData(string token)
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.ADMINISTRATOR))

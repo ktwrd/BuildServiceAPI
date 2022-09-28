@@ -21,8 +21,9 @@ namespace BuildServiceAPI.Controllers.Admin
             AccountPermission.ADMINISTRATOR
         };
 
-        [HttpGet]
-        [Route("get")]
+        [HttpGet("get")]
+        [ProducesResponseType(200, Type = typeof(ObjectResponse<Dictionary<string, Dictionary<string, object>>>))]
+        [ProducesResponseType(401, Type = typeof(ObjectResponse<HttpException>))]
         public ActionResult GetConfig(string token)
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions))
@@ -42,8 +43,10 @@ namespace BuildServiceAPI.Controllers.Admin
             }, MainClass.serializerOptions);
         }
 
-        [HttpPost]
-        [Route("setvalue")]
+        [HttpPost("setvalue")]
+        [ProducesResponseType(200, Type = typeof(ObjectResponse<Dictionary<string, Dictionary<string, object>>>))]
+        [ProducesResponseType(400, Type = typeof(ObjectResponse<HttpException>))]
+        [ProducesResponseType(401, Type = typeof(ObjectResponse<HttpException>))]
         public ActionResult SetValue(string token, string group, string key)
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions))
@@ -88,8 +91,10 @@ namespace BuildServiceAPI.Controllers.Admin
             }, MainClass.serializerOptions);
         }
 
-        [HttpPost]
-        [Route("set")]
+        [HttpPost("set")]
+        [ProducesResponseType(200, Type = typeof(ObjectResponse<Dictionary<string, Dictionary<string, object>>>))]
+        [ProducesResponseType(400, Type = typeof(ObjectResponse<HttpException>))]
+        [ProducesResponseType(401, Type = typeof(ObjectResponse<HttpException>))]
         public ActionResult SetConfig(string token)
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions))
@@ -143,8 +148,10 @@ namespace BuildServiceAPI.Controllers.Admin
             }, MainClass.serializerOptions);
         }
 
-        [HttpPost]
-        [Route("reset")]
+        [HttpPost("reset")]
+        [ProducesResponseType(200, Type = typeof(ObjectResponse<Dictionary<string, Dictionary<string, object>>>))]
+        [ProducesResponseType(401, Type = typeof(ObjectResponse<HttpException>))]
+        [ProducesResponseType(500, Type = typeof(ObjectResponse<HttpException>))]
         public ActionResult ResetConfig(string token)
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions))
@@ -178,8 +185,9 @@ namespace BuildServiceAPI.Controllers.Admin
             }, MainClass.serializerOptions);
         }
 
-        [HttpGet]
-        [Route("save")]
+        [HttpGet("save")]
+        [ProducesResponseType(200, Type = typeof(ObjectResponse<Dictionary<string, Dictionary<string, object>>>))]
+        [ProducesResponseType(401, Type = typeof(ObjectResponse<HttpException>))]
         public ActionResult Save(string token)
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions))

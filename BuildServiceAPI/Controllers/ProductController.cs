@@ -9,8 +9,8 @@ namespace BuildServiceAPI.Controllers
     [Route("[controller]")]
     public class ProductController : Controller
     {
-        [HttpGet]
-        [Route("available")]
+        [HttpGet("available")]
+        [Produces(typeof(string[]))]
         public ActionResult FetchAvailable(string? token="")
         {
             var productIDList = new List<string>();

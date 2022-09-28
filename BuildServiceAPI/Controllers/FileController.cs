@@ -18,8 +18,11 @@ namespace BuildServiceAPI.Controllers
     [Route("[controller]")]
     public class FileController : Controller
     {
-        [HttpPost]
-        [Route("{hash}")]
+        [HttpPost("{hash}")]
+        [ProducesResponseType(401, Type = typeof(HttpException))]
+        [ProducesResponseType(404, Type = typeof(HttpException))]
+        [ProducesResponseType(200, Type = typeof(PublishedReleaseFile[]))]
+        [ProducesResponseType(500, Type = typeof(HttpException))]
         public ActionResult AddFileToHash(string hash, string token)
         {
             if (token == null || token.Length < 1 || !MainClass.ValidTokens.ContainsKey(token) || !MainClass.contentManager.AccountManager.AccountHasPermission(token, BuildServiceCommon.Authorization.AccountPermission.RELEASE_MANAGE))
@@ -76,8 +79,9 @@ namespace BuildServiceAPI.Controllers
             return Json(MainClass.contentManager?.Published[hash].Files ?? Array.Empty<object>(), MainClass.serializerOptions);
         }
 
-        [HttpGet]
-        [Route("{hash}")]
+        [HttpGet("{hash}")]
+        [ProducesResponseType(401, Type = typeof(ObjectResponse<HttpException>))]
+        [ProducesResponseType(200, Type = typeof(List<PublishedReleaseFile>))]
         public ActionResult FetchFilesFromHash(string hash, string token)
         {
             var returnContent = new List<PublishedReleaseFile>();

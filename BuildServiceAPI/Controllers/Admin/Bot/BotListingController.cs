@@ -11,6 +11,7 @@ namespace BuildServiceAPI.Controllers.Admin.Bot
     public class BotListingController : Controller
     {
         [HttpGet("list")]
+        [ProducesResponseType(401, Type = typeof(ObjectResponse<HttpException>))]
         public ActionResult ListBots(string token)
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.ADMINISTRATOR))

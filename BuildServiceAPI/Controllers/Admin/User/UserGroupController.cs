@@ -21,6 +21,9 @@ namespace BuildServiceAPI.Controllers.Admin.User
         };
 
         [HttpGet("list")]
+        [ProducesResponseType(200, Type = typeof(ObjectResponse<string[]>))]
+        [ProducesResponseType(401, Type = typeof(ObjectResponse<HttpException>))]
+        [ProducesResponseType(404, Type = typeof(ObjectResponse<HttpException>))]
         public ActionResult List(string token, string username)
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions))
@@ -52,6 +55,9 @@ namespace BuildServiceAPI.Controllers.Admin.User
         }
 
         [HttpPost("set")]
+        [ProducesResponseType(200, Type = typeof(ObjectResponse<object>))]
+        [ProducesResponseType(401, Type = typeof(ObjectResponse<HttpException>))]
+        [ProducesResponseType(500, Type = typeof(ObjectResponse<HttpException>))]
         public ActionResult SetContent(string token)
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions))
@@ -118,6 +124,9 @@ namespace BuildServiceAPI.Controllers.Admin.User
         }
 
         [HttpGet("grant")]
+        [ProducesResponseType(200, Type = typeof(ObjectResponse<bool>))]
+        [ProducesResponseType(401, Type = typeof(ObjectResponse<HttpException>))]
+        [ProducesResponseType(404, Type = typeof(ObjectResponse<HttpException>))]
         public ActionResult Grant(string token, string username, string group)
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions))
@@ -149,6 +158,9 @@ namespace BuildServiceAPI.Controllers.Admin.User
         }
 
         [HttpGet("revoke")]
+        [ProducesResponseType(200, Type = typeof(ObjectResponse<object>))]
+        [ProducesResponseType(401, Type = typeof(ObjectResponse<HttpException>))]
+        [ProducesResponseType(404, Type = typeof(ObjectResponse<HttpException>))]
         public ActionResult RevokeGroup(string token, string username, string group)
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions))

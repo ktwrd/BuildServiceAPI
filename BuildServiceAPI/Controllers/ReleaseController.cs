@@ -16,6 +16,8 @@ namespace BuildServiceAPI.Controllers
     public class ReleaseController : Controller
     {
         [HttpGet]
+        [ProducesResponseType(401, Type = typeof(ObjectResponse<HttpException>))]
+        [ProducesResponseType(200, Type = typeof(ObjectResponse<Dictionary<string, ProductRelease>>))]
         public ActionResult Index(string token)
         {
             var account = MainClass.contentManager.AccountManager.GetAccount(token);
@@ -190,8 +192,8 @@ namespace BuildServiceAPI.Controllers
             return resultList;
         }
 
-        [HttpGet]
-        [Route("latest/{app}")]
+        [HttpGet("latest/{app}")]
+        [Produces(typeof(ObjectResponse<List<ProductRelease>>))]
         public ActionResult LatestFromPath(string app, string? token = "")
         {
             var account = MainClass.contentManager.AccountManager.GetAccount(token);
@@ -207,8 +209,9 @@ namespace BuildServiceAPI.Controllers
             return Json(fetchReleasesByAppID(app, token ?? ""), MainClass.serializerOptions);
         }
 
-        [HttpGet]
-        [Route("latest")]
+        [HttpGet("latest")]
+        [ProducesResponseType(200, Type = typeof(ObjectResponse<List<ProductRelease>>))]
+        [ProducesResponseType(401, Type = typeof(ObjectResponse<HttpException>))]
         public ActionResult LatestFromParameter(string id="", string? token = "")
         {
             var account = MainClass.contentManager.AccountManager.GetAccount(token);
@@ -233,6 +236,7 @@ namespace BuildServiceAPI.Controllers
         }
 
         [HttpGet("hasUpdate")]
+        [Produces(typeof(ReleaseStreamUpdateDetails))]
         public ActionResult ReleaseHasUpdate(string app, string branch, string currentHash, string? token="")
         {
             ProductReleaseStream? targetReleaseStream = null;
