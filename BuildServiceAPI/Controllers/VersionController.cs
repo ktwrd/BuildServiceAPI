@@ -32,5 +32,17 @@ namespace BuildServiceAPI.Controllers
         {
             return DateTimeOffset.UtcNow.ToUnixTimeSeconds() - MainClass.StartupTimestamp;
         }
+
+        [HttpGet("/")]
+        [HttpGet("/server/details")]
+        [Produces(typeof(ServerDetailsResponse))]
+        public ServerDetailsResponse ServerDetails()
+        {
+            return new ServerDetailsResponse
+            {
+                Uptime = ServerUptime(),
+                Version = ServerVersion()
+            };
+        }
     }
 }
