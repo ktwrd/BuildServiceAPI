@@ -5,10 +5,10 @@ using System.Reflection;
 
 namespace BuildServiceAPI.Controllers
 {
-    [Route("version")]
     [ApiController]
     public class VersionController : Controller
     {
+        [HttpGet("/version")]
         public string ServerVersion()
         {
             var asm = Assembly.GetAssembly(typeof(VersionController));
@@ -25,6 +25,12 @@ namespace BuildServiceAPI.Controllers
             }
 
             return version.ToString();
+        }
+
+        [HttpGet("/uptime")]
+        public long ServerUptime()
+        {
+            return DateTimeOffset.UtcNow.ToUnixTimeSeconds() - MainClass.StartupTimestamp;
         }
     }
 }
