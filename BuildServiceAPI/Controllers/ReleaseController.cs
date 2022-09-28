@@ -224,20 +224,46 @@ namespace BuildServiceAPI.Controllers
             // Get all latest available
             if (id.Length < 1)
             {
-                var appIDlist = new List<string>();
-                foreach (var k in MainClass.contentManager.ReleaseInfoContent)
-                    appIDlist.Add(k.appID);
-                appIDlist = appIDlist.Where(v => v.Length > 0).Distinct().ToList();
-
-                var resultList = new List<ProductRelease>();
-                foreach (var v in appIDlist)
-                    resultList = resultList.Concat(fetchReleasesByAppID(v, token ?? "")).ToList();
-                return Json(resultList, MainClass.serializerOptions);
+                return Json(fetchAllReleases(token ?? ""), MainClass.serializerOptions);
             }
             else
             {
                 return LatestFromPath(id, token ?? "");
             }
+        }
+
+        [HttpGet("hasUpdate")]
+        public ActionResult ReleaseHasUpdate(string app, string branch, string currentHash, string? token="")
+        {
+            ProductReleaseStream? targetReleaseStream = null;
+
+            var result = fetchReleasesByAppID(app, token ?? "");
+            foreach (var product in result)
+            {
+                if (product.ProductID != app) continue;
+                foreach (var stream in product.Streams)
+                {
+                    if (stream.BranchName != branch) continue;
+                    targetReleaseStream = stream;
+                }
+            }
+
+            var details = new ReleaseStreamUpdateDetails()
+            {
+                Stream = targetReleaseStream,
+
+                TargetApp = app,
+                TargetBranch = branch,
+                CurrentHash = currentHash
+            };
+
+            if (targetReleaseStream != null)
+            {
+                details.HasUpdate = targetReleaseStream.CommitHash != currentHash;
+                details.UpdateReleaseTimestamp = targetReleaseStream.UpdatedTimestamp;
+            }
+
+            return Json(details, MainClass.serializerOptions);
         }
     }
 }
