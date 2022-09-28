@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
@@ -34,6 +35,15 @@ namespace BuildServiceAPI
         public static List<ITokenGranter> TokenGrantList = new List<ITokenGranter>();
 
         public static ContentManager contentManager;
+
+        public static string DataDirectory
+        {
+            get
+            {
+                string target = Assembly.GetExecutingAssembly().Location ?? Path.Combine(Directory.GetCurrentDirectory(), "config.ini");
+                return Path.GetDirectoryName(target) ?? Directory.GetCurrentDirectory();
+            }
+        }
         
         public static void Main(string[] args)
         {
