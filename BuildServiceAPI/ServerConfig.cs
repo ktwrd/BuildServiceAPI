@@ -16,7 +16,7 @@ namespace BuildServiceAPI
         public static class ServerConfig
         {
             public static string ConfigFilename => "config.ini";
-            public static string ConfigLocation => Path.Combine(Path.GetDirectoryName(Directory.GetCurrentDirectory()), ConfigFilename);
+            public static string ConfigLocation => Path.Combine(MainClass.DataDirectory, ConfigFilename);
             public static IniConfigSource Source;
             private static Timer BusStationTimer;
             static ServerConfig()

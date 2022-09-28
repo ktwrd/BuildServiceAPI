@@ -51,17 +51,17 @@ namespace BuildServiceAPI
             ServerConfig.Save();
         }
 
-        private readonly string DATABASE_FILENAME = Path.Combine(
-            Directory.GetCurrentDirectory(),
-            "content.db");
+        /*private readonly string DATABASE_FILENAME = Path.Combine(
+            MainClass.DataDirectory,
+            "content.db");*/
         private readonly string JSONBACKUP_FILENAME = Path.Combine(
-            Directory.GetCurrentDirectory(),
+            MainClass.DataDirectory,
             "content.json");
         private readonly string JSON_ACCOUNT_FILENAME = Path.Combine(
-            Directory.GetCurrentDirectory(),
+            MainClass.DataDirectory,
             "account.json");
         private readonly string JSON_SYSANNOUNCE_FILENAME = Path.Combine(
-            Directory.GetCurrentDirectory(),
+            MainClass.DataDirectory,
             "systemAnnouncement.json");
         private int DatabaseVersion;
         private class JSONBackupContent
@@ -162,7 +162,6 @@ namespace BuildServiceAPI
             }*/
             SystemAnnouncement.OnUpdate();
             AccountManager.ForcePendingWrite();
-            Console.WriteLine($"[ContentManager->DatabaseSerialize] Saved {Path.GetRelativePath(Directory.GetCurrentDirectory(), DATABASE_FILENAME)}");
             CreateJSONBackup();
             ServerConfig.Save();
         }
