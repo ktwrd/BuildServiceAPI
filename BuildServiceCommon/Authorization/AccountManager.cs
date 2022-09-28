@@ -53,7 +53,7 @@ namespace BuildServiceCommon.Authorization
             foreach (var account in AccountList)
             {
                 foreach (var item in account.Tokens)
-                    if (item.Token == token)
+                    if (item.Token == token && account.Enabled)
                         return true;
             }
             return false;
