@@ -13,8 +13,7 @@ namespace BuildServiceAPI.Controllers.Admin
     [ApiController]
     public class SystemAnnouncementController : Controller
     {
-        [HttpGet]
-        [Route("latest")]
+        [HttpGet("latest")]
         public ActionResult Fetch()
         {
             var item = MainClass.contentManager.SystemAnnouncement.GetLatest();
@@ -28,11 +27,10 @@ namespace BuildServiceAPI.Controllers.Admin
             }, MainClass.serializerOptions);
         }
 
-        [HttpGet]
-        [Route("new")]
+        [HttpGet("new")]
         public ActionResult Set(string token, string content, bool? active=true)
         {
-            if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.ADMINISTRATOR))
+            if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.ANNOUNCEMENT_MANAGE))
             {
                 Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 return Json(new ObjectResponse<string>()
@@ -50,11 +48,10 @@ namespace BuildServiceAPI.Controllers.Admin
             }, MainClass.serializerOptions);
         }
 
-        [HttpGet]
-        [Route("update")]
+        [HttpGet("update")]
         public ActionResult UpdateActiveStatus(string token, bool active)
         {
-            if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.ADMINISTRATOR))
+            if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.ANNOUNCEMENT_MANAGE))
             {
                 Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 return Json(new ObjectResponse<string>()
@@ -73,11 +70,10 @@ namespace BuildServiceAPI.Controllers.Admin
             }, MainClass.serializerOptions);
         }
 
-        [HttpGet]
-        [Route("all")]
+        [HttpGet("all")]
         public ActionResult FetchAll(string token)
         {
-            if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.ADMINISTRATOR))
+            if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.ANNOUNCEMENT_MANAGE))
             {
                 Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 return Json(new ObjectResponse<string>()
@@ -93,11 +89,10 @@ namespace BuildServiceAPI.Controllers.Admin
             }, MainClass.serializerOptions);
         }
 
-        [HttpGet]
-        [Route("summary")]
+        [HttpGet("summary")]
         public ActionResult GetSummary(string token)
         {
-            if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.ADMINISTRATOR))
+            if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.ANNOUNCEMENT_MANAGE))
             {
                 Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 return Json(new ObjectResponse<string>()
@@ -114,8 +109,7 @@ namespace BuildServiceAPI.Controllers.Admin
         }
 
     
-        [HttpGet]
-        [Route("setData")]
+        [HttpGet("setData")]
         public ActionResult SetData(string token, string content)
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.ADMINISTRATOR))
