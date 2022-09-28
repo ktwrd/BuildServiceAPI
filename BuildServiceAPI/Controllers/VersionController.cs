@@ -9,6 +9,7 @@ namespace BuildServiceAPI.Controllers
     public class VersionController : Controller
     {
         [HttpGet("/version")]
+        [HttpGet("/server/version")]
         public string ServerVersion()
         {
             var asm = Assembly.GetAssembly(typeof(VersionController));
