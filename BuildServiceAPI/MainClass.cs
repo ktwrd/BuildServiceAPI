@@ -71,9 +71,9 @@ namespace BuildServiceAPI
                 App.UseSwaggerUI(options =>
                 {
                     options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-                    options.RoutePrefix = string.Empty;
+                    options.RoutePrefix = "swagger/ui";
                 });
-                Console.WriteLine($"[BuildServiceAPI->Main] In development mode, so swagger is enabled. SwaggerUI can be accessed at 0.0.0.0:5010/");
+                Console.WriteLine($"[BuildServiceAPI->Main] In development mode, so swagger is enabled. SwaggerUI can be accessed at 0.0.0.0:5010/swagger/ui");
             }
             App.Use((context, next) =>
             {
