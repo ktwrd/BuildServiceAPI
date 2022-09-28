@@ -10,11 +10,11 @@ namespace BuildServiceCommon
     [Serializable]
     public class PublishedRelease : bSerializable, bFirebaseSerializable
     {
-        public string UID = GeneralHelper.GenerateUID();
-        public string CommitHash = "";
-        public long Timestamp = 0;
-        public ReleaseInfo Release = ReleaseInfo.Blank();
-        public PublishedReleaseFile[] Files = Array.Empty<PublishedReleaseFile>();
+        public string UID { get; set; } = GeneralHelper.GenerateUID();
+        public string CommitHash { get; set; } = "";
+        public long Timestamp { get; set; } = 0;
+        public ReleaseInfo Release { get; set; } = ReleaseInfo.Blank();
+        public PublishedReleaseFile[] Files { get; set; } = Array.Empty<PublishedReleaseFile>();
 
         public async Task FromFirebase(DocumentSnapshot document, VoidDelegate completeIncrement)
         {
@@ -97,11 +97,11 @@ namespace BuildServiceCommon
     [Serializable]
     public class PublishedReleaseFile : bSerializable, bFirebaseSerializable
     {
-        public string UID = GeneralHelper.GenerateUID();
-        public string Location = "";
-        public string CommitHash = "";
-        public FilePlatform Platform = FilePlatform.Any;
-        public FileType Type = FileType.Other;
+        public string UID { get; set; } = GeneralHelper.GenerateUID();
+        public string Location { get; set; } = "";
+        public string CommitHash { get; set; } = "";
+        public FilePlatform Platform { get; set; } = FilePlatform.Any;
+        public FileType Type { get; set; } = FileType.Other;
         public void ReadFromStream(SerializationReader sr)
         {
             Location = sr.ReadString();
