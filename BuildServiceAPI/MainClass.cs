@@ -44,9 +44,11 @@ namespace BuildServiceAPI
                 return Path.GetDirectoryName(target) ?? Directory.GetCurrentDirectory();
             }
         }
-        
+
+        public static long StartupTimestamp { get; private set; }
         public static void Main(string[] args)
         {
+            StartupTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             ServerConfig.Get();
             AppDomain.CurrentDomain.ProcessExit += BeforeExit;
             serializerOptions.Converters.Add(new kate.shared.DateTimeConverterUsingDateTimeOffsetParse());
