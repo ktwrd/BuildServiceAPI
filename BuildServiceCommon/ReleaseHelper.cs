@@ -81,8 +81,6 @@ namespace BuildServiceCommon
                     ProductID = release.appID,
                     CommitHash = release.commitHash
                 };
-                Console.WriteLine($"{release.commitHash}whitelist" + string.Join(",", release.groupWhitelist));
-                Console.WriteLine($"{release.commitHash}blacklist" + string.Join(",", release.groupBlacklist));
                 foreach (var i in release.groupWhitelist)
                     stream.GroupWhitelist.Add(i.ToUpper().Trim());
                 foreach (var i in release.groupBlacklist)

@@ -139,7 +139,6 @@ namespace BuildServiceCommon.Authorization
                                 account.Groups = new List<string>();
                             if (account.Permissions == null)
                                 account.Permissions = new List<AccountPermission>();
-                            Console.WriteLine($"[AccountManager->CreateToken] Account with username {account.Username} has a new token. They're in the groups {JsonSerializer.Serialize(account.Groups.ToArray())}");
                             return new GrantTokenResponse("Granted token", true, success, account.Groups.ToArray(), account.Permissions.ToArray());
                         }
                     }
