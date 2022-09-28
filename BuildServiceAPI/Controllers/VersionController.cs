@@ -28,6 +28,7 @@ namespace BuildServiceAPI.Controllers
         }
 
         [HttpGet("/uptime")]
+        [HttpGet("/server/uptime")]
         public long ServerUptime()
         {
             return DateTimeOffset.UtcNow.ToUnixTimeSeconds() - MainClass.StartupTimestamp;
