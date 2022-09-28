@@ -177,6 +177,19 @@ namespace BuildServiceAPI.Controllers
             return returnContent.Where(v => v.Streams.Length > 0).ToList();
         }
 
+        private List<ProductRelease> fetchAllReleases(string token)
+        {
+            var appIDlist = new List<string>();
+            foreach (var k in MainClass.contentManager.ReleaseInfoContent)
+                appIDlist.Add(k.appID);
+            appIDlist = appIDlist.Where(v => v.Length > 0).Distinct().ToList();
+
+            var resultList = new List<ProductRelease>();
+            foreach (var v in appIDlist)
+                resultList = resultList.Concat(fetchReleasesByAppID(v, token ?? "")).ToList();
+            return resultList;
+        }
+
         [HttpGet]
         [Route("latest/{app}")]
         public ActionResult LatestFromPath(string app, string? token = "")
