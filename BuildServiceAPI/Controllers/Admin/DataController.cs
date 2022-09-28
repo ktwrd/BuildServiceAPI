@@ -27,11 +27,11 @@ namespace BuildServiceAPI.Controllers.Admin
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.ADMINISTRATOR))
             {
-                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                return Json(new ObjectResponse<string>()
+                Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return Json(new ObjectResponse<HttpException>()
                 {
                     Success = false,
-                    Data = ServerStringResponse.InvalidCredential
+                    Data = new HttpException(401, ServerStringResponse.InvalidCredential)
                 }, MainClass.serializerOptions);
             }
 
@@ -117,11 +117,11 @@ namespace BuildServiceAPI.Controllers.Admin
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.ADMINISTRATOR))
             {
-                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                return Json(new ObjectResponse<string>()
+                Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return Json(new ObjectResponse<HttpException>()
                 {
                     Success = false,
-                    Data = ServerStringResponse.InvalidCredential
+                    Data = new HttpException(401, ServerStringResponse.InvalidCredential)
                 }, MainClass.serializerOptions);
             }
 
@@ -167,11 +167,11 @@ namespace BuildServiceAPI.Controllers.Admin
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.ADMINISTRATOR))
             {
-                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                return Json(new ObjectResponse<string>()
+                Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return Json(new ObjectResponse<HttpException>()
                 {
                     Success = false,
-                    Data = ServerStringResponse.InvalidCredential
+                    Data = new HttpException(401, ServerStringResponse.InvalidCredential)
                 }, MainClass.serializerOptions);
             }
 
@@ -214,11 +214,12 @@ namespace BuildServiceAPI.Controllers.Admin
             }
             else
             {
-                return Json(new ObjectResponse<string>()
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new ObjectResponse<HttpException>()
                 {
-                    Success = true,
-                    Data = ServerStringResponse.InvalidParameter("type")
-                }, MainClass.serializerOptions); ;
+                    Success = false,
+                    Data = new HttpException(400, ServerStringResponse.InvalidParameter("type"))
+                }, MainClass.serializerOptions);
             }
         }
 
@@ -230,11 +231,11 @@ namespace BuildServiceAPI.Controllers.Admin
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.ADMINISTRATOR))
             {
-                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                return Json(new ObjectResponse<string>()
+                Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return Json(new ObjectResponse<HttpException>()
                 {
                     Success = false,
-                    Data = ServerStringResponse.InvalidCredential
+                    Data = new HttpException(401, ServerStringResponse.InvalidCredential)
                 }, MainClass.serializerOptions);
             }
             HttpContext.Request.Body.Seek(0, SeekOrigin.Begin);
@@ -282,13 +283,13 @@ namespace BuildServiceAPI.Controllers.Admin
             }
             else
             {
-                return Json(new ObjectResponse<string>()
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new ObjectResponse<HttpException>()
                 {
                     Success = false,
-                    Data = ServerStringResponse.InvalidParameter("type")
+                    Data = new HttpException(400, ServerStringResponse.InvalidParameter("type"))
                 }, MainClass.serializerOptions);
             }
-
         }
     }
 }

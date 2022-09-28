@@ -28,11 +28,11 @@ namespace BuildServiceAPI.Controllers.Admin
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions))
             {
-                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                return Json(new ObjectResponse<string>()
+                Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return Json(new ObjectResponse<HttpException>()
                 {
                     Success = false,
-                    Data = "Invalid Account"
+                    Data = new HttpException(401, ServerStringResponse.InvalidCredential)
                 }, MainClass.serializerOptions);
             }
 
@@ -51,11 +51,11 @@ namespace BuildServiceAPI.Controllers.Admin
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions))
             {
-                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                return Json(new ObjectResponse<string>()
+                Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return Json(new ObjectResponse<HttpException>()
                 {
                     Success = false,
-                    Data = "Invalid Account"
+                    Data = new HttpException(401, ServerStringResponse.InvalidCredential)
                 }, MainClass.serializerOptions);
             }
 
@@ -74,11 +74,11 @@ namespace BuildServiceAPI.Controllers.Admin
             }
             catch (Exception e)
             {
-                Response.StatusCode = 401;
+                Response.StatusCode = StatusCodes.Status400BadRequest;
                 return Json(new ObjectResponse<HttpException>()
                 {
                     Success = false,
-                    Data = new HttpException(401, "Invalid Body", e)
+                    Data = new HttpException(StatusCodes.Status400BadRequest, ServerStringResponse.InvalidBody, e)
                 }, MainClass.serializerOptions);
             }
 
@@ -99,11 +99,11 @@ namespace BuildServiceAPI.Controllers.Admin
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions))
             {
-                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                return Json(new ObjectResponse<string>()
+                Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return Json(new ObjectResponse<HttpException>()
                 {
                     Success = false,
-                    Data = "Invalid Account"
+                    Data = new HttpException(401, ServerStringResponse.InvalidCredential)
                 }, MainClass.serializerOptions);
             }
 
@@ -122,20 +122,20 @@ namespace BuildServiceAPI.Controllers.Admin
             }
             catch (Exception e)
             {
-                Response.StatusCode = 401;
+                Response.StatusCode = 400;
                 return Json(new ObjectResponse<HttpException>()
                 {
                     Success = false,
-                    Data = new HttpException(401, "Invalid Body", e)
+                    Data = new HttpException(400, ServerStringResponse.InvalidBody, e)
                 }, MainClass.serializerOptions);
             }
             if (decodedBody == null)
             {
-                Response.StatusCode = 401;
+                Response.StatusCode = 400;
                 return Json(new ObjectResponse<HttpException>()
                 {
                     Success = false,
-                    Data = new HttpException(401, "Invalid Body")
+                    Data = new HttpException(400, ServerStringResponse.InvalidBody)
                 }, MainClass.serializerOptions);
             }
 
@@ -156,11 +156,11 @@ namespace BuildServiceAPI.Controllers.Admin
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions))
             {
-                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                return Json(new ObjectResponse<string>()
+                Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return Json(new ObjectResponse<HttpException>()
                 {
                     Success = false,
-                    Data = "Invalid Account"
+                    Data = new HttpException(401, ServerStringResponse.InvalidCredential)
                 }, MainClass.serializerOptions);
             }
 
@@ -192,11 +192,11 @@ namespace BuildServiceAPI.Controllers.Admin
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions))
             {
-                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                return Json(new ObjectResponse<string>()
+                Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return Json(new ObjectResponse<HttpException>()
                 {
                     Success = false,
-                    Data = "Invalid Account"
+                    Data = new HttpException(401, ServerStringResponse.InvalidCredential)
                 }, MainClass.serializerOptions);
             }
 

@@ -8,6 +8,7 @@ using BuildServiceCommon.Authorization;
 using BuildServiceAPI.BuildServiceAPI;
 using System.Net;
 using System;
+using Microsoft.AspNetCore.Http;
 
 namespace BuildServiceAPI.Controllers
 {
@@ -25,11 +26,11 @@ namespace BuildServiceAPI.Controllers
             {
                 if (!account.Enabled)
                 {
-                    Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    Response.StatusCode = StatusCodes.Status401Unauthorized;
                     return Json(new ObjectResponse<HttpException>()
                     {
                         Success = false,
-                        Data = new HttpException((int)HttpStatusCode.Unauthorized, ServerStringResponse.AccountDisabled)
+                        Data = new HttpException(StatusCodes.Status401Unauthorized, ServerStringResponse.AccountDisabled)
                     }, MainClass.serializerOptions);
                 }
                 if (ServerConfig.GetBoolean("Security", "AllowPermission_ReadReleaseBypass", true) && account.HasPermission(AccountPermission.READ_RELEASE_BYPASS))
@@ -49,7 +50,7 @@ namespace BuildServiceAPI.Controllers
                     }, MainClass.serializerOptions);
                 }
             }
-            Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            Response.StatusCode = StatusCodes.Status401Unauthorized;
             return Json(new ObjectResponse<HttpException>()
             {
                 Success = false,
@@ -199,11 +200,11 @@ namespace BuildServiceAPI.Controllers
             var account = MainClass.contentManager.AccountManager.GetAccount(token);
             if (account != null && !account.Enabled)
             {
-                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                Response.StatusCode = StatusCodes.Status401Unauthorized;
                 return Json(new ObjectResponse<HttpException>()
                 {
                     Success = false,
-                    Data = new HttpException((int)HttpStatusCode.Unauthorized, ServerStringResponse.AccountDisabled)
+                    Data = new HttpException(StatusCodes.Status401Unauthorized, ServerStringResponse.AccountDisabled)
                 }, MainClass.serializerOptions);
             }
             return Json(fetchReleasesByAppID(app, token ?? ""), MainClass.serializerOptions);
@@ -217,11 +218,11 @@ namespace BuildServiceAPI.Controllers
             var account = MainClass.contentManager.AccountManager.GetAccount(token);
             if (account != null && !account.Enabled)
             {
-                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                Response.StatusCode = StatusCodes.Status401Unauthorized;
                 return Json(new ObjectResponse<HttpException>()
                 {
                     Success = false,
-                    Data = new HttpException((int)HttpStatusCode.Unauthorized, ServerStringResponse.AccountDisabled)
+                    Data = new HttpException(StatusCodes.Status401Unauthorized, ServerStringResponse.AccountDisabled)
                 }, MainClass.serializerOptions);
             }
             // Get all latest available

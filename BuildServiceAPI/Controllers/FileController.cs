@@ -28,17 +28,17 @@ namespace BuildServiceAPI.Controllers
             if (token == null || token.Length < 1 || !MainClass.ValidTokens.ContainsKey(token) || !MainClass.contentManager.AccountManager.AccountHasPermission(token, BuildServiceCommon.Authorization.AccountPermission.RELEASE_MANAGE))
             {
                 Response.StatusCode = 401;
-                return Json(new HttpException(401, @"Invalid token"), MainClass.serializerOptions);
+                return Json(new HttpException(401, ServerStringResponse.InvalidCredential), MainClass.serializerOptions);
             }
             else if (!MainClass.contentManager?.Published.ContainsKey(hash) ?? false)
             {
-                Response.StatusCode = (int)HttpStatusCode.NotFound;
+                Response.StatusCode = StatusCodes.Status404NotFound;
                 return Json(new HttpException(404, @"Commit not published"), MainClass.serializerOptions);
             }
             if (!Request.HasJsonContentType())
             {
                 Response.StatusCode = (int)HttpStatusCode.UnsupportedMediaType;
-                return Json(new HttpException(401, "Unsupported Media Type"), MainClass.serializerOptions);
+                return Json(new HttpException(401, ServerStringResponse.UnsupportedMediaType), MainClass.serializerOptions);
             }
             var syncIOFeature = HttpContext.Features.Get<IHttpBodyControlFeature>();
             if (syncIOFeature != null)
@@ -56,12 +56,12 @@ namespace BuildServiceAPI.Controllers
             catch (Exception e)
             {
                 Response.StatusCode = 401;
-                return Json(new HttpException(401, "Invalid Body", e), MainClass.serializerOptions);
+                return Json(new HttpException(401, ServerStringResponse.InvalidBody, e), MainClass.serializerOptions);
             }
             if (decodedBody == null)
             {
                 Response.StatusCode = 401;
-                return Json(new HttpException(401, "Invalid Body"), MainClass.serializerOptions);
+                return Json(new HttpException(401, ServerStringResponse.InvalidBody), MainClass.serializerOptions);
             }
 
             var fileList = new List<PublishedReleaseFile>();
@@ -89,11 +89,11 @@ namespace BuildServiceAPI.Controllers
             var account = MainClass.contentManager.AccountManager.GetAccount(token);
             if (!account.Enabled)
             {
-                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                Response.StatusCode = StatusCodes.Status401Unauthorized;
                 return Json(new ObjectResponse<HttpException>()
                 {
                     Success = false,
-                    Data = new HttpException((int)HttpStatusCode.Unauthorized, ServerStringResponse.AccountDisabled)
+                    Data = new HttpException(StatusCodes.Status401Unauthorized, ServerStringResponse.AccountDisabled)
                 }, MainClass.serializerOptions);
             }
             if (contentManager != null && account != null)
@@ -126,8 +126,9 @@ namespace BuildServiceAPI.Controllers
             return Json(returnContent, MainClass.serializerOptions);
         }
 
-        [HttpGet]
-        [Route("")]
+        [HttpGet("")]
+        [ProducesResponseType(401, Type = typeof(ObjectResponse<HttpException>))]
+        [ProducesResponseType(200, Type = typeof(List<PublishedReleaseFile>))]
         public ActionResult FetchFilesFromHashByParameter(string hash, string? token = "") => FetchFilesFromHash(hash, token ?? "");
     }
 }

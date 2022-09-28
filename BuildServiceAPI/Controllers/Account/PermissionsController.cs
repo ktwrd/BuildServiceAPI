@@ -25,11 +25,11 @@ namespace BuildServiceAPI.Controllers.Account
             }
             if (!account.Enabled)
             {
-                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                Response.StatusCode = StatusCodes.Status401Unauthorized;
                 return Json(new ObjectResponse<HttpException>()
                 {
                     Success = false,
-                    Data = new HttpException((int)HttpStatusCode.Unauthorized, ServerStringResponse.AccountDisabled)
+                    Data = new HttpException(StatusCodes.Status401Unauthorized, ServerStringResponse.AccountDisabled)
                 }, MainClass.serializerOptions);
             }
 

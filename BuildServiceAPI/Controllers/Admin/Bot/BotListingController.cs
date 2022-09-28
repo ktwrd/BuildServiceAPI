@@ -16,11 +16,11 @@ namespace BuildServiceAPI.Controllers.Admin.Bot
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, AccountPermission.ADMINISTRATOR))
             {
-                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                return Json(new ObjectResponse<string>()
+                Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return Json(new ObjectResponse<HttpException>()
                 {
                     Success = false,
-                    Data = ServerStringResponse.InvalidCredential
+                    Data = new HttpException(401, ServerStringResponse.InvalidCredential)
                 }, MainClass.serializerOptions);
             }
             return Json(new ObjectResponse<object>()

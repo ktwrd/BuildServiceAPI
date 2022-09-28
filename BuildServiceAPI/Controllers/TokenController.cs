@@ -19,7 +19,7 @@ namespace BuildServiceAPI.Controllers
             var grantTokenResponse = MainClass.contentManager.AccountManager.GrantTokenAndOrAccount(WebUtility.UrlDecode(username), WebUtility.UrlDecode(password));
 
             if (!grantTokenResponse.Success)
-                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                Response.StatusCode = StatusCodes.Status401Unauthorized;
             return Json(new ObjectResponse<GrantTokenResponse>()
             {
                 Success = grantTokenResponse.Success,
@@ -42,7 +42,7 @@ namespace BuildServiceAPI.Controllers
         {
             if (token.Length < 32 || token.Length > 32)
             {
-                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                Response.StatusCode = StatusCodes.Status401Unauthorized;
                 return Json(new ObjectResponse<bool>()
                 {
                     Success = false,
@@ -55,7 +55,7 @@ namespace BuildServiceAPI.Controllers
                 var res = MainClass.contentManager.AccountManager.ValidateToken(token);
                 if (!res)
                 {
-                    Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    Response.StatusCode = StatusCodes.Status401Unauthorized;
                 }
                 return Json(new ObjectResponse<bool>()
                 {
@@ -66,7 +66,7 @@ namespace BuildServiceAPI.Controllers
             catch (Exception)
             { }
 
-            Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            Response.StatusCode = StatusCodes.Status401Unauthorized;
             return Json(new ObjectResponse<bool>()
             {
                 Success = false,
@@ -81,42 +81,42 @@ namespace BuildServiceAPI.Controllers
         {
             if (token == null || token.Length < 32 || token.Length > 32)
             {
-                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                return Json(new ObjectResponse<string>()
+                Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return Json(new ObjectResponse<HttpException>()
                 {
                     Success = false,
-                    Data = "Invalid Account"
+                    Data = new HttpException(401, ServerStringResponse.InvalidCredential)
                 }, MainClass.serializerOptions);
             }
 
             var account = MainClass.contentManager.AccountManager.GetAccount(token);
             if (account == null)
             {
-                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                return Json(new ObjectResponse<string>()
+                Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return Json(new ObjectResponse<HttpException>()
                 {
                     Success = false,
-                    Data = "Invalid Account"
+                    Data = new HttpException(401, ServerStringResponse.InvalidCredential)
                 }, MainClass.serializerOptions);
             }
             if (!account.Enabled)
             {
-                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                Response.StatusCode = StatusCodes.Status401Unauthorized;
                 return Json(new ObjectResponse<HttpException>()
                 {
                     Success = false,
-                    Data = new HttpException((int)HttpStatusCode.Unauthorized, ServerStringResponse.AccountDisabled)
+                    Data = new HttpException(401, ServerStringResponse.AccountDisabled)
                 }, MainClass.serializerOptions);
             }
 
             var details = account.GetTokenDetails(token);
             if (details == null)
             {
-                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                return Json(new ObjectResponse<string>()
+                Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return Json(new ObjectResponse<HttpException>()
                 {
                     Success = false,
-                    Data = "Invalid Account"
+                    Data = new HttpException(401, ServerStringResponse.InvalidCredential)
                 }, MainClass.serializerOptions);
             }
 
@@ -134,31 +134,31 @@ namespace BuildServiceAPI.Controllers
         {
             if (token == null || token.Length < 32 || token.Length > 32)
             {
-                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                return Json(new ObjectResponse<string>()
+                Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return Json(new ObjectResponse<HttpException>()
                 {
                     Success = false,
-                    Data = "Invalid Account"
+                    Data = new HttpException(401, ServerStringResponse.InvalidCredential)
                 }, MainClass.serializerOptions);
             }
 
             var account = MainClass.contentManager.AccountManager.GetAccount(token);
             if (account == null)
             {
-                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                return Json(new ObjectResponse<string>()
+                Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return Json(new ObjectResponse<HttpException>()
                 {
                     Success = false,
-                    Data = "Invalid Account"
+                    Data = new HttpException(401, ServerStringResponse.InvalidCredential)
                 }, MainClass.serializerOptions);
             }
             if (!account.Enabled)
             {
-                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                Response.StatusCode = StatusCodes.Status401Unauthorized;
                 return Json(new ObjectResponse<HttpException>()
                 {
                     Success = false,
-                    Data = new HttpException((int)HttpStatusCode.Unauthorized, ServerStringResponse.AccountDisabled)
+                    Data = new HttpException(StatusCodes.Status401Unauthorized, ServerStringResponse.AccountDisabled)
                 }, MainClass.serializerOptions);
             }
 

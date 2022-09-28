@@ -26,7 +26,7 @@ namespace BuildServiceAPI.Controllers.Admin
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions))
             {
-                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                Response.StatusCode = StatusCodes.Status401Unauthorized;
                 return Json(new ObjectResponse<string>()
                 {
                     Success = false,

@@ -29,11 +29,11 @@ namespace BuildServiceAPI.Controllers.Admin.User
         {
             if (!MainClass.contentManager.AccountManager.AccountHasPermission(token, RequiredPermissions))
             {
-                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                return Json(new ObjectResponse<string>()
+                Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return Json(new ObjectResponse<HttpException>()
                 {
                     Success = false,
-                    Data = ServerStringResponse.InvalidCredential
+                    Data = new HttpException(StatusCodes.Status401Unauthorized, ServerStringResponse.InvalidCredential)
                 }, MainClass.serializerOptions);
             }
 

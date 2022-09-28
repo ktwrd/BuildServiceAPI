@@ -29,12 +29,12 @@ namespace BuildServiceAPI.Controllers
             if (!MainClass.ValidTokens.ContainsKey(token))
             {
                 Response.StatusCode = 401;
-                return Json(new HttpException(401, @"Invalid token"), MainClass.serializerOptions);
+                return Json(new HttpException(401, ServerStringResponse.InvalidCredential), MainClass.serializerOptions);
             }
             if (!Request.HasJsonContentType())
             {
                 Response.StatusCode = (int)HttpStatusCode.UnsupportedMediaType;
-                return Json(new HttpException(401, "Unsupported Media Type"), MainClass.serializerOptions);
+                return Json(new HttpException(401, ServerStringResponse.UnsupportedMediaType), MainClass.serializerOptions);
             }
             var syncIOFeature = HttpContext.Features.Get<IHttpBodyControlFeature>();
             if (syncIOFeature != null)
@@ -51,12 +51,12 @@ namespace BuildServiceAPI.Controllers
             catch (Exception e)
             {
                 Response.StatusCode = 401;
-                return Json(new HttpException(401, "Invalid Body", e), MainClass.serializerOptions);
+                return Json(new HttpException(401, ServerStringResponse.InvalidBody, e), MainClass.serializerOptions);
             }
             if (decodedBody == null)
             {
                 Response.StatusCode = 401;
-                return Json(new HttpException(401, "Invalid Body"), MainClass.serializerOptions);
+                return Json(new HttpException(401, ServerStringResponse.InvalidBody), MainClass.serializerOptions);
             }
             var parameters = decodedBody;
             if (parameters.releaseInfo.remoteLocation.Length < 1)
@@ -121,17 +121,17 @@ namespace BuildServiceAPI.Controllers
                     Response.StatusCode = 401;
                     return Json(new ObjectResponse<HttpException>()
                     {
-                        Data = new HttpException(401, @"Invalid token"),
+                        Data = new HttpException(401, ServerStringResponse.InvalidCredential),
                         Success = false
                     }, MainClass.serializerOptions);
                 }
                 if (!account.Enabled)
                 {
-                    Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    Response.StatusCode = StatusCodes.Status401Unauthorized;
                     return Json(new ObjectResponse<HttpException>()
                     {
                         Success = false,
-                        Data = new HttpException((int)HttpStatusCode.Unauthorized, ServerStringResponse.AccountDisabled)
+                        Data = new HttpException(StatusCodes.Status401Unauthorized, ServerStringResponse.AccountDisabled)
                     }, MainClass.serializerOptions);
                 }
                 if (!account.HasPermission(AccountPermission.ADMINISTRATOR))
@@ -139,7 +139,7 @@ namespace BuildServiceAPI.Controllers
                     Response.StatusCode = 401;
                     return Json(new ObjectResponse<HttpException>()
                     {
-                        Data = new HttpException(401, @"Missing permissions"),
+                        Data = new HttpException(401, ServerStringResponse.InvalidPermission),
                         Success = false
                     }, MainClass.serializerOptions);
                 }
@@ -152,13 +152,15 @@ namespace BuildServiceAPI.Controllers
         }
 
         [HttpGet("hash")]
+        [ProducesResponseType(401, Type = typeof(HttpException))]
+        [ProducesResponseType(200, Type = typeof(ObjectResponse<PublishedRelease?>))]
         public ActionResult ByCommitHashFromParameter(string hash, string? token)
         {
             var account = MainClass.contentManager.AccountManager.GetAccount(token ?? "");
             if (account == null)
             {
                 Response.StatusCode = 401;
-                return Json(new HttpException(401, @"Invalid token"), MainClass.serializerOptions);
+                return Json(new HttpException(401, ServerStringResponse.InvalidCredential), MainClass.serializerOptions);
             }
             if (!account.HasPermission(AccountPermission.ADMINISTRATOR))
             {
@@ -185,6 +187,8 @@ namespace BuildServiceAPI.Controllers
         }
 
         [HttpGet("hash/{hash}")]
+        [ProducesResponseType(401, Type = typeof(HttpException))]
+        [ProducesResponseType(200, Type = typeof(ObjectResponse<PublishedRelease?>))]
         public ActionResult ByCommitHashFromPath(string? token, string hash) => ByCommitHashFromParameter(token ?? "", hash);
     }
 }
