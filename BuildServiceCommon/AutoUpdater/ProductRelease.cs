@@ -17,7 +17,7 @@ namespace BuildServiceCommon.AutoUpdater
     }
 
     [Serializable]
-    public class ProductRelease : bSerializable, bFirebaseSerializable, IProductRelease
+    public class ProductRelease : bSerializable, IProductRelease
     {
         public string UID { get; set; }
         public string ProductName { get; set; }
@@ -33,7 +33,7 @@ namespace BuildServiceCommon.AutoUpdater
         }
 
         #region bFirebaseSerializable
-        public async Task FromFirebase(DocumentSnapshot document, VoidDelegate completeIncrement)
+        /*public async Task FromFirebase(DocumentSnapshot document, VoidDelegate completeIncrement)
         {
             this.UID = document.Reference.Id;
 
@@ -81,7 +81,7 @@ namespace BuildServiceCommon.AutoUpdater
             await document.SetAsync(data);
             completeIncrement();
         }
-        public DocumentReference GetFirebaseDocumentReference(FirestoreDb database) => database.Document(FirebaseHelper.FirebaseCollection[this.GetType()] + "/" + UID);
+        public DocumentReference GetFirebaseDocumentReference(FirestoreDb database) => database.Document(FirebaseHelper.FirebaseCollection[this.GetType()] + "/" + UID);*/
         #endregion
 
         #region bSerializable

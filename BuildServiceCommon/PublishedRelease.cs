@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace BuildServiceCommon
 {
     [Serializable]
-    public class PublishedRelease : bSerializable, bFirebaseSerializable
+    public class PublishedRelease : bSerializable
     {
         public string UID { get; set; } = GeneralHelper.GenerateUID();
         public string CommitHash { get; set; } = "";
@@ -16,7 +16,7 @@ namespace BuildServiceCommon
         public ReleaseInfo Release { get; set; } = ReleaseInfo.Blank();
         public PublishedReleaseFile[] Files { get; set; } = Array.Empty<PublishedReleaseFile>();
 
-        public async Task FromFirebase(DocumentSnapshot document, VoidDelegate completeIncrement)
+        /*public async Task FromFirebase(DocumentSnapshot document, VoidDelegate completeIncrement)
         {
             this.UID = document.Reference.Id;
 
@@ -78,7 +78,7 @@ namespace BuildServiceCommon
             await document.SetAsync(data);
             completeIncrement();
         }
-        public DocumentReference GetFirebaseDocumentReference(FirestoreDb database) => database.Document(FirebaseHelper.FirebaseCollection[this.GetType()] + "/" + UID);
+        public DocumentReference GetFirebaseDocumentReference(FirestoreDb database) => database.Document(FirebaseHelper.FirebaseCollection[this.GetType()] + "/" + UID);*/
         public void ReadFromStream(SerializationReader sr)
         {
             CommitHash = sr.ReadString();
@@ -95,7 +95,7 @@ namespace BuildServiceCommon
         }
     }
     [Serializable]
-    public class PublishedReleaseFile : bSerializable, bFirebaseSerializable
+    public class PublishedReleaseFile : bSerializable
     {
         public string UID { get; set; } = GeneralHelper.GenerateUID();
         public string Location { get; set; } = "";
@@ -117,7 +117,7 @@ namespace BuildServiceCommon
             sw.Write(Convert.ToInt32(Type));
         }
 
-        public Task FromFirebase(DocumentSnapshot document, VoidDelegate completeIncrement)
+        /*public Task FromFirebase(DocumentSnapshot document, VoidDelegate completeIncrement)
         {
             this.UID = document.Reference.Id;
 
@@ -140,7 +140,7 @@ namespace BuildServiceCommon
             await document.SetAsync(data);
             completeIncrement();
         }
-        public DocumentReference GetFirebaseDocumentReference(FirestoreDb database) => database.Document(FirebaseHelper.FirebaseCollection[this.GetType()] + "/" + UID);
+        public DocumentReference GetFirebaseDocumentReference(FirestoreDb database) => database.Document(FirebaseHelper.FirebaseCollection[this.GetType()] + "/" + UID);*/
     }
     public enum FileType
     {

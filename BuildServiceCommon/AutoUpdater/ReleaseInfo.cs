@@ -34,7 +34,7 @@ namespace BuildServiceCommon.AutoUpdater
         string[] groupBlacklist { get; set; }
     }
     [Serializable]
-    public class ReleaseInfo : IReleaseInfo, bSerializable, bFirebaseSerializable
+    public class ReleaseInfo : IReleaseInfo, bSerializable
     {
         public string UID { get; private set; }
         public string version { get; set; }
@@ -51,7 +51,7 @@ namespace BuildServiceCommon.AutoUpdater
         public Dictionary<string, string> executable { get; set; }
         public string[] groupWhitelist { get; set; }
         public string[] groupBlacklist { get; set; }
-
+/*
         #region bFirebaseSerializable
         public Task FromFirebase(DocumentSnapshot document, VoidDelegate completeIncrement)
         {
@@ -94,7 +94,7 @@ namespace BuildServiceCommon.AutoUpdater
         }
         public DocumentReference GetFirebaseDocumentReference(FirestoreDb database) => database.Document(FirebaseHelper.FirebaseCollection[this.GetType()] + "/" + UID);
         #endregion
-
+*/
         public static ReleaseInfo Blank()
         {
             return new ReleaseInfo();

@@ -23,7 +23,7 @@ namespace BuildServiceCommon.AutoUpdater
     }
 
     [Serializable]
-    public class ProductReleaseStream : bSerializable, bFirebaseSerializable, IProductReleaseStream
+    public class ProductReleaseStream : bSerializable, IProductReleaseStream
     {
         public string UID { get; private set; }
 
@@ -59,7 +59,7 @@ namespace BuildServiceCommon.AutoUpdater
             GroupWhitelist = new List<string>();
             GroupBlacklist = new List<string>();
         }
-
+/*
         #region bFirebaseSerializable
         public Task FromFirebase(DocumentSnapshot document, VoidDelegate completeIncrement)
         {
@@ -103,7 +103,7 @@ namespace BuildServiceCommon.AutoUpdater
         }
         public DocumentReference GetFirebaseDocumentReference(FirestoreDb database) => database.Document(FirebaseHelper.FirebaseCollection[this.GetType()] + "/" + UID);
         #endregion bFirebaseSerializable
-
+*/
         #region bSerializable
         public void ReadFromStream(SerializationReader sr)
         {

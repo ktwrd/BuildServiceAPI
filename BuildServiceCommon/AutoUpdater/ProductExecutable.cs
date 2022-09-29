@@ -14,7 +14,7 @@ namespace BuildServiceCommon.AutoUpdater
         string Windows { get; set; }
     }
     [Serializable]
-    public class ProductExecutable : bSerializable, bFirebaseSerializable, IProductExecutable
+    public class ProductExecutable : bSerializable, IProductExecutable
     {
         public string UID { get; private set; }
         public string Linux { get; set; }
@@ -40,7 +40,7 @@ namespace BuildServiceCommon.AutoUpdater
         }
         #endregion
 
-        #region bFirebaseSerializable
+        /*#region bFirebaseSerializable
         public Task FromFirebase(DocumentSnapshot document, VoidDelegate completeIncrement)
         {
             this.UID = document.Reference.Id;
@@ -60,6 +60,6 @@ namespace BuildServiceCommon.AutoUpdater
             completeIncrement();
         }
         public DocumentReference GetFirebaseDocumentReference(FirestoreDb database) => database.Document(FirebaseHelper.FirebaseCollection[this.GetType()] + "/" + UID);
-        #endregion
+        #endregion*/
     }
 }
