@@ -12,12 +12,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildServiceCommon", "BuildServiceCommon\BuildServiceCommon.csproj", "{B57069B8-C42D-44EF-B78B-0887D04E72A8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "kate.shared", "kate.shared", "{AC32B699-00CE-4FBE-84F5-48C8BB5886EF}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kate.shared.Firebase", "..\csharp-kate.shared\kate.shared.Firebase\kate.shared.Firebase.csproj", "{EDB26FF7-8B37-4E07-A83A-F1CAAB2D5293}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "kate.shared", "..\csharp-kate.shared\kate.shared\kate.shared.shproj", "{A1C98DE4-B369-4821-A565-6C921CAF8D88}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildServiceAPI.DesktopClient", "BuildServiceAPI.DesktopClient\BuildServiceAPI.DesktopClient.csproj", "{690D0D36-C3FE-4D86-B241-B0DFE14980B7}"
 EndProject
 Global
@@ -34,10 +28,6 @@ Global
 		{B57069B8-C42D-44EF-B78B-0887D04E72A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B57069B8-C42D-44EF-B78B-0887D04E72A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B57069B8-C42D-44EF-B78B-0887D04E72A8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EDB26FF7-8B37-4E07-A83A-F1CAAB2D5293}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EDB26FF7-8B37-4E07-A83A-F1CAAB2D5293}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EDB26FF7-8B37-4E07-A83A-F1CAAB2D5293}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EDB26FF7-8B37-4E07-A83A-F1CAAB2D5293}.Release|Any CPU.Build.0 = Release|Any CPU
 		{690D0D36-C3FE-4D86-B241-B0DFE14980B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{690D0D36-C3FE-4D86-B241-B0DFE14980B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{690D0D36-C3FE-4D86-B241-B0DFE14980B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -46,16 +36,7 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{EDB26FF7-8B37-4E07-A83A-F1CAAB2D5293} = {AC32B699-00CE-4FBE-84F5-48C8BB5886EF}
-		{A1C98DE4-B369-4821-A565-6C921CAF8D88} = {AC32B699-00CE-4FBE-84F5-48C8BB5886EF}
-	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F3C77772-D21F-4862-AC94-5618F784605D}
-	EndGlobalSection
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		..\csharp-kate.shared\kate.shared\kate.shared.projitems*{690d0d36-c3fe-4d86-b241-b0dfe14980b7}*SharedItemsImports = 4
-		..\csharp-kate.shared\kate.shared\kate.shared.projitems*{a1c98de4-b369-4821-a565-6c921caf8d88}*SharedItemsImports = 13
-		..\csharp-kate.shared\kate.shared\kate.shared.projitems*{edb26ff7-8b37-4e07-a83a-f1caab2d5293}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal
