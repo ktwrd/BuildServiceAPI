@@ -11,6 +11,8 @@ namespace BuildServiceAPI.Controllers.Account
     public class AccountController : Controller
     {
         [HttpGet]
+        [ProducesResponseType(200, Type = typeof(ObjectResponse<AccountDetailsResponse>))]
+        [ProducesResponseType(401, Type = typeof(ObjectResponse<HttpException>))]
         public ActionResult Index(string token)
         {
             var account = MainClass.contentManager.AccountManager.GetAccount(token ?? "");
