@@ -40,13 +40,13 @@ namespace BuildServiceAPI.Controllers
         [HttpGet("/")]
         [HttpGet("/server/details")]
         [Produces(typeof(ServerDetailsResponse))]
-        public ServerDetailsResponse ServerDetails()
+        public ActionResult ServerDetails()
         {
-            return new ServerDetailsResponse
+            return Json(new ServerDetailsResponse
             {
                 Uptime = ServerUptime(),
                 Version = ServerVersion()
-            };
+            }, MainClass.serializerOptions);
         }
     }
 }
