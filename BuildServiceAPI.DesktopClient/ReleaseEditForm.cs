@@ -36,7 +36,7 @@ namespace BuildServiceAPI.DesktopClient
 
         private void ResetChanges()
         {
-            ReleaseInfo = AdminForm.ContentManagerAlias.ReleaseInfoContent[ReleaseIndex];
+            ReleaseInfo = Program.LocalContent.ContentManagerAlias.ReleaseInfoContent[ReleaseIndex];
             LoadContent();
         }
 
@@ -88,7 +88,7 @@ namespace BuildServiceAPI.DesktopClient
             ReleaseInfo.version = textBoxLabelVersion.TextboxContent;
             ReleaseInfo.commitHash = textBoxLabelCommitHash.TextboxContent;
             ReleaseInfo.commitHashShort = textBoxLabelCommitHash.TextboxContent.Substring(0, 7);
-            AdminForm.ContentManagerAlias.ReleaseInfoContent[ReleaseIndex] = ReleaseInfo;
+            Program.LocalContent.ContentManagerAlias.ReleaseInfoContent[ReleaseIndex] = ReleaseInfo;
         }
 
         private void buttonReset_Click(object sender, EventArgs e)

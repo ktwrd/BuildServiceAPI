@@ -23,6 +23,22 @@ namespace BuildServiceAPI.DesktopClient
 
         public static void Save() => Source.Save();
 
+        public static Dictionary<string, Dictionary<string, object>> Get()
+        {
+            Dictionary<string, Dictionary<string, object>> dict = new Dictionary<string, Dictionary<string, object>>();
+            foreach (IConfig item in Source.Configs)
+            {
+                if (!dict.ContainsKey(item.Name))
+                    dict.Add(item.Name, new Dictionary<string, object>());
+                foreach (var key in item.GetKeys())
+                {
+                    if (!dict[item.Name].ContainsKey(key))
+                        dict[item.Name].Add(key, null);
+                    dict[item.Name][key] = item.Get(key);
+                }
+            }
+            return dict;
+        }
         public static IConfig Get(string group)
         {
             var cfg = Source.Configs[group];

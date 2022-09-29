@@ -16,6 +16,12 @@ namespace BuildServiceAPI.DesktopClient
         public static string ConfigFilename => "client.ini";
         public static string ConfigLocation => Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), ConfigFilename);
 
+        public static MainForm MainForm;
+        public static AdminForm AdminForm => MainForm.AdminForm;
+
+        public static AuthClient AuthClient;
+        public static LocalContent LocalContent;
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -26,7 +32,8 @@ namespace BuildServiceAPI.DesktopClient
             serializerOptions.Converters.Add(new kate.shared.DateTimeConverterUsingDateTimeParse());
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            MainForm = new MainForm();
+            Application.Run(MainForm);
         }
 
         public static void Save()

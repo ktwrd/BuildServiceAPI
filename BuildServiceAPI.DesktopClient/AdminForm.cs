@@ -20,6 +20,7 @@ namespace BuildServiceAPI.DesktopClient
 {
     public partial class AdminForm : Form
     {
+        public static LocalContent LocalContent => Program.LocalContent;
         public AdminForm()
         {
             InitializeComponent();
@@ -29,12 +30,74 @@ namespace BuildServiceAPI.DesktopClient
             textBoxLabelEndpoint.TextboxContent = UserConfig.GetString("Authentication", "Endpoint", "");
             showLatestReleaseToolStripMenuItem.Checked = UserConfig.GetBoolean("General", "ShowLatestRelease", true);
             checkBoxAuthAutoLogin.Checked = UserConfig.GetBoolean("Authentication", "AutoLogin", false);
-            httpClient = new HttpClient();
-            Refresh += AdminForm_Refresh;
-            PushChanges += AdminForm_PushChanges;
             SelectedReleasesChange += AdminForm_SelectedReleasesChange;
             toolStripSplitButtonReleaseDelete.Enabled = false;
             toolStripButtonReleaseEdit.Enabled = false;
+
+            LocalContent.OnPullBefore += LocalContent_OnPullBefore;
+            LocalContent.OnPull += LocalContent_OnPull;
+
+            LocalContent.OnPushBefore += LocalContent_OnPushBefore;
+            LocalContent.OnPush += LocalContent_OnPush;
+
+            if (LocalContent.Auth != null && LocalContent.Auth.ServerDetails != null)
+            {
+                toolStripLabelServerVersion.Text = $"Server: {LocalContent.Auth.ServerDetails.Version}";
+            }
+        }
+
+
+        private void LocalContent_OnPushBefore(ContentField field)
+        {
+            toolStripAnnouncement.Enabled = false;
+            listViewAnnouncement.Enabled = false;
+        }
+        private void LocalContent_OnPush(ContentField field)
+        {
+            toolStripAnnouncement.Enabled = true;
+            listViewAnnouncement.Enabled = true;
+            if (field == ContentField.Announcement || field == ContentField.All)
+            {
+                RefreshAnnouncementList();
+            }
+            if (field == ContentField.ContentManager || field == ContentField.All)
+            {
+                RefreshReleaseTree();
+                RefreshReleaseListView();
+            }
+            toolStripButtonAnnouncementEnforce.Enabled = !LocalContent.AnnouncementSummary.Active;
+            toolStripButtonAnnouncementsDisable.Enabled = LocalContent.AnnouncementSummary.Active;
+            toolStripLabelServerVersion.Text = $"Server: {LocalContent.Auth.ServerDetails.Version}";
+        }
+
+        private void LocalContent_OnPullBefore(ContentField field)
+        {
+            toolStripAnnouncement.Enabled = false;
+            listViewAnnouncement.Enabled = false;
+            Enabled = false;
+        }
+
+        private void LocalContent_OnPull(ContentField field)
+        {
+            Enabled = true;
+            toolStripAnnouncement.Enabled = true;
+            listViewAnnouncement.Enabled = true;
+            if (field == ContentField.Announcement || field == ContentField.All)
+            {
+                RefreshAnnouncementList();
+            }
+            if (field == ContentField.ContentManager || field == ContentField.All)
+            {
+                RefreshReleaseTree();
+                RefreshReleaseListView();
+            }
+            if (field == ContentField.Account || field == ContentField.All)
+            {
+                RefreshAccountListView();
+            }
+            toolStripButtonAnnouncementEnforce.Enabled = !LocalContent.AnnouncementSummary.Active;
+            toolStripButtonAnnouncementsDisable.Enabled = LocalContent.AnnouncementSummary.Active;
+            toolStripLabelServerVersion.Text = $"Server: {LocalContent.Auth.ServerDetails.Version}";
         }
 
         private void AdminForm_SelectedReleasesChange()
@@ -52,16 +115,6 @@ namespace BuildServiceAPI.DesktopClient
             }
         }
 
-        private void AdminForm_PushChanges()
-        {
-            toolStripButtonMainPushChanges_Click(null, null);
-        }
-
-        private void AdminForm_Refresh()
-        {
-            toolStripButtonMainPull_Click(null, null);
-        }
-
         public void FetchToken()
         {
             UserConfig.Set("Authentication", "Username", textBoxLabelUsername.TextboxContent);
@@ -73,7 +126,7 @@ namespace BuildServiceAPI.DesktopClient
             Enabled = false;
             try
             {
-                UpdateToken();
+                LocalContent.Auth.FetchToken();
             }
             catch (Exception except)
             {
@@ -83,106 +136,17 @@ namespace BuildServiceAPI.DesktopClient
             Enabled = true;
         }
 
-        public static HttpClient httpClient;
-
-        public void UpdateToken()
-        {
-            var targetURL = Endpoint.TokenGrant(
-                UserConfig.GetString("Authentication", "Username", ""),
-                UserConfig.GetString("Authentication", "Password", ""));
-            Trace.WriteLine($"[AdminForm->UpdateToken] Fetching Response of {targetURL}");
-
-            HttpResponseMessage response = null;
-            try
-            {
-                response = httpClient.GetAsync(targetURL).Result;
-            }
-            catch (AggregateException except)
-            {
-                foreach (var e in except.InnerExceptions)
-                {
-                    MessageBox.Show(e.Message, $"Failed to fetch token", MessageBoxButtons.OK);
-                    Trace.WriteLine(except);
-                }
-                return;
-            }
-            catch (Exception except)
-            {
-                MessageBox.Show(except.Message, $"Failed to fetch token", MessageBoxButtons.OK);
-                Trace.WriteLine(except);
-                return;
-            }
-            var stringContent = response.Content.ReadAsStringAsync().Result;
-            var dynamicContent = JsonSerializer.Deserialize<ObjectResponse<dynamic>>(stringContent, Program.serializerOptions);
-            var deserialized = JsonSerializer.Deserialize<ObjectResponse<GrantTokenResponse>>(stringContent, Program.serializerOptions);
-            if (deserialized == null || Type.GetType(deserialized.DataType) != typeof(BuildServiceCommon.Authorization.GrantTokenResponse) || deserialized.Success == false)
-            {
-                MessageBox.Show($"{JsonSerializer.Serialize(dynamicContent, Program.serializerOptions)}", $"Failed to refresh announcements");
-                Trace.WriteLine($"[AdminForm->RefreshAnnouncements] Failed to fetch announcements\n--------\n{JsonSerializer.Serialize(dynamicContent, Program.serializerOptions)}\n--------\n");
-                return;
-            }
-
-            if (deserialized.Data.Success && dynamicContent.Success)
-            {
-                // We got the token!~
-                Token = deserialized.Data.Token;
-            }
-            else
-            {
-                MessageBox.Show($"{deserialized.Data.Message}\n {JsonSerializer.Serialize(deserialized, Program.serializerOptions)}", $"Failed to fetch token");
-                Token = null;
-            }
-            OnRefresh();
-        }
-
-        public event VoidDelegate PushChanges;
-        public void OnPushChanges()
-        {
-            if (PushChanges != null)
-            {
-                PushChanges?.Invoke();
-                Trace.WriteLine($"[AdminForm->OnPushChanges] Invoked PushChanges");
-            }
-        }
-
-        public event VoidDelegate Refresh;
-        public void OnRefresh()
-        {
-            if (Refresh != null)
-                Refresh?.Invoke();
-        }
-
-        public AccountToken Token;
-
-        public AllDataResult ContentManagerAlias = null;
 
         #region Account Management
-        public List<AccountDetailsResponse> AccountListing = new List<AccountDetailsResponse>();
         /// <summary>
         /// Nullable
         /// </summary>
         public AccountDetailsResponse SelectedAccountEntry = null;
         public AccountDetailsResponse[] SelectedAcccountEntry_Arr = Array.Empty<AccountDetailsResponse>();
-        public void RefreshAccounts()
-        {
-            AccountListing.Clear();
-            var targetURL = Endpoint.UserList(Token.Token);
-            var response = httpClient.GetAsync(targetURL).Result;
-            var stringContent = response.Content.ReadAsStringAsync().Result;
-            var dynamicContent = JsonSerializer.Deserialize<ObjectResponse<dynamic>>(stringContent, Program.serializerOptions);
-            var content = JsonSerializer.Deserialize<ObjectResponse<AccountDetailsResponse[]>>(stringContent, Program.serializerOptions);
-            if (!dynamicContent.Success || content == null)
-            {
-                MessageBox.Show($"{stringContent}", $"Failed to refresh accounts");
-                Trace.WriteLine($"[AdminForm->RefreshAccounts] Failed to fetch account listings\n--------\n{JsonSerializer.Serialize(dynamicContent, Program.serializerOptions)}\n--------\n");
-                return;
-            }
-            AccountListing = new List<AccountDetailsResponse>(content.Data);
-        }
         public void RefreshAccountListView()
         {
             listViewAccount.Items.Clear();
-            foreach (var item in AccountListing)
+            foreach (var item in LocalContent.AccountListing)
             {
                 var permissionString = new List<string>();
                 foreach (var p in item.Permissions)
@@ -209,7 +173,7 @@ namespace BuildServiceAPI.DesktopClient
             toolStripButtonAccountGroupPowertool.Enabled = true;
             SelectedAccountEntry = null;
             var selectedList = new List<AccountDetailsResponse>();
-            foreach (var account in AccountListing)
+            foreach (var account in LocalContent.AccountListing)
             {
                 foreach (ListViewItem selectedItem in listViewAccount.SelectedItems)
                 {
@@ -222,7 +186,7 @@ namespace BuildServiceAPI.DesktopClient
             SelectedAcccountEntry_Arr = selectedList.ToArray();
             if (listViewAccount.SelectedItems.Count < 1) return;
             if (listViewAccount.SelectedItems.Count > 1) return;
-            foreach (var item in AccountListing)
+            foreach (var item in LocalContent.AccountListing)
             {
                 if (item.Username == listViewAccount.SelectedItems[0].Name)
                 {
@@ -253,7 +217,7 @@ namespace BuildServiceAPI.DesktopClient
         private void toolStripButtonAccountRefresh_Click(object sender, EventArgs e)
         {
             Enabled = false;
-            RefreshAccounts();
+            LocalContent.PullAccounts();
             RefreshAccountListView();
             Enabled = true;
         }
@@ -279,93 +243,13 @@ namespace BuildServiceAPI.DesktopClient
         #endregion
 
         #region Announcements
-        public class SystemAnnouncementSummaryAsList : SystemAnnouncementSummary
-        {
-            public new List<SystemAnnouncementEntry> Entries { get; set; }
-            public SystemAnnouncementSummaryAsList()
-                : base()
-            {
-                Entries = new List<SystemAnnouncementEntry>();
-            }
-        }
-
-        public SystemAnnouncementSummaryAsList AnnouncementSummary = new SystemAnnouncementSummaryAsList();
         public SystemAnnouncementEntry SelectedAnnouncementEntry = null;
-        public void RefreshAnnouncements()
-        {
-            AnnouncementSummary = new SystemAnnouncementSummaryAsList();
-            if (Token == null)
-            {
-                Trace.WriteLine($"[AdminForm->RefreshAnnouncements] Token is null");
-                return;
-            }
-            var targetURL = Endpoint.AnnouncementSummary(Token.Token);
-            Trace.WriteLine($"[AdminForm->RefreshAnnouncements] Fetching Response of {targetURL}");
-
-            var response = httpClient.GetAsync(targetURL).Result;
-            var stringContent = response.Content.ReadAsStringAsync().Result;
-            var dynamicContent = JsonSerializer.Deserialize<ObjectResponse<dynamic>>(stringContent, Program.serializerOptions);
-            var content = JsonSerializer.Deserialize<ObjectResponse<SystemAnnouncementSummaryAsList>>(stringContent, Program.serializerOptions);
-            if (content == null || dynamicContent.Success == false)
-            {
-                MessageBox.Show($"{JsonSerializer.Serialize(dynamicContent, Program.serializerOptions)}", $"Failed to refresh announcements");
-                Trace.WriteLine($"[AdminForm->RefreshAnnouncements] Failed to fetch announcements\n--------\n{JsonSerializer.Serialize(dynamicContent, Program.serializerOptions)}\n--------\n");
-                return;
-            }
-
-            AnnouncementSummary = content.Data;
-            toolStripButtonAnnouncementEnforce.Enabled = !AnnouncementSummary.Active;
-            toolStripButtonAnnouncementsDisable.Enabled = AnnouncementSummary.Active;
-        }
-        public void PushAnnouncements()
-        {
-            if (AnnouncementSummary == null)
-            {
-                Trace.WriteLine($"[AdminForm->PushAnnouncements] Cannot push since AnnouncementSummary is null.");
-                MessageBox.Show($"AnnouncementSummary is null ;w;", $"Failed to push announcements");
-                return;
-            }
-
-            if (AnnouncementSummary.Entries.Count < 1)
-                AnnouncementSummary.Active = false;
-            int activeCount = 0;
-            foreach (var item in AnnouncementSummary.Entries)
-                if (item.Active)
-                    activeCount++;
-            if (activeCount < 1)
-                AnnouncementSummary.Active = false;
-
-            var arraySummary = new SystemAnnouncementSummary()
-            {
-                Active = AnnouncementSummary.Active,
-                Entries = AnnouncementSummary.Entries.ToArray()
-            };
-
-            var targetURL = Endpoint.AnnouncementSetData(Token.Token, arraySummary);
-            var response = httpClient.GetAsync(targetURL).Result;
-            var stringContent = response.Content.ReadAsStringAsync().Result;
-            var dynamicContent = JsonSerializer.Deserialize<ObjectResponse<dynamic>>(stringContent, Program.serializerOptions);
-            var content = JsonSerializer.Deserialize<ObjectResponse<SystemAnnouncementSummary>>(stringContent, Program.serializerOptions);
-            if (!dynamicContent.Success || content == null)
-            {
-                MessageBox.Show($"{stringContent}", $"Failed to push announcements");
-                Trace.WriteLine($"[AdminForm->PushAnnouncements] Failed to push announcements\n--------\n{JsonSerializer.Serialize(dynamicContent, Program.serializerOptions)}\n--------\n");
-                return;
-            }
-            AnnouncementSummary = new SystemAnnouncementSummaryAsList()
-            {
-                Active = content.Data.Active,
-                Entries = new List<SystemAnnouncementEntry>(content.Data.Entries)
-            };
-            toolStripButtonAnnouncementEnforce.Enabled = !AnnouncementSummary.Active;
-            toolStripButtonAnnouncementsDisable.Enabled = AnnouncementSummary.Active;
-        }
 
         public void RefreshAnnouncementList()
         {
             UpdateSelectedAnnouncementItem();
             listViewAnnouncement.Items.Clear();
-            foreach (var item in AnnouncementSummary.Entries)
+            foreach (var item in LocalContent.AnnouncementSummary.Entries)
             {
                 var lvitem = new ListViewItem(new string[]
                 {
@@ -373,12 +257,12 @@ namespace BuildServiceAPI.DesktopClient
                     item.Active.ToString(),
                     item.Timestamp.ToString()
                 });
-                lvitem.Name = AnnouncementSummary.Entries.IndexOf(item).ToString();
+                lvitem.Name = LocalContent.AnnouncementSummary.Entries.IndexOf(item).ToString();
                 listViewAnnouncement.Items.Add(lvitem);
             }
             UpdateSelectedAnnouncementItem();
-            toolStripButtonAnnouncementEnforce.Enabled = !AnnouncementSummary.Active;
-            toolStripButtonAnnouncementsDisable.Enabled = AnnouncementSummary.Active;
+            toolStripButtonAnnouncementEnforce.Enabled = !LocalContent.AnnouncementSummary.Active;
+            toolStripButtonAnnouncementsDisable.Enabled = LocalContent.AnnouncementSummary.Active;
         }
         public void UpdateSelectedAnnouncementItem()
         {
@@ -389,32 +273,36 @@ namespace BuildServiceAPI.DesktopClient
             try
             {
                 int index = int.Parse(listViewAnnouncement.SelectedItems[0].Name);
-                if (index > AnnouncementSummary.Entries.Count || index < 0) return;
+                if (index > LocalContent.AnnouncementSummary.Entries.Count || index < 0) return;
                 toolStripButtonAnnouncementDelete.Enabled = true;
                 toolStripButtonAnnouncementEdit.Enabled = true;
-                SelectedAnnouncementEntry = AnnouncementSummary.Entries[index];
+                SelectedAnnouncementEntry = LocalContent.AnnouncementSummary.Entries[index];
             }
             catch (Exception) { }
         }
         public void SetAnnouncementContent(SystemAnnouncementEntry entry)
         {
-            if (AnnouncementSummary.Entries.Contains(entry))
+            if (LocalContent.AnnouncementSummary.Entries.Contains(entry))
             {
-                int index = AnnouncementSummary.Entries.IndexOf(entry);
-                AnnouncementSummary.Entries[index] = entry;
+                int index = LocalContent.AnnouncementSummary.Entries.IndexOf(entry);
+                LocalContent.AnnouncementSummary.Entries[index] = entry;
             }
             else
             {
-                AnnouncementSummary.Entries.Add(entry);
+                LocalContent.AnnouncementSummary.Entries.Add(entry);
             }
             RefreshAnnouncementList();
         }
 
         private void toolStripButtonAnnouncementRefresh_Click(object sender, EventArgs e)
         {
-            RefreshAnnouncements();
+            LocalContent.PullAnnouncements();
             RefreshAnnouncementList();
             UpdateSelectedAnnouncementItem();
+        }
+        private void toolStripButtonAnnouncementPushChanges_Click(object sender, EventArgs e)
+        {
+            LocalContent.PushAnnouncements();
         }
 
         private void listViewAnnouncement_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e) => UpdateSelectedAnnouncementItem();
@@ -423,39 +311,35 @@ namespace BuildServiceAPI.DesktopClient
         {
             if (SelectedAnnouncementEntry == null) return;
             var newEntries = new List<SystemAnnouncementEntry>();
-            foreach (var item in AnnouncementSummary.Entries)
+            foreach (var item in LocalContent.AnnouncementSummary.Entries)
                 if (item != SelectedAnnouncementEntry)
                     newEntries.Add(item);
-            AnnouncementSummary.Entries = newEntries;
+            LocalContent.AnnouncementSummary.Entries = newEntries;
             RefreshAnnouncementList();
         }
         private void toolStripButtonAnnouncementEnforce_Click(object sender, EventArgs e)
         {
-            AnnouncementSummary.Active = true;
-            toolStripButtonAnnouncementEnforce.Enabled = !AnnouncementSummary.Active;
-            toolStripButtonAnnouncementsDisable.Enabled = AnnouncementSummary.Active;
+            LocalContent.AnnouncementSummary.Active = true;
+            toolStripButtonAnnouncementEnforce.Enabled = !LocalContent.AnnouncementSummary.Active;
+            toolStripButtonAnnouncementsDisable.Enabled = LocalContent.AnnouncementSummary.Active;
         }
 
         private void toolStripButtonAnnouncementsDisable_Click(object sender, EventArgs e)
         {
-            AnnouncementSummary.Active = false;
-            toolStripButtonAnnouncementEnforce.Enabled = !AnnouncementSummary.Active;
-            toolStripButtonAnnouncementsDisable.Enabled = AnnouncementSummary.Active;
+            LocalContent.AnnouncementSummary.Active = false;
+            toolStripButtonAnnouncementEnforce.Enabled = !LocalContent.AnnouncementSummary.Active;
+            toolStripButtonAnnouncementsDisable.Enabled = LocalContent.AnnouncementSummary.Active;
         }
 
         private void toolStripButtonAnnouncementAdd_Click(object sender, EventArgs e)
         {
             var announcement = new SystemAnnouncementEntry();
-            AnnouncementSummary.Entries.Add(announcement);
+            LocalContent.AnnouncementSummary.Entries.Add(announcement);
 
             var popup = new AnnouncementEditModal(announcement);
             popup.Show();
             popup.MdiParent = MdiParent;
             popup.AdminForm = this;
-        }
-        private void toolStripButtonAnnouncementPushChanges_Click(object sender, EventArgs e)
-        {
-            PushAnnouncements();
         }
 
         private void listViewAnnouncement_SelectedIndexChanged(object sender, EventArgs e) => UpdateSelectedAnnouncementItem();
@@ -471,99 +355,6 @@ namespace BuildServiceAPI.DesktopClient
         }
         #endregion
 
-        #region Content Manager
-        public void RefreshContentManager()
-        {
-            var targetURL = Endpoint.DumpDataFetch(Token.Token, DataType.All);
-            var response = httpClient.GetAsync(targetURL).Result;
-            var stringContent = response.Content.ReadAsStringAsync().Result;
-            var dynamicContent = JsonSerializer.Deserialize<ObjectResponse<dynamic>>(stringContent, Program.serializerOptions);
-            var content = JsonSerializer.Deserialize<ObjectResponse<AllDataResult>>(stringContent, Program.serializerOptions);
-            if (!dynamicContent.Success || content == null)
-            {
-                MessageBox.Show($"{stringContent}", $"Failed to refresh content manager");
-                Trace.WriteLine($"[AdminForm->RefreshContentManager] Failed to fetch content manager\n--------\n{JsonSerializer.Serialize(dynamicContent, Program.serializerOptions)}\n--------\n");
-                return;
-            }
-            ContentManagerAlias = content.Data;
-        }
-        public void PushContentManager()
-        {
-            if (ContentManagerAlias == null)
-            {
-                Trace.WriteLine($"[AdminForm->PushContentManager] Cannot push since ContentManagerAlias is null");
-                MessageBox.Show("ContentManagerAlias is null ;w;", "Failed to push Content Manager");
-                return;
-            }
-
-            ContentManagerAlias.Releases = ReleaseHelper.TransformReleaseList(ContentManagerAlias.ReleaseInfoContent.ToArray());
-
-            var targetURL = Endpoint.DumpSetData(Token.Token, DataType.All);
-            var pushContent = new ObjectResponse<AllDataResult>()
-            {
-                Success = true,
-                Data = ContentManagerAlias
-            };
-            var _strcon = new StringContent(JsonSerializer.Serialize(pushContent, Program.serializerOptions));
-            var response = httpClient.PostAsync(targetURL, _strcon).Result;
-            var stringContent = response.Content.ReadAsStringAsync().Result;
-            var dynamicContent = JsonSerializer.Deserialize<ObjectResponse<dynamic>>(stringContent, Program.serializerOptions);
-            if (dynamicContent.Success == false)
-            {
-                MessageBox.Show($"{stringContent}", $"Failed to push content manager");
-                Trace.WriteLine($"[AdminForm->PushContentManager] Failed to push content manager\n--------\n{JsonSerializer.Serialize(dynamicContent, Program.serializerOptions)}\n--------\n");
-                return;
-            }
-            var content = JsonSerializer.Deserialize<ObjectResponse<object>>(stringContent, Program.serializerOptions);
-            if (!dynamicContent.Success || content == null)
-            {
-                MessageBox.Show($"{stringContent}", $"Failed to push content manager");
-                Trace.WriteLine($"[AdminForm->PushContentManager] Failed to push content manager\n--------\n{JsonSerializer.Serialize(dynamicContent, Program.serializerOptions)}\n--------\n");
-                return;
-            }
-            var contentTyped = JsonSerializer.Deserialize<ObjectResponse<AllDataResult>>(stringContent, Program.serializerOptions);
-            ContentManagerAlias = contentTyped.Data;
-        }
-
-        private void buttonPushAll_Click(object sender, EventArgs e)
-        {
-            toolStripAnnouncement.Enabled = false;
-            listViewAnnouncement.Enabled = false;
-            var taskArray = new Task[]
-            {
-                new Task(delegate { PushAnnouncements(); }),
-                new Task(delegate { PushContentManager(); })
-            };
-            foreach (var i in taskArray)
-                i.Start();
-            Task.WhenAll(taskArray).Wait();
-            toolStripAnnouncement.Enabled = true;
-            listViewAnnouncement.Enabled = true;
-            RefreshAnnouncementList();
-        }
-
-        private void buttonRefresh_Click(object sender, EventArgs e)
-        {
-            toolStripAnnouncement.Enabled = false;
-            listViewAnnouncement.Enabled = false;
-            var taskArray = new Task[]
-            {
-                new Task(delegate { RefreshAnnouncements(); }),
-                new Task(delegate { RefreshContentManager(); }),
-                new Task(delegate { RefreshAccounts(); })
-            };
-            foreach (var i in taskArray)
-                i.Start();
-            Task.WhenAll(taskArray).Wait();
-            Enabled = true;
-            toolStripAnnouncement.Enabled = true;
-            listViewAnnouncement.Enabled = true;
-            RefreshAnnouncementList();
-            RefreshReleaseTree();
-            RefreshReleaseListView();
-            RefreshAccountListView();
-        }
-        #endregion
 
         #region Releases
         public List<ReleaseInfo> SelectedReleases = new List<ReleaseInfo>();
@@ -571,14 +362,14 @@ namespace BuildServiceAPI.DesktopClient
         public void RefreshReleaseTree()
         {
             treeViewReleaseProduct.Nodes.Clear();
-            if (ContentManagerAlias == null)
+            if (LocalContent.ContentManagerAlias == null)
             {
                 Trace.WriteLine($"[AdminForm->RefreshReleaseTree] ContentManagerAlias is null");
                 return;
             }
 
             Dictionary<string, List<ReleaseInfo>> releaseInfoDict = new Dictionary<string, List<ReleaseInfo>>();
-            foreach (var release in ContentManagerAlias.ReleaseInfoContent)
+            foreach (var release in LocalContent.ContentManagerAlias.ReleaseInfoContent)
             {
                 if (release.appID.Length < 1) continue;
                 if (!releaseInfoDict.ContainsKey(release.appID))
@@ -594,13 +385,13 @@ namespace BuildServiceAPI.DesktopClient
         public void RefreshReleaseListView()
         {
             listViewReleases.Items.Clear();
-            if (ContentManagerAlias == null)
+            if (LocalContent.ContentManagerAlias == null)
             {
                 Trace.WriteLine($"[AdminForm->RefreshReleaseTree] ContentManagerAlias is null");
                 return;
             }
             if (treeViewReleaseProduct.SelectedNode == null) return;
-            var targetReleaseList = ContentManagerAlias.ReleaseInfoContent
+            var targetReleaseList = LocalContent.ContentManagerAlias.ReleaseInfoContent
                 .Where(v => v.appID == treeViewReleaseProduct.SelectedNode.Text)
                 .OrderByDescending(s => s.timestamp).ToList();
             if (UserConfig.GetBoolean("General", "ShowLatestRelease", true))
@@ -617,7 +408,7 @@ namespace BuildServiceAPI.DesktopClient
                         item.remoteLocation,
                         DateTimeOffset.FromUnixTimeMilliseconds(item.timestamp).ToString()
                     });
-                lvitem.Name = ContentManagerAlias.ReleaseInfoContent.IndexOf(item).ToString();
+                lvitem.Name = LocalContent.ContentManagerAlias.ReleaseInfoContent.IndexOf(item).ToString();
                 listViewReleases.Items.Add(lvitem);
             }
         }
@@ -625,9 +416,7 @@ namespace BuildServiceAPI.DesktopClient
         private void toolStripButtonReleasePush_Click(object sender, EventArgs e)
         {
             Enabled = false;
-            PushContentManager();
-            RefreshReleaseListView();
-            RefreshReleaseTree();
+            LocalContent.PushContentManager();
             Enabled = true;
         }
         private void toolStripButtonReleaseRefresh_Click(object sender, EventArgs e)
@@ -657,7 +446,7 @@ namespace BuildServiceAPI.DesktopClient
                 int attemptedIndex = int.Parse(item.Name);
                 if (attemptedIndex >= 0)
                 {
-                    SelectedReleases.Add(ContentManagerAlias.ReleaseInfoContent[attemptedIndex]);
+                    SelectedReleases.Add(LocalContent.ContentManagerAlias.ReleaseInfoContent[attemptedIndex]);
                 }
             }
             if (SelectedReleasesChange != null)
@@ -666,7 +455,7 @@ namespace BuildServiceAPI.DesktopClient
 
         private void toolStripButtonReleaseEdit_Click(object sender, EventArgs e)
         {
-            var form = new ReleaseEditForm(SelectedReleases[0], ContentManagerAlias.ReleaseInfoContent.IndexOf(SelectedReleases[0]), this);
+            var form = new ReleaseEditForm(SelectedReleases[0], LocalContent.ContentManagerAlias.ReleaseInfoContent.IndexOf(SelectedReleases[0]), this);
             form.Show();
             form.MdiParent = MdiParent;
             form.AdminForm = this;
@@ -681,16 +470,16 @@ namespace BuildServiceAPI.DesktopClient
             RefreshReleaseListView();
             RefreshReleaseTree();
         }
-        public bool RemoveRelease(ReleaseInfo releaseInfo) => ContentManagerAlias.ReleaseInfoContent.Remove(releaseInfo);
+        public bool RemoveRelease(ReleaseInfo releaseInfo) => LocalContent.ContentManagerAlias.ReleaseInfoContent.Remove(releaseInfo);
         public void RemoveReleaseBySignature(string signature)
         {
             var newReleaseInfoList = new List<ReleaseInfo>();
-            foreach (var item in ContentManagerAlias.ReleaseInfoContent)
+            foreach (var item in LocalContent.ContentManagerAlias.ReleaseInfoContent)
             {
                 if (item.remoteLocation != signature)
                     newReleaseInfoList.Add(item);
             }
-            ContentManagerAlias.ReleaseInfoContent = newReleaseInfoList;
+            LocalContent.ContentManagerAlias.ReleaseInfoContent = newReleaseInfoList;
         }
 
         private void toolStripMenuItemDeleteRemoteSignature_Click(object sender, EventArgs e)
@@ -708,48 +497,17 @@ namespace BuildServiceAPI.DesktopClient
         private void listViewReleases_Click(object sender, EventArgs e) => listViewReleases_SelectedIndexChanged(null, null);
         #endregion
 
-        private void toolStripButtonMainPushChanges_Click(object sender, EventArgs e)
-        {
-            toolStripAnnouncement.Enabled = false;
-            listViewAnnouncement.Enabled = false;
-            var taskArray = new Task[]
-            {
-                new Task(delegate { PushAnnouncements(); }),
-                new Task(delegate { PushContentManager(); })
-            };
-            foreach (var i in taskArray)
-                i.Start();
-            Task.WhenAll(taskArray).Wait();
-            toolStripAnnouncement.Enabled = true;
-            listViewAnnouncement.Enabled = true;
-            RefreshAnnouncementList();
-        }
-
-        private void buttonConnectionTokenFetch_Click(object sender, EventArgs e)
-        {
-            FetchToken();
-        }
-
         private void toolStripButtonMainPull_Click(object sender, EventArgs e)
         {
-            toolStripAnnouncement.Enabled = false;
-            listViewAnnouncement.Enabled = false;
-            var taskArray = new Task[]
-            {
-                new Task(delegate { RefreshAnnouncements(); }),
-                new Task(delegate { RefreshContentManager(); }),
-                new Task(delegate { RefreshAccounts(); })
-            };
-            foreach (var i in taskArray)
-                i.Start();
-            Task.WhenAll(taskArray).Wait();
-            Enabled = true;
-            toolStripAnnouncement.Enabled = true;
-            listViewAnnouncement.Enabled = true;
-            RefreshAnnouncementList();
-            RefreshReleaseTree();
-            RefreshReleaseListView();
-            RefreshAccountListView();
+            LocalContent.Pull();
+        }
+        private void toolStripButtonMainPushChanges_Click(object sender, EventArgs e)
+        {
+            LocalContent.Push();
+        }
+        private void buttonConnectionTokenFetch_Click(object sender, EventArgs e)
+        {
+            LocalContent.Auth.FetchToken();
         }
 
         private void checkBoxAuthAutoLogin_CheckedChanged(object sender, EventArgs e)
@@ -757,13 +515,6 @@ namespace BuildServiceAPI.DesktopClient
             UserConfig.Set("Authentication", "AutoLogin", checkBoxAuthAutoLogin.Checked);
             UserConfig.Save();
         }
-
-        private void AdminForm_Shown(object sender, EventArgs e)
-        {
-            if (UserConfig.GetBoolean("Authentication", "AutoLogin", false))
-                FetchToken();
-        }
-
 
     }
 }

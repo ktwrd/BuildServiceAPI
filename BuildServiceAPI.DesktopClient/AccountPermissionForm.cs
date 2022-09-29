@@ -69,24 +69,23 @@ namespace BuildServiceAPI.DesktopClient
             {
                 taskList.Add(new Task(delegate
                 {
-                    var targetURL = Endpoint.UserPermissionRevoke(AdminForm.Token.Token, Account.Username, perm);
-                    AdminForm.httpClient.GetAsync(targetURL).Wait();
+                    var targetURL = Endpoint.UserPermissionRevoke(Program.AuthClient.Token, Account.Username, perm);
+                    Program.AuthClient.HttpClient.GetAsync(targetURL).Wait();
                 }));
             }
             foreach (var perm in grantList)
             {
                 taskList.Add(new Task(delegate
                 {
-                    var targetURL = Endpoint.UserPermissionGrant(AdminForm.Token.Token, Account.Username, perm);
-                    AdminForm.httpClient.GetAsync(targetURL).Wait();
+                    var targetURL = Endpoint.UserPermissionGrant(Program.AuthClient.Token, Account.Username, perm);
+                    Program.AuthClient.HttpClient.GetAsync(targetURL).Wait();
                 }));
             }
             foreach (var t in taskList)
                 t.Start();
             Task.WhenAll(taskList);
             Enabled = true;
-            AdminForm.RefreshAccounts();
-            AdminForm.RefreshAccountListView();
+            Program.LocalContent.PullAccounts();
             AdminForm.Enabled = true;
             Close();
         }

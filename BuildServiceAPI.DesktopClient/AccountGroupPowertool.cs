@@ -31,7 +31,7 @@ namespace BuildServiceAPI.DesktopClient
 
             checkedListBoxAccountRemove.Items.Clear();
             checkedListBoxAccountJoin.Items.Clear();
-            foreach (var account in AdminForm.AccountListing)
+            foreach (var account in Program.LocalContent.AccountListing)
             {
                 checkedListBoxAccountRemove.Items.Add(account.Username);
                 checkedListBoxAccountJoin.Items.Add(account.Username);
@@ -170,7 +170,7 @@ namespace BuildServiceAPI.DesktopClient
             SelectedUsernamesToJoin = checkedListBoxAccountJoin.Items.Cast<string>().ToArray();
 
             var requestDictionary = new Dictionary<string, string[]>();
-            foreach (var account in AdminForm.AccountListing)
+            foreach (var account in Program.LocalContent.AccountListing)
             {
                 var newGroups = new List<string>(account.Groups);
                 if (SelectedUsernamesToRemove.Contains(account.Username))
@@ -190,7 +190,7 @@ namespace BuildServiceAPI.DesktopClient
                 Data = requestDictionary
             };
 
-            var request = AdminForm.httpClient.PostAsync(Endpoint.UserGroupSet(AdminForm.Token.Token), new StringContent(JsonSerializer.Serialize(objectContent, Program.serializerOptions))).Result;
+            var request = Program.AuthClient.HttpClient.PostAsync(Endpoint.UserGroupSet(Program.AuthClient.Token), new StringContent(JsonSerializer.Serialize(objectContent, Program.serializerOptions))).Result;
             var stringResponse = request.Content.ReadAsStringAsync().Result;
             var dynamicResponse = JsonSerializer.Deserialize<ObjectResponse<dynamic>>(stringResponse, Program.serializerOptions);
             if (!dynamicResponse.Success)
@@ -200,8 +200,7 @@ namespace BuildServiceAPI.DesktopClient
             }
 
             Close();
-            AdminForm.RefreshAccounts();
-            AdminForm.RefreshAccountListView();
+            Program.LocalContent.PullAccounts();
         }
 
         private void buttonAccountRemoveSelectAll_Click(object sender, EventArgs e)

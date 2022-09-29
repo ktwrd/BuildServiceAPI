@@ -48,14 +48,14 @@ namespace BuildServiceAPI.DesktopClient
             {
                 { Account.Username, groupList.ToArray() }
             };
-            var targetURL = Endpoint.UserGroupSet(AdminForm.Token.Token);
+            var targetURL = Endpoint.UserGroupSet(Program.AuthClient.Token);
             var sendContentObject = new ObjectResponse<Dictionary<string, string[]>>()
             {
                 Success = true,
                 Data = dict
             };
 
-            var response = AdminForm.httpClient.PostAsync(targetURL, new StringContent(JsonSerializer.Serialize(sendContentObject, Program.serializerOptions))).Result;
+            var response = Program.AuthClient.HttpClient.PostAsync(targetURL, new StringContent(JsonSerializer.Serialize(sendContentObject, Program.serializerOptions))).Result;
             var stringContent = response.Content.ReadAsStringAsync().Result;
             var dynamicContent = JsonSerializer.Deserialize<ObjectResponse<dynamic>>(stringContent, Program.serializerOptions);
             if (!dynamicContent.Success)
@@ -64,8 +64,7 @@ namespace BuildServiceAPI.DesktopClient
                 MessageBox.Show($"({exceptionContent.Data.Code}) {exceptionContent.Data.Message}\n{exceptionContent.Data.Exception}", $"Failed to push user group");
             }
 
-            AdminForm.RefreshAccounts();
-            AdminForm.RefreshAccountListView();
+            Program.LocalContent.PullAccounts();
         }
 
         private void AccountGroupForm_Shown(object sender, EventArgs e)

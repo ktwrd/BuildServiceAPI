@@ -35,6 +35,8 @@ namespace BuildServiceAPI.DesktopClient
             => WebUtility.UrlEncode(content);
         private static string encode(dynamic content)
             => encode(content.ToString());
+        internal static string ServerDetails
+            => $"{Base}/server/details";
         internal static string LatestReleaseBase
             => $"{Base}/release/latest";
         internal static string LatestRelease(string id)
@@ -56,6 +58,9 @@ namespace BuildServiceAPI.DesktopClient
             => $"{Base}/token/details?token={encode(token)}";
         internal static string TokenRemove(string token, bool all = false)
             => $"{Base}/token/remove?token={encode(token)}&all={encode(all)}";
+
+        internal static string AccountDetails(string token)
+            => $"{Base}/account?token={encode(token)}";
 
         internal static string AnnouncementLatest()
             => $"{Base}/admin/announcement/latest";

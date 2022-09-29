@@ -18,9 +18,12 @@ namespace BuildServiceAPI.DesktopClient
         {
             InitializeComponent();
 
+            Program.LocalContent = new LocalContent();
+
             AdminForm = new AdminForm();
             AdminForm.MdiParent = this;
             AdminForm.Show();
+            AdminForm.Shown += AdminForm_Shown;
             AdminForm.FormClosing += AdminForm_FormClosing;
 
 #if false
@@ -30,6 +33,17 @@ namespace BuildServiceAPI.DesktopClient
 #endif
             AutoUpdater.Start("https://raw.githubusercontent.com/ktwrd/BuildServiceAPI/main/AutoUpdate.DesktopClient.xml");
             AutoUpdater.Mandatory = true;
+        }
+
+        private void AdminForm_Shown(object sender, EventArgs e)
+        {
+            Program.AuthClient = new AuthClient();
+            var gotten = UserConfig.Get();
+            if (UserConfig.GetBoolean("Authentication", "AutoLogin", false))
+                Program.AuthClient.ValidateOrFetch();
+            if (Program.AuthClient.TokenData != null)
+                Program.LocalContent.Pull();
+            AdminForm.Shown -= AdminForm_Shown;
         }
 
         private void AdminForm_FormClosing(object sender, FormClosingEventArgs e)
