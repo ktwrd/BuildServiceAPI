@@ -84,15 +84,17 @@
             this.tabPageSettings = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.textBoxLabelUsername = new BuildServiceAPI.DesktopClient.TextBoxLabel();
+            this.textBoxLabelPassword = new BuildServiceAPI.DesktopClient.MaskedTextBoxLabel();
+            this.textBoxLabelEndpoint = new BuildServiceAPI.DesktopClient.TextBoxLabel();
             this.checkBoxAuthAutoLogin = new System.Windows.Forms.CheckBox();
             this.buttonConnectionTokenFetch = new System.Windows.Forms.Button();
             this.imageListTabs = new System.Windows.Forms.ImageList(this.components);
             this.toolStrip2 = new System.Windows.Forms.ToolStrip();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.toolStripLabelServerVersion = new System.Windows.Forms.ToolStripLabel();
-            this.textBoxLabelUsername = new BuildServiceAPI.DesktopClient.TextBoxLabel();
-            this.textBoxLabelPassword = new BuildServiceAPI.DesktopClient.MaskedTextBoxLabel();
-            this.textBoxLabelEndpoint = new BuildServiceAPI.DesktopClient.TextBoxLabel();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.listBoxSettingsPermissions = new System.Windows.Forms.ListBox();
             this.tabControl1.SuspendLayout();
             this.tabPageAccountMan.SuspendLayout();
             this.toolStripAccountMan.SuspendLayout();
@@ -109,6 +111,7 @@
             this.flowLayoutPanel2.SuspendLayout();
             this.toolStrip2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -627,6 +630,7 @@
             // 
             // tabPageSettings
             // 
+            this.tabPageSettings.Controls.Add(this.groupBox2);
             this.tabPageSettings.Controls.Add(this.groupBox1);
             this.tabPageSettings.ImageIndex = 3;
             this.tabPageSettings.Location = new System.Drawing.Point(4, 23);
@@ -661,77 +665,6 @@
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(314, 228);
             this.flowLayoutPanel2.TabIndex = 0;
-            // 
-            // checkBoxAuthAutoLogin
-            // 
-            this.checkBoxAuthAutoLogin.AutoSize = true;
-            this.checkBoxAuthAutoLogin.Location = new System.Drawing.Point(3, 138);
-            this.checkBoxAuthAutoLogin.Name = "checkBoxAuthAutoLogin";
-            this.checkBoxAuthAutoLogin.Size = new System.Drawing.Size(117, 17);
-            this.checkBoxAuthAutoLogin.TabIndex = 4;
-            this.checkBoxAuthAutoLogin.Text = "Automatically Login";
-            this.checkBoxAuthAutoLogin.UseVisualStyleBackColor = true;
-            this.checkBoxAuthAutoLogin.CheckedChanged += new System.EventHandler(this.checkBoxAuthAutoLogin_CheckedChanged);
-            // 
-            // buttonConnectionTokenFetch
-            // 
-            this.buttonConnectionTokenFetch.Image = ((System.Drawing.Image)(resources.GetObject("buttonConnectionTokenFetch.Image")));
-            this.buttonConnectionTokenFetch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonConnectionTokenFetch.Location = new System.Drawing.Point(3, 161);
-            this.buttonConnectionTokenFetch.Name = "buttonConnectionTokenFetch";
-            this.buttonConnectionTokenFetch.Size = new System.Drawing.Size(105, 23);
-            this.buttonConnectionTokenFetch.TabIndex = 3;
-            this.buttonConnectionTokenFetch.Text = "Reload Token";
-            this.buttonConnectionTokenFetch.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.buttonConnectionTokenFetch.UseVisualStyleBackColor = true;
-            this.buttonConnectionTokenFetch.Click += new System.EventHandler(this.buttonConnectionTokenFetch_Click);
-            // 
-            // imageListTabs
-            // 
-            this.imageListTabs.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListTabs.ImageStream")));
-            this.imageListTabs.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageListTabs.Images.SetKeyName(0, "box.png");
-            this.imageListTabs.Images.SetKeyName(1, "user.png");
-            this.imageListTabs.Images.SetKeyName(2, "megaphone.png");
-            this.imageListTabs.Images.SetKeyName(3, "gear.png");
-            // 
-            // toolStrip2
-            // 
-            this.toolStrip2.Enabled = false;
-            this.toolStrip2.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripLabelServerVersion});
-            this.toolStrip2.Location = new System.Drawing.Point(3, 0);
-            this.toolStrip2.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
-            this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Padding = new System.Windows.Forms.Padding(3, 0, 3, 0);
-            this.toolStrip2.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.toolStrip2.Size = new System.Drawing.Size(1258, 25);
-            this.toolStrip2.TabIndex = 1;
-            this.toolStrip2.Text = "toolStrip2";
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.toolStrip2, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.tabControl1, 0, 1);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1264, 441);
-            this.tableLayoutPanel1.TabIndex = 2;
-            // 
-            // toolStripLabelServerVersion
-            // 
-            this.toolStripLabelServerVersion.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.toolStripLabelServerVersion.Name = "toolStripLabelServerVersion";
-            this.toolStripLabelServerVersion.Size = new System.Drawing.Size(190, 22);
-            this.toolStripLabelServerVersion.Text = "Server: {Auth.ServerDetails.Version}";
-            this.toolStripLabelServerVersion.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // textBoxLabelUsername
             // 
@@ -781,6 +714,96 @@
             this.textBoxLabelEndpoint.TextboxContent = "";
             this.textBoxLabelEndpoint.TextboxLines = new string[0];
             // 
+            // checkBoxAuthAutoLogin
+            // 
+            this.checkBoxAuthAutoLogin.AutoSize = true;
+            this.checkBoxAuthAutoLogin.Location = new System.Drawing.Point(3, 138);
+            this.checkBoxAuthAutoLogin.Name = "checkBoxAuthAutoLogin";
+            this.checkBoxAuthAutoLogin.Size = new System.Drawing.Size(117, 17);
+            this.checkBoxAuthAutoLogin.TabIndex = 4;
+            this.checkBoxAuthAutoLogin.Text = "Automatically Login";
+            this.checkBoxAuthAutoLogin.UseVisualStyleBackColor = true;
+            this.checkBoxAuthAutoLogin.CheckedChanged += new System.EventHandler(this.checkBoxAuthAutoLogin_CheckedChanged);
+            // 
+            // buttonConnectionTokenFetch
+            // 
+            this.buttonConnectionTokenFetch.Image = ((System.Drawing.Image)(resources.GetObject("buttonConnectionTokenFetch.Image")));
+            this.buttonConnectionTokenFetch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonConnectionTokenFetch.Location = new System.Drawing.Point(3, 161);
+            this.buttonConnectionTokenFetch.Name = "buttonConnectionTokenFetch";
+            this.buttonConnectionTokenFetch.Size = new System.Drawing.Size(105, 23);
+            this.buttonConnectionTokenFetch.TabIndex = 3;
+            this.buttonConnectionTokenFetch.Text = "Reload Token";
+            this.buttonConnectionTokenFetch.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.buttonConnectionTokenFetch.UseVisualStyleBackColor = true;
+            this.buttonConnectionTokenFetch.Click += new System.EventHandler(this.buttonConnectionTokenFetch_Click);
+            // 
+            // imageListTabs
+            // 
+            this.imageListTabs.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListTabs.ImageStream")));
+            this.imageListTabs.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageListTabs.Images.SetKeyName(0, "box.png");
+            this.imageListTabs.Images.SetKeyName(1, "user.png");
+            this.imageListTabs.Images.SetKeyName(2, "megaphone.png");
+            this.imageListTabs.Images.SetKeyName(3, "gear.png");
+            // 
+            // toolStrip2
+            // 
+            this.toolStrip2.Enabled = false;
+            this.toolStrip2.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripLabelServerVersion});
+            this.toolStrip2.Location = new System.Drawing.Point(3, 0);
+            this.toolStrip2.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
+            this.toolStrip2.Name = "toolStrip2";
+            this.toolStrip2.Padding = new System.Windows.Forms.Padding(3, 0, 3, 0);
+            this.toolStrip2.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            this.toolStrip2.Size = new System.Drawing.Size(1258, 25);
+            this.toolStrip2.TabIndex = 1;
+            this.toolStrip2.Text = "toolStrip2";
+            // 
+            // toolStripLabelServerVersion
+            // 
+            this.toolStripLabelServerVersion.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripLabelServerVersion.Name = "toolStripLabelServerVersion";
+            this.toolStripLabelServerVersion.Size = new System.Drawing.Size(190, 22);
+            this.toolStripLabelServerVersion.Text = "Server: {Auth.ServerDetails.Version}";
+            this.toolStripLabelServerVersion.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.toolStrip2, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.tabControl1, 0, 1);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1264, 441);
+            this.tableLayoutPanel1.TabIndex = 2;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.listBoxSettingsPermissions);
+            this.groupBox2.Location = new System.Drawing.Point(332, 6);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(200, 244);
+            this.groupBox2.TabIndex = 2;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Your Permissions";
+            // 
+            // listBoxSettingsPermissions
+            // 
+            this.listBoxSettingsPermissions.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listBoxSettingsPermissions.FormattingEnabled = true;
+            this.listBoxSettingsPermissions.Location = new System.Drawing.Point(3, 16);
+            this.listBoxSettingsPermissions.Name = "listBoxSettingsPermissions";
+            this.listBoxSettingsPermissions.Size = new System.Drawing.Size(194, 225);
+            this.listBoxSettingsPermissions.TabIndex = 0;
+            // 
             // AdminForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -817,6 +840,7 @@
             this.toolStrip2.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -886,5 +910,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
         private System.Windows.Forms.ToolStripButton toolStripButtonAccountRefresh;
         private System.Windows.Forms.ToolStripLabel toolStripLabelServerVersion;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.ListBox listBoxSettingsPermissions;
     }
 }
