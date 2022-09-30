@@ -30,14 +30,20 @@ namespace BuildServiceAPI.DesktopClient
                 return;
             }
             OnPullBefore?.Invoke(ContentField.All);
-            var taskArray = new Task[]
+            var taskArray = new List<Task>()
             {
-                new Task(delegate { PullAccounts(false); }),
-                new Task(delegate { PullAnnouncements(false); }),
-                new Task(delegate { PullContentManager(false); }),
                 new Task(delegate { Auth.FetchAccountDetails(); }),
                 new Task(delegate { Auth.FetchServerDetails(); })
             };
+            if (Auth.AccountDetails != null)
+            {
+                if (Auth.AccountDetails.Permissions.Contains(AccountPermission.USER_LIST))
+                    taskArray.Add(new Task(delegate { PullAccounts(false); }));
+                if (Auth.AccountDetails.Permissions.Contains(AccountPermission.ANNOUNCEMENT_MANAGE))
+                    taskArray.Add(new Task(delegate { PullAnnouncements(false); }));
+                if (Auth.AccountDetails.Permissions.Contains(AccountPermission.ADMINISTRATOR))
+                    taskArray.Add(new Task(delegate { PullContentManager(false); }));
+            }
 
             foreach (var i in taskArray)
                 i.Start();
