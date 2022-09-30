@@ -19,6 +19,8 @@ namespace BuildServiceAPI.DesktopClient
             InitializeComponent();
 
             Program.LocalContent = new LocalContent();
+            Program.LocalContent.OnPull += LocalContent_OnPull;
+            Program.LocalContent.OnPush += LocalContent_OnPush;
 
             AdminForm = new AdminForm();
             AdminForm.MdiParent = this;
@@ -33,6 +35,24 @@ namespace BuildServiceAPI.DesktopClient
 #endif
             AutoUpdater.Start("https://raw.githubusercontent.com/ktwrd/BuildServiceAPI/main/AutoUpdate.DesktopClient.xml");
             AutoUpdater.Mandatory = true;
+        }
+
+        private void LocalContent_OnPush(ContentField field)
+        {
+            toolStripLabelServerVersion.Text = $"Server Version: Unknown";
+            if (Program.LocalContent.Auth.ServerDetails != null)
+            {
+                toolStripLabelServerVersion.Text = $"Server Version: v{Program.LocalContent.Auth.ServerDetails.Version}";
+            }
+        }
+
+        private void LocalContent_OnPull(ContentField field)
+        {
+            toolStripLabelServerVersion.Text = $"Server Version: Unknown";
+            if (Program.LocalContent.Auth.ServerDetails != null)
+            {
+                toolStripLabelServerVersion.Text = $"Server Version: v{Program.LocalContent.Auth.ServerDetails.Version}";
+            }
         }
 
         private void AdminForm_Shown(object sender, EventArgs e)

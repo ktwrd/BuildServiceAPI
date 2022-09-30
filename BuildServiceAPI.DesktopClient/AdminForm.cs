@@ -40,10 +40,6 @@ namespace BuildServiceAPI.DesktopClient
             LocalContent.OnPushBefore += LocalContent_OnPushBefore;
             LocalContent.OnPush += LocalContent_OnPush;
 
-            if (LocalContent.Auth != null && LocalContent.Auth.ServerDetails != null)
-            {
-                toolStripLabelServerVersion.Text = $"Server: {LocalContent.Auth.ServerDetails.Version}";
-            }
         }
 
 
@@ -67,7 +63,6 @@ namespace BuildServiceAPI.DesktopClient
             }
             toolStripButtonAnnouncementEnforce.Enabled = !LocalContent.AnnouncementSummary.Active;
             toolStripButtonAnnouncementsDisable.Enabled = LocalContent.AnnouncementSummary.Active;
-            toolStripLabelServerVersion.Text = $"Server: {LocalContent.Auth.ServerDetails.Version}";
         }
 
         private void LocalContent_OnPullBefore(ContentField field)
@@ -88,7 +83,6 @@ namespace BuildServiceAPI.DesktopClient
             listViewAnnouncement.Enabled = true;
             toolStripButtonAnnouncementEnforce.Enabled = !LocalContent.AnnouncementSummary.Active;
             toolStripButtonAnnouncementsDisable.Enabled = LocalContent.AnnouncementSummary.Active;
-            toolStripLabelServerVersion.Text = $"Server: {LocalContent.Auth.ServerDetails.Version}";
 
             if (LocalContent.Auth.AccountDetails != null)
             {
