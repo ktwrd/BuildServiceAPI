@@ -74,7 +74,11 @@ namespace BuildServiceAPI.DesktopClient
         {
             toolStripAnnouncement.Enabled = false;
             listViewAnnouncement.Enabled = false;
-            Enabled = false;
+            tabPageAccountMan.Enabled = false;
+            tabPageAnnouncementManagement.Enabled = false;
+            tabPageReleaseDetails.Enabled = false;
+
+            listBoxSettingsPermissions.Items.Clear();
         }
 
         private void LocalContent_OnPull(ContentField field)
@@ -82,6 +86,25 @@ namespace BuildServiceAPI.DesktopClient
             Enabled = true;
             toolStripAnnouncement.Enabled = true;
             listViewAnnouncement.Enabled = true;
+            toolStripButtonAnnouncementEnforce.Enabled = !LocalContent.AnnouncementSummary.Active;
+            toolStripButtonAnnouncementsDisable.Enabled = LocalContent.AnnouncementSummary.Active;
+            toolStripLabelServerVersion.Text = $"Server: {LocalContent.Auth.ServerDetails.Version}";
+
+            if (LocalContent.Auth.AccountDetails != null)
+            {
+                bool admin = LocalContent.Auth.AccountDetails.Permissions.Contains(AccountPermission.ADMINISTRATOR);
+                tabPageAccountMan.Enabled = admin || LocalContent.Auth.AccountDetails.Permissions.Contains(AccountPermission.USER_LIST);
+                tabPageAnnouncementManagement.Enabled = admin || LocalContent.Auth.AccountDetails.Permissions.Contains(AccountPermission.ANNOUNCEMENT_MANAGE);
+                tabPageReleaseDetails.Enabled = admin;
+                listBoxSettingsPermissions.Items.Clear();
+                foreach (var perm in LocalContent.Auth.AccountDetails.Permissions)
+                    listBoxSettingsPermissions.Items.Add(perm.ToString());
+            }
+            else
+            {
+                listBoxSettingsPermissions.Items.Add(@"None");
+            }
+
             if (field == ContentField.Announcement || field == ContentField.All)
             {
                 RefreshAnnouncementList();
@@ -95,9 +118,6 @@ namespace BuildServiceAPI.DesktopClient
             {
                 RefreshAccountListView();
             }
-            toolStripButtonAnnouncementEnforce.Enabled = !LocalContent.AnnouncementSummary.Active;
-            toolStripButtonAnnouncementsDisable.Enabled = LocalContent.AnnouncementSummary.Active;
-            toolStripLabelServerVersion.Text = $"Server: {LocalContent.Auth.ServerDetails.Version}";
         }
 
         private void AdminForm_SelectedReleasesChange()
@@ -170,7 +190,12 @@ namespace BuildServiceAPI.DesktopClient
             toolStripButtonAccountGroupMan.Enabled = false;
             toolStripButtonAccountPermission.Enabled = false;
             toolStripButtonUserModify.Enabled = false;
-            toolStripButtonAccountGroupPowertool.Enabled = true;
+            toolStripButtonAccountGroupPowertool.Enabled = false;
+            if (LocalContent.Auth.AccountDetails != null)
+            {
+                bool admin = LocalContent.Auth.AccountDetails.Permissions.Contains(AccountPermission.ADMINISTRATOR);
+                toolStripButtonAccountGroupPowertool.Enabled = admin || LocalContent.Auth.AccountDetails.Permissions.Contains(AccountPermission.USER_GROUP_MODIFY);
+            }
             SelectedAccountEntry = null;
             var selectedList = new List<AccountDetailsResponse>();
             foreach (var account in LocalContent.AccountListing)
@@ -196,8 +221,12 @@ namespace BuildServiceAPI.DesktopClient
                     toolStripButtonAccountBlockEdit.Enabled = true;
                     toolStripButtonUserModify.Enabled = true;
                     #endif
-                    toolStripButtonAccountGroupMan.Enabled = true;
-                    toolStripButtonAccountPermission.Enabled = true;
+                    if (LocalContent.Auth.AccountDetails != null)
+                    {
+                        bool admin = LocalContent.Auth.AccountDetails.Permissions.Contains(AccountPermission.ADMINISTRATOR);
+                        toolStripButtonAccountGroupMan.Enabled = admin || LocalContent.Auth.AccountDetails.Permissions.Contains(AccountPermission.USER_GROUP_MODIFY);
+                        toolStripButtonAccountPermission.Enabled = admin || LocalContent.Auth.AccountDetails.Permissions.Contains(AccountPermission.USER_PERMISSION_MODIFY);
+                    }
                     SelectedAccountEntry = item;
                     break;
                 }
